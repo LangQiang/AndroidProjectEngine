@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/lrlite_base_toast__bg"
+    android:gravity="center"
+    android:orientation="vertical">
+    
+    <TextView 
+        android:id="@+id/kwtoast_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp"
+        android:gravity="center_horizontal"
+        tools:text="这都是什么"
+        android:textColor="@color/LRLiteBase_cl_white"
+        android:textSize="16sp"/>
+
+</LinearLayout>

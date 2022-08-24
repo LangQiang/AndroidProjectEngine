@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- LRLiteBase统一颜色 -->
+
+    <color name="LRLiteBase_transparent">#00000000</color>
+    <!-- white -->
+    <color name="LRLiteBase_cl_white">#ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_6">#0Fffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_5">#0Dffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_8">#14ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_10">#1affffff</color>
+    <color name="LRLiteBase_cl_white_alpha_15">#21ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_20">#33ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_25">#40ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_30">#4cffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_35">#59ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_40">#66ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_45">#72ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_50">#7fffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_55">#8cffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_60">#99ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_65">#a5ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_70">#b2ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_75">#bfffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_80">#ccffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_85">#d8ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_90">#e5ffffff</color>
+    <color name="LRLiteBase_cl_white_alpha_95">#f2ffffff</color>
+    <!-- 全透明啥也看不见。。 -->
+    <color name="LRLiteBase_cl_white_alpha_100">#00ffffff</color>
+    <color name="LRLiteBase_cl_transparent">#00000000</color>
+
+    <!-- black -->
+    <color name="LRLiteBase_cl_black">#000000</color>
+    <color name="LRLiteBase_cl_black_33">#333333</color>
+    <color name="LRLiteBase_cl_black_66">#666666</color>
+    <color name="LRLiteBase_cl_black_1">#949494</color>
+    <color name="LRLiteBase_cl_black_88">#888888</color>
+    <color name="LRLiteBase_cl_black_99">#999999</color>
+    <color name="LRLiteBase_cl_black_99_50">#7f999999</color>
+    <color name="LRLiteBase_cl_black_2">#aaaaaa</color>
+    <color name="LRLiteBase_cl_black_3">#dadada</color>
+    <color name="LRLiteBase_cl_black_4">#e6e6e6</color>
+    <color name="LRLiteBase_cl_dddddd">#dddddd</color>
+    <color name="LRLiteBase_cl_dddddd_15">#21dddddd</color>
+    <color name="LRLiteBase_cl_black_alpha_2">#05000000</color>
+    <color name="LRLiteBase_cl_black_alpha_3">#08000000</color>
+    <color name="LRLiteBase_cl_black_alpha_4">#0B000000</color>
+    <color name="LRLiteBase_cl_black_alpha_5">#0D000000</color>
+    <color name="LRLiteBase_cl_black_alpha_8">#14000000</color>
+    <color name="LRLiteBase_cl_black_alpha_12">#1e000000</color>
+    <color name="LRLiteBase_cl_black_alpha_15">#21000000</color>
+    <color name="LRLiteBase_cl_black_alpha_25">#40000000</color>
+    <color name="LRLiteBase_cl_black_alpha_30">#4c000000</color>
+    <color name="LRLiteBase_cl_black_alpha_35">#59000000</color>
+    <color name="LRLiteBase_cl_black_alpha_38">#60000000</color>
+    <color name="LRLiteBase_cl_black_alpha_40">#66000000</color>
+    <color name="LRLiteBase_cl_black_alpha_45">#72000000</color>
+    <color name="LRLiteBase_cl_black_alpha_50">#7f000000</color>
+    <color name="LRLiteBase_cl_black_alpha_56">#90000000</color>
+    <color name="LRLiteBase_cl_black_alpha_60">#99000000</color>
+    <color name="LRLiteBase_cl_black_63">#636363</color>
+    <color name="LRLiteBase_cl_black_712">#7C7C7C</color>
+    <color name="LRLiteBase_cl_black_alpha_65">#a5000000</color>
+    <color name="LRLiteBase_cl_black_alpha_70">#b2000000</color>
+    <color name="LRLiteBase_cl_black_alpha_75">#b0000000</color>
+    <color name="LRLiteBase_cl_black_alpha_80">#bf000000</color>
+    <color name="LRLiteBase_cl_black_alpha_90">#e5000000</color>
+
+    <drawable name="LRLiteBase_cl_black_alpha_5">#0D000000</drawable>
+    <drawable name="LRLiteBase_cl_white">#ffffff</drawable>
+    <drawable name="LRLiteBase_cl_drawable_transparent">#00000000</drawable>
+
+
+    <!-- red -->
+    <color name="kw_new_red">#fc5457</color>
+
+    <!-- dark background -->
+    <!--     <color name="LRLiteBase_cl_dark_bg">#f21b1b22</color> -->
+    <!-- <color name="LRLiteBase_cl_dark_bg">#d81b1b22</color>%80 -->
+    <color name="LRLiteBase_cl_dark_bg">#e61b1b22</color>
+
+
+    <!--ui 1.0-->
+    <color name="LRLiteBase_background">#fafafa</color>
+    <color name="main_topbar_bg">#99262630</color>
+    <color name="color_ffcd2d">#ffcd2d</color>
+    <color name="rgbf0f0f0">#f0f0f0</color>
+    <color name="music_pack_twice_orange">#ff6600</color>
+    <color name="seek_bar_thumb_color">#FA452B</color>
+    <color name="ts_now_play_common_theme_color">#FA452B</color>
+    <color name="ts_common_theme_color">#FA452B</color>
+    <color name="ts_common_theme_color_alpha_20">#33FA452B</color>
+    <color name="rgbFFFF5400">#FFFA452B</color>
+    <color name="rgbFFEB4D00">#FFEB4D00</color>
+    <color name="rgb4D000000">#4D000000</color>
+    <color name="rgbFF979797">#FF979797</color>s
+    <color name="rgbFFF33628">#FFF33628</color>
+    <color name="rgbFFFF6310">#FFFF6310</color>
+    <color name="rgbFFFFA139">#FFFFA139</color>
+    <color name="rgbffffeadf">#ffffeadf</color>
+
+    <color name="kw_title_bar_bg">#fafafa</color>
+    <color name="kw_title_bar_right_text">#FA452B</color>
+    <color name="web_activity_title_bar_bg">#FF6D3B</color>
+
+    <color name="black333">#333333</color>
+
+    <color name="white6">#0fffffff</color>
+    <color name="white8">#14ffffff</color>
+    <color name="white10">#1affffff</color>
+    <color name="white16">#22ffffff</color>
+    <color name="white20">#32ffffff</color>
+    <color name="white40">#64ffffff</color>
+    <color name="white50">#80ffffff</color>
+    <color name="white60">#96ffffff</color>
+    <color name="white70">#b3ffffff</color>
+    <color name="white80">#ccffffff</color>
+    <color name="black6">#0f000000</color>
+    <color name="black16">#22000000</color>
+    <color name="black20">#32000000</color>
+    <color name="black30">#4c000000</color>
+    <color name="black40">#66000000</color>
+    <color name="black60">#99000000</color>
+    <color name="black80">#cc000000</color>
+    <color name="black">#ff000000</color>
+    <color name="listen_tab_select">#F73B3B</color>
+
+
+    <!-- 游戏悬浮框 -->
+    <color name="kw_white">#ffffffff</color>
+    <color name="kw_black">#ff000000</color>
+
+    <!-- 舞指进入背景色 -->
+    <!--新人榜-->
+    <!--加速下载-->
+
+    <color name="LRLiteBase_cl_white_bg">#e5e5e5</color>
+
+    <!--换肤-->
+    <color name="skin_official_default">#ffcd2d</color>
+    <color name="skin_white_bg">#f2f2f2</color>
+    <color name="skin_official_blue">#1da0ef</color>
+    <color name="skin_official_yellow">#fdbe13</color>
+    <color name="skin_official_white">#fff</color>
+    <color name="skin_official_black_black">#252a31</color>
+    <color name="skin_official_gold">#cba97f</color>
+
+    <color name="skin_high_color_50">#7fFF6D3B</color>
+    <color name="skin_high_color_70">#b2FF6D3B</color>
+
+    <color name="task_progress_up">#FF202C</color>
+    <color name="task_progress_down">#FF5C8E</color>
+
+
+
+    <!-- 合唱歌词颜色 -->
+    <!-- 秀场直播间主播头像背景  -->
+
+
+    <!--你唱我猜-->
+
+    <!--主题换肤背景色-->
+
+    <color name="bibi_common_blue">#0CAEE7</color>
+
+    <!-- 音乐包 -->
+    <color name="mine_musicbag_focus">#ffbc01</color>
+
+
+    <!-- 一键升级音质    -->
+    <color name="upgrade_main_color">#ca9d63</color>
+
+
+    <!--煲机 -->
+
+    <color name="minead_listitem_text">#888888</color>
+
+    <!--专辑详情页-->
+    <color name="album_detail_theme">@color/skin_high_blue_color</color>
+    <color name="album_detail_write_comment">#FFEBEB</color>
+    <color name="album_detail_item_bg">@color/LRLiteBase_cl_white</color>
+    <color name="album_detail_recent">#DB7451</color>
+    <color name="album_detail_limit_free">#F68270</color>
+    <color name="kw_ccc">#cccccc</color>
+
+    <color name="ts_color_c1">#bf000000</color>
+    <color name="ts_color_c2">#99000000</color>
+    <color name="ts_color_c3">#66000000</color>
+    <color name="ts_color_c4">#33000000</color>
+    <color name="ts_color_c6">#14000000</color>
+    <color name="ts_color_c7">#0D000000</color>
+    <color name="ts_color_ln">#14000000</color>
+
+
+    <color name="skin_title_important_color">#cc000000</color>
+    <color name="skin_title_less_important_color">#555555</color>
+    <color name="skin_title_color">#ffffff</color>
+    <color name="skin_desc_color">#888888</color>
+    <color name="skin_tip_color">#888888</color>
+    <color name="skin_disable_color">#cacaca</color>
+    <color name="skin_splite_color">#0E000000</color>
+    <color name="skin_tab_splite_color">#08000000</color>
+    <color name="skin_high_color">#f0aa00</color>
+    <color name="skin_item_bg">#ffffff</color>
+    <color name="skin_white">#ffffff</color>
+    <color name="skin_transparent">#00000000</color>
+    <color name="LRLiteBase_cl_black_alpha_20">#33000000</color>
+    <color name="LRLiteBase_cl_black_alpha_10">#1a000000</color>
+    <color name="skin_curmusic_bg">#f2f2f2</color>
+    <color name="skin_loading_text">#999999</color>
+    <color name="skin_mine_section">#f9f9f9</color>
+    <color name="main_back">#f9faf9</color>
+    <color name="skin_buttom_splite_color">#0D000000</color>
+    <color name="skin_bussness_square_text">#666666</color>
+    <color name="skin_f2f2f2_262630">#f2f2f2</color>
+    <color name="main_search_bg">#eeeeee</color>
+    <color name="skin_recoment_title_color">#666666</color>
+    <color name="skin_high_blue_color">#1672FA</color>
+    <color name="skin_high_blue_color5">#0d1672FA</color>
+
+
+    <color name="skin_official_white_white">#f9f9f9</color>
+
+
+    <color name="classify_backgroud">#f9fAf9</color>
+
+
+    <color name="psd_text_color">@color/LRLiteBase_cl_black_alpha_80</color>
+    <color name="line_color">@color/LRLiteBase_cl_transparent</color>
+    <color name="grid_color">@color/LRLiteBase_cl_white</color>
+
+    <color name="vip_tips_backgroud">#f2f2f2</color>
+
+    <color name="ts_lite_common_fa452b">#fa452b</color>
+    <color name="color_disu">#FFE30542</color>
+    <color name="color_gaosu">#FFFF4038</color>
+    <color name="color_jisu">#FFFF7B00</color>
+    <color name="color_guangsu">#FF0DDD88</color>
+
+    <color name="color_disu_rocket">#FFE50743</color>
+    <color name="color_guangsu_rocket">#FF00C77F</color>
+    <color name="kw_common_cl_white_alpha_100">#00ffffff</color>
+    <color name="kw_common_cl_transparent">#00000000</color>
+    <color name="kw_common_cl_black">#000000</color>
+    <color name="white">#ffffff</color>
+
+    <color name="lrlite_index_color_fff64c37">#FFF64C37</color>
+    <color name="lrlite_index_color_ff3953B6">#FF3953B6</color>
+    <color name="red">#FF0000</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="main_bg">#f5f5f5</color>
+    <color name="bottom_bg">#fafafa</color>
+    <color name="app_theme_color">#1672FA</color>
+    <color name="album_header_default_bg">#b3b3b3</color>
+    <color name="tab_bg_color">#f3f3f3</color>
+
+<!--    元惜-->
+    <color name="yuanxi_nft_land_mark_seleck_title_color">#5553F7</color>
+    <color name="yuanxi_nft_land_mark_seleck_date_color">#bf5553F7</color>
+</resources>

@@ -1,0 +1,9 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- 描边 -->
+    <stroke
+        android:width="1px"
+        android:color="@color/LRLiteBase_cl_white_alpha_60" />
+    <!-- 圆角 -->
+    <corners android:radius="25dp" />
+</shape>

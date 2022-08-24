@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:id="@+id/back_panel"
+        android:layout_width="60dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="17dp"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            style="@style/LRLiteBase_TitleBar.TitleBarText"
+            android:layout_gravity="left|center_vertical"
+            android:textSize="16dp"
+            android:visibility="gone" />
+
+        <com.lazylite.mod.widget.textview.IconView
+            android:id="@+id/btn_back_icon_font"
+            style="@style/LRLiteBase_TitleBar.TitleBarText"
+            android:layout_gravity="left|center_vertical"
+            android:text="@string/title_back_icon"
+            android:textColor="@color/black"
+            android:textSize="24dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:scaleType="center"
+            android:background="@drawable/lrlite_base_back_white" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/right_panel"
+        android:layout_width="wrap_content"
+        android:minWidth="60dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:focusable="false"
+        android:visibility="visible">
+
+        <CheckBox
+            android:id="@+id/check_all"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center"
+            android:button="@null"
+            android:checked="false"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/btn_complete"
+            style="@style/LRLiteBase_TitleBar.TitleBarRightText"
+            android:layout_gravity="center"
+            android:textSize="13dp"
+            android:paddingRight="20dp"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/settings_panel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/btn_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:scaleType="center"
+                android:src="@drawable/lrlite_base_menu_setting"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/btn_settings_tips"
+                style="@style/LRLiteBase_DotTip"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="0dp"
+                android:visibility="gone" />
+
+            <com.lazylite.mod.widget.textview.IconView
+                android:id="@+id/right_icon_view"
+                android:visibility="gone"
+                android:layout_centerInParent="true"
+                android:textSize="24dp"
+                android:textColor="@color/black80"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:id="@+id/extend_panel"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/right_panel"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/btn_extend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:scaleType="center"
+            android:background="@drawable/lrlite_base_list_item_opt_normal"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/btn_extend_tips"
+            style="@style/LRLiteBase_DotTip"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="0dp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/title_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/main_title"
+            style="@style/LRLiteBase_TitleBar.TitleBarText"
+            android:textSize="16dp"
+            android:includeFontPadding="false"/>
+
+        <TextView
+            android:id="@+id/sub_title"
+            style="@style/LRLiteBase_TitleBar.TitleBarText"
+            android:textSize="10dp"
+            android:visibility="gone" />
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/title_right_container"
+        android:layout_width="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:focusable="true"
+        android:layout_marginRight="15dp"
+        android:visibility="gone"/>
+</merge>

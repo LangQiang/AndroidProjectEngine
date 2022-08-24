@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_back_icon">&#xe61e;</string>
+    <string name="title_info_icon">&#xe61d;</string>
+    <string name="title_share_icon">&#xe61f;</string>
+
+    <string name="close_icon">&#xe61b;</string>
+    <string name="right_arrow">&#xe625;</string>
+    <string name="tip_icon">&#xe6d4;</string>
+    <string name="copy_icon">&#xe621;</string>
+    <string name="download_icon">&#xe632;</string>
+
+    <!--    首页底部icon-->
+    <string name="bottom_index_select_icon">&#xe6e0;</string>
+    <string name="bottom_index_normal_icon">&#xe6e1;</string>
+    <string name="bottom_mine_select_icon">&#xe6d8;</string>
+    <string name="bottom_mine_normal_icon">&#xe6dc;</string>
+
+    <!--    首页热卖标签-->
+    <string name="index_sale_tag_notify_icon">&#xe6d4;</string>
+    <string name="index_sale_tag_hot_icon">&#xe6db;</string>
+    <string name="index_sale_tag_timing_icon">&#xe6e5;</string>
+
+    <!--    详情页-->
+    <string name="detail_active_default">&#xe62e;</string>
+    <string name="detail_active_hit">&#xe6d9;</string>
+    <string name="detail_active_miss">&#xe62c;</string>
+
+    <!--    支付-->
+    <string name="wx_pay_icon">&#xe6dd;</string>
+    <string name="ali_pay_icon">&#xe6df;</string>
+
+    <!--    订单-->
+    <string name="order_success_icon">&#xe6d9;</string>
+    <string name="order_deliver_icon">&#xe6d6;</string>
+    <string name="order_cancel_icon">&#xe6e4;</string>
+
+    <string name="mine_header_setting_icon">&#xe620;</string>
+    <string name="mine_header_share_icon">&#xe61f;</string>
+    <string name="mine_header_copy_icon">&#xe621;</string>
+    <string name="mine_header_order_icon">&#xe62a;</string>
+    <string name="mine_header_msg_icon">&#xe629;</string>
+    <string name="mine_header_trans_icon">&#xe62d;</string>
+    <string name="mine_right_arrow_icon">&#xe625;</string>
+    <string name="mine_down_icon">&#xe632;</string>
+    <string name="mine_slid_up_icon">&#xe62b;</string>
+    <string name="mine_dialog_close_icon">&#xe62c;</string>
+    <string name="mine_order_item_icon">&#xe6e3;</string>
+
+    <string name="mine_share_wx_friend">&#xe633;</string>
+    <string name="mine_share_wx_timeline">&#xe62f;</string>
+    <string name="mine_share_qq_friend">&#xe631;</string>
+    <string name="mine_share_qq_zone">&#xe630;</string>
+
+    <string name="clock_icon">&#xe6e6;</string>
+
+</resources>

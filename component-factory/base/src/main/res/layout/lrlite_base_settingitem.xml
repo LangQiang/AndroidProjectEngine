@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:background="@drawable/base_selector_item_click"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/rl_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp">
+
+        <com.lazylite.mod.widget.textview.IconView
+            android:id="@+id/iv_set_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            android:textSize="14dp"
+            android:text="@string/mine_right_arrow_icon"
+            android:textColor="@color/black60"
+            skin:enable="true"
+            tools:visibility="visible" />
+
+        <com.lazylite.mod.widget.KuwoSwitch
+            android:id="@+id/cb_set_switch"
+            style="@style/Switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            skin:isHighColor="true" />
+
+        <ImageView
+            android:id="@+id/iv_listen_auto_select_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone"
+            skin:isHighColor="true"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/tv_set_sub_center"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="0dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:visibility="gone"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_star"
+                android:text="*"
+                android:textColor="#fff9331b" />
+
+            <TextView
+                android:id="@+id/tv_set_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_star"
+                android:textColor="@color/skin_title_important_color"
+                android:textSize="15dp"
+                skin:enable="true"
+                tools:text="标题" />
+
+            <ImageView
+                android:id="@+id/img_set_item_tag"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="1dp"
+                android:layout_toRightOf="@+id/tv_set_title"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_set_sub_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:textColor="@color/skin_desc_color"
+            android:textSize="12dp"
+            android:visibility="gone"
+            skin:enable="true"
+            tools:text="副标题"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_set_sub_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/rl_icon"
+        android:ellipsize="end"
+        android:maxEms="10"
+        android:maxLines="1"
+        android:textColor="@color/skin_desc_color"
+        android:textSize="13sp"
+        skin:enable="true"
+        tools:text="右边文案" />
+
+    <View
+        android:id="@+id/setting_splite"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@color/black6"
+        skin:enable="true" />
+
+</RelativeLayout>

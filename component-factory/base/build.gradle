@@ -1,0 +1,82 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'maven-publish'
+}
+
+ext {
+    publishVersion = '1.0.0-SNAPSHOT'
+    publishArtifactName = 'base-core'
+    publishComponentType = 'aar-release'
+}
+apply from:'../../publish-tool.gradle'
+
+android {
+    compileSdk rootProject.ext.compileSdk
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdk
+        targetSdk rootProject.ext.targetSdk
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        if (project.hasProperty('IS_ALLOW_PROXY')) {
+            buildConfigField "boolean", "IS_ALLOW_PROXY", IS_ALLOW_PROXY
+        }else {
+            buildConfigField "boolean", "IS_ALLOW_PROXY", "false"
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = rootProject.ext.sourceCompatibility
+        targetCompatibility = rootProject.ext.targetCompatibility
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation rootProject.ext.appcompat
+    implementation rootProject.ext.recyclerview
+    implementation rootProject.ext.coordinatorlayout
+    implementation rootProject.ext.constraintlayout
+    implementation rootProject.ext.material
+    implementation rootProject.ext.palette
+    implementation rootProject.ext.viewpager2
+    implementation rootProject.ext.legacy_support_v4
+
+    implementation rootProject.ext.core_ktx
+
+
+    implementation rootProject.ext.okhttp3
+    implementation rootProject.ext.mmkv
+    api rootProject.ext.gson
+    api rootProject.ext.lottie
+    api rootProject.ext.pickerview
+    api rootProject.ext.timber
+
+    api('com.facebook.fresco:animated-gif:0.14.1') {
+        exclude module: 'support-v4'
+    }
+    api('com.facebook.fresco:fresco:0.13.0') {
+        exclude module: 'support-v4'
+    }
+}

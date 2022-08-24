@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">元惜</string>
+
+    <string name="list_onlywifi">仅wifi联网已开启\n为了节省您的流量，不获取在线内容</string>
+    <string name="search_result_search_nonet_tip">还没联网，无法搜索网络歌曲</string>
+    <string name="search_result_search_nocontent_tip">暂无数据</string>
+    <string name="search_result_search_noconnect_tip">网络请求失败\n请检查您的网络设置</string>
+    <string name="base_net_nocontent_tip">当前网络不可用，请检查网络配置</string>
+    <string name="base_try">点击重试</string>
+    <string name="base_error">数据错误，请重试</string>
+</resources>

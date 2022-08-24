@@ -1,0 +1,56 @@
+def printMsg(msg) {
+    println String.format("---------%s---------", msg)
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                if (project.publishVersion.endsWith("SNAPSHOT")) {
+                    url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                    printMsg('repo maven snapshot')
+                } else {
+                    url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                    printMsg('repo maven release')
+                }
+                printMsg('repo maven credentials :' + sonaTypeUserName + " " + sonaTypePassWord)
+                credentials {
+                    username sonaTypeUserName
+                    password sonaTypePassWord
+                }
+            }
+        }
+
+        publications {
+            MyPublication(MavenPublication) {
+                groupId 'io.github.langqiang'
+                artifactId project.publishArtifactName
+                version project.publishVersion
+                printMsg('publications type ' + project.publishComponentType)
+                switch (project.publishComponentType) {
+                    case 'aar-debug':
+                        from components.debug
+                        break
+                    case 'aar-release':
+                        from components.release
+                        break
+                    case 'apk-debug':
+                        from components.debug_apk
+                        break
+                    case 'apk-release':
+                        from components.release_apk
+                        break
+                    case 'jave':
+                        from components.java
+                        break
+                    default:
+//                        忽略平台 web
+                        break
+                }
+
+            }
+        }
+    }
+
+
+}

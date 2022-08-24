@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <style
+        name="LRLiteBase_FullWidthDialogTheme"
+        parent="android:Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+    </style>
+
+    <style name="LRLiteBase_AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/lrlite_base_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/lrlite_base_bottom_out</item>
+    </style>
+    <!-- 在中部显示的对话框,白底 -->
+    <style
+        name="LRLiteBase_AlertDialogWhite"
+        parent="android:Theme.Dialog"
+        >
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/lrlite_base_tingshuweb_radius_dialog_background</item>
+    </style>
+    <style
+        name="LRLiteBase_DialogBottomRound"
+        parent="android:Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/skin_transparent</item>
+    </style>
+    <style
+        name="LRLiteBase_KwPopupAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/lrlite_base_popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/lrlite_base_popup_exit</item>
+    </style>
+
+    <style name="LRLiteBase_TitleBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/title_height</item>
+        <item name="android:background">@color/main_bg</item>
+    </style>
+
+    <style name="LRLiteBase_TitleBar.TitleBarText">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/kw_common_cl_transparent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@color/kw_common_cl_black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="LRLiteBase_TitleBar.TitleBarRightText" parent="LRLiteBase_TitleBar.TitleBarText">
+        <item name="android:textColor">@color/app_theme_color</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="LRLiteBase_DotTip">
+        <item name="android:layout_width">5dp</item>
+        <item name="android:layout_height">5dp</item>
+        <item name="android:background">@drawable/lrlite_base_tips_red_dot</item>
+    </style>
+
+    <declare-styleable name="LRLiteBase_LoadingView">
+        <attr name="count" format="integer"/>
+        <attr name="lineStrokeWidth" format="dimension"/>
+        <attr name="maxLineHeight" format="dimension"/>
+        <attr name="minLineHeight" format="dimension"/>
+        <attr name="space" format="dimension"/>
+        <attr name="duration" format="integer"/>
+        <attr name="delay" format="integer"/>
+        <attr name="lineColor" format="color"/>
+        <attr name="special" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="LRLiteBase_CommonLoadingView">
+        <attr name="msgTextMarginTop" format="dimension" />
+        <attr name="msgTextSize" format="dimension"/>
+        <attr name="msgTextColor" format="color" />
+        <attr name="msgText" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="SubsamplingScaleImageView">
+        <attr name="src" format="reference"/>
+        <attr name="assetName" format="string"/>
+        <attr name="panEnabled" format="boolean"/>
+        <attr name="zoomEnabled" format="boolean"/>
+        <attr name="quickScaleEnabled" format="boolean"/>
+        <attr name="tileBackgroundColor" format="color"/>
+    </declare-styleable>
+
+    <style
+        name="CommonDialogTheme"
+        parent="android:Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/skin_transparent</item>
+    </style>
+</resources>

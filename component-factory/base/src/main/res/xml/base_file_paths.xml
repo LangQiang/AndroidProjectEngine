@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="storage/emulated/0"
+        path="." />
+    <external-path
+        name="Home"
+        path="Android/data/com.tencent.metarare/files/YuanXi/" />
+    <external-path
+        name="Download"
+        path="Download/" />
+    <external-path
+        name="DownloadRes"
+        path="元惜/试音素材/" />
+</paths>

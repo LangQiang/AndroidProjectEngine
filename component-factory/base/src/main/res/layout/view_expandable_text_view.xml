@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:includeFontPadding="false"
+        android:lineSpacingMultiplier="1"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@color/black60"
+        android:textSize="13dp"
+        tools:text="中文名:周建龙\n别名:散仙建龙" />
+
+    <TextView
+        android:id="@+id/tv_last_line"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_content"
+        android:layout_toLeftOf="@+id/tv_more"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:includeFontPadding="false"
+        android:lineSpacingMultiplier="0"
+        android:lineSpacingExtra="0dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black60"
+        android:textSize="13dp"
+        android:drawablePadding="3dp"
+        android:layout_centerHorizontal="true"
+        tools:text="别名:散仙建龙" />
+
+    <TextView
+        android:id="@+id/tv_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tv_last_line"
+        android:layout_alignParentRight="true"
+        android:drawablePadding="3dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="13dp"
+        android:textColor="@color/black"
+        android:drawableRight="@drawable/ic_arrow_down"
+        android:text="展开" />
+</merge>

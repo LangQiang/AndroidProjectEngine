@@ -1,0 +1,202 @@
+<!--
+  Copyright 2011 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<resources>
+    <declare-styleable name="LRLiteBase_BottomTabStyle">
+        <!--文字大小-->
+        <attr name="bottom_tab_item_text_size" format="dimension" />
+        <!--文字选中颜色-->
+        <attr name="bottom_tab_item_text_selected_color" format="color" />
+        <!--文字默认颜色-->
+        <attr name="bottom_tab_item_text_normal_color" format="color" />
+        <!--icon大小-->
+        <attr name="bottom_tab_item_icon_size" format="dimension" />
+        <!--消息角标背景颜色-->
+        <attr name="bottom_tab_item_message_bkg_color" format="color" />
+        <!--消息角标文字大小-->
+        <attr name="bottom_tab_item_message_text_size" format="dimension" />
+        <!--消息角标文字颜色-->
+        <attr name="bottom_tab_item_message_tip_text_color" format="color" />
+        <!--红点提示大小-->
+        <attr name="bottom_tab_item_red_dot_size" format="dimension" />
+        <!--中间扩展布局-->
+        <attr name="bottom_tab_center_view" format="reference" />
+        <!--中间扩展布局留宽-->
+        <attr name="bottom_tab_center_view_width" format="dimension" />
+        <!--中间扩展布局留左右padding-->
+        <attr name="bottom_tab_center_view_padding_lr" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="LRLiteBase_CircleMusicView">
+        <attr name="circle_music_view_progress_width" format="dimension" />
+        <attr name="circle_music_view_progress_slot_color" format="color" />
+        <attr name="circle_music_view_progress_buffer_color" format="color" />
+        <attr name="circle_music_view_progress_color" format="color" />
+        <attr name="circle_music_view_progress_need_slot" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CircularImage">
+        <attr name="circularimage_border_width" format="dimension" />
+        <attr name="circularimage_border_color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="RoundCornerLayout">
+        <attr name="round_layout_radius" format="dimension" />
+        <attr name="round_top_left" format="dimension" />
+        <attr name="round_top_right" format="dimension" />
+        <attr name="round_bottom_left" format="dimension" />
+        <attr name="round_bottom_right" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="SwipeBackLayout">
+        <attr name="edge_size" format="dimension" />
+        <attr name="edge_flag">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+            <enum name="bottom" value="2" />
+            <enum name="all" value="3" />
+        </attr>
+        <attr name="shadow_left" format="reference" />
+        <attr name="shadow_right" format="reference" />
+        <attr name="shadow_bottom" format="reference" />
+    </declare-styleable>
+
+    <attr name="SwipeBackLayoutStyle" format="reference" />
+
+    <style name="SwipeBackLayout">
+        <item name="edge_size">0dip</item>
+        <item name="shadow_left">@drawable/lrlite_base_shadow_left</item>
+        <item name="shadow_right">@drawable/lrlite_base_shadow_right</item>
+        <item name="shadow_bottom">@drawable/lrlite_base_shadow_bottom</item>
+    </style>
+
+    <!-- PullToRefresh start-->
+    <declare-styleable name="PullToRefresh">
+        <attr name="adapterViewBackground" format="reference|color" />
+        <attr name="headerBackground" format="reference|color" />
+        <attr name="headerTextColor" format="color" />
+        <attr name="pullmode">
+            <flag name="pullDownFromTop" value="0x1" />
+            <flag name="pullUpFromBottom" value="0x2" />
+            <flag name="both" value="0x3" />
+        </attr>
+        <attr name="loadingLabel" format="string"/>
+        <attr name="releaseLabel" format="string"/>
+        <attr name="pullDownLabel" format="string"/>
+        <attr name="pullUpLabel" format="string"/>
+        <attr name="ptr_is_white" format="boolean"/>
+    </declare-styleable>
+    <!-- PullToRefresh end-->
+
+    <declare-styleable name="LRLiteBase_KwTitleBar">
+        <!--title back ground color-->
+        <attr name="bgColor" format="reference" />
+
+        <attr name="ktbTitle" format="reference" />
+
+        <attr name="leftIconId" format="reference" />
+        <attr name="rightIconId" format="reference" />
+        <attr name="extentIconId" format="reference" />
+
+        <attr name="rightStr" format="reference" />
+        <attr name="leftCancelStr" format="reference" />
+        <attr name="leftBackStr" format="reference" />
+
+        <attr name="showCheckBox" format="boolean" />
+        <attr name="checkBoxBkg" format="reference" />
+
+    </declare-styleable>
+
+
+    <declare-styleable name="LRLiteBase_SmoothCircleProgressBar">
+        <attr name="sc_strokeWidth" format="dimension" />
+        <attr name="sc_strokeColor" format="reference|color" />
+        <attr name="sc_slotColor" format="reference|color" />
+        <attr name="sc_needSlot" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="MarqueeViewStyle">
+        <attr name="mvInterval" format="integer|reference"/>
+        <attr name="mvAnimDuration" format="integer|reference"/>
+        <attr name="mvTextColor" format="color|reference"/>
+        <attr name="mvSingleLine" format="boolean"/>
+        <attr name="mvFont" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="LRLiteBase_KwSetting">
+        <attr name="set_title" format="reference" />
+        <attr name="set_subtitle" format="reference" />
+        <attr name="set_center" format="reference" />
+        <attr name="set_star" format="boolean" />
+        <attr name="set_line" format="boolean" />
+        <attr name="set_title_bold" format="boolean" />
+        <attr name="set_icon">
+            <flag name="set_image" value="1" />
+            <flag name="set_kwswitch" value="2" />
+            <flag name="set_choose" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="KwPileView">
+        <attr name="KwPileView_verticalSpace" format="dimension"/>
+        <attr name="KwPileView_pileWidth" format="dimension"/>
+        <attr name="KwPileView_imageSize" format="dimension" />
+        <attr name="KwPileView_visibleCount" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="TimelineView" >
+        <attr name="time_marker" format="color|reference"/>
+        <attr name="time_markerSize" format="dimension"/>
+        <attr name="time_markerPaddingLeft" format="dimension"/>
+        <attr name="time_markerPaddingTop" format="dimension"/>
+        <attr name="time_markerPaddingRight" format="dimension"/>
+        <attr name="time_markerPaddingBottom" format="dimension"/>
+        <attr name="time_markerInCenter" format="boolean"/>
+        <attr name="time_startLineColor" format="color"/>
+        <attr name="time_endLineColor" format="color"/>
+        <attr name="time_lineWidth" format="dimension"/>
+        <attr name="time_lineStyle" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="dash" value="1" />
+        </attr>
+        <attr name="time_lineStyleDashGap" format="dimension" />
+        <attr name="time_lineStyleDashLength" format="dimension" />
+        <attr name="time_lineOrientation" format="enum">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+        <attr name="time_linePadding" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="ProgressButton">
+        <attr name="progressColor" format="color" />
+        <attr name="progressBackColor" format="color"/>
+        <attr name="buttonColor" format="color" />
+        <attr name="progress" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="base_CircleProgressBar">
+        <attr name="base_radius" format="dimension" />
+        <attr name="base_strokeWidth" format="dimension" />
+        <attr name="base_txtSize" format="dimension" />
+        <attr name="base_circleColor" format="color" />
+        <attr name="base_backColor" format="color" />
+        <attr name="base_ringColor" format="color" />
+        <attr name="base_txtColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="SquareImageView">
+        <attr name="aspect" format="float" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:skin="http://schemas.android.com/android/skin"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/pull_refresh_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="下拉刷新"
+        android:textColor="@color/LRLiteBase_cl_white"
+        android:visibility="gone"
+        android:textSize="13dp"
+        skin:enable="true"
+        android:gravity="center_horizontal"/>
+
+    <ProgressBar
+        android:id="@+id/pull_refresh_progress"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateDrawable="@drawable/program_list_loading"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_toLeftOf="@id/pull_refresh_text"
+        tools:visibility="visible"
+        />
+
+    <ImageView
+        android:id="@+id/pull_refresh_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/pull_refresh_text"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:background="@drawable/icon_pull_to_refresh_white"
+        skin:enable="true"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/pull_refresh_lottie_view"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        app:lottie_fileName="loading_blue.json"
+        app:lottie_loop="true" />
+
+</RelativeLayout>

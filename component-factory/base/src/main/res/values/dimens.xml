@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <dimen name="lrlite_base_bottom_height">58dp</dimen>
+    <dimen name="lrlite_base_minibar_height">58dp</dimen>
+    <dimen name="title_height">45dp</dimen>
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="115dp"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="115dp"
+        android:layout_height="115dp"
+        android:background="@drawable/base_toast_bg"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            app:layout_constraintBottom_toTopOf="@+id/tv_msg"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:src="@drawable/base_icon_toast_tip" />
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_icon"
+            tools:text="信息提交成功信息提交成功信息提交成功信息提交成功" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_loading"
+    android:layout_width="110dp"
+    android:layout_height="110dp"
+    android:background="@drawable/base_shape_black80_18_bg"
+    android:orientation="horizontal"
+    android:shadowColor="#00ffffff"
+    app:msgText="正在加载..."
+    app:msgTextSize="13sp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <com.lazylite.mod.widget.CircleProgressBar
+            android:id="@+id/progress"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:base_backColor="@color/black16"
+            app:base_radius="22dp"
+            app:base_ringColor="@color/white"
+            app:base_strokeWidth="2dp"
+            app:base_txtColor="#ffffff"
+            app:base_txtSize="12sp" />
+
+        <com.lazylite.mod.widget.textview.DinRegularTextView
+            android:id="@+id/tv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="上传中..."
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+</RelativeLayout>
