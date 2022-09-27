@@ -13,7 +13,11 @@
             <option value="$PROJECT_DIR$/Sample" />
             <option value="$PROJECT_DIR$/Sample/app" />
             <option value="$PROJECT_DIR$/component-factory" />
+            <option value="$PROJECT_DIR$/component-factory/Deeplink" />
+            <option value="$PROJECT_DIR$/component-factory/ThreadPool" />
+            <option value="$PROJECT_DIR$/component-factory/annotationLib" />
             <option value="$PROJECT_DIR$/component-factory/base" />
+            <option value="$PROJECT_DIR$/component-factory/processorlib" />
             <option value="$PROJECT_DIR$/test" />
           </set>
         </option>

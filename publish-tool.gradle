@@ -1,8 +1,11 @@
 def printMsg(msg) {
-    println String.format("---------%s---------", msg)
+    println String.format("---------  %s  ---------", msg)
 }
 
-afterEvaluate {
+var groupIdStr = 'io.github.langqiang'
+
+
+def publishCloser = {
     publishing {
         repositories {
             maven {
@@ -23,7 +26,7 @@ afterEvaluate {
 
         publications {
             MyPublication(MavenPublication) {
-                groupId 'io.github.langqiang'
+                groupId groupIdStr
                 artifactId project.publishArtifactName
                 version project.publishVersion
                 printMsg('publications type ' + project.publishComponentType)
@@ -40,7 +43,7 @@ afterEvaluate {
                     case 'apk-release':
                         from components.release_apk
                         break
-                    case 'jave':
+                    case 'java':
                         from components.java
                         break
                     default:
@@ -51,6 +54,30 @@ afterEvaluate {
             }
         }
     }
+}
+
+if ("java" == project.publishComponentType) {
+    publishCloser('java')
+} else {
+    afterEvaluate {
+        publishCloser('java')
+    }
+}
 
 
+afterEvaluate {
+    publish.doLast {
+        var ret = ""
+        if (project.publishVersion.endsWith("SNAPSHOT")) {
+            ret += 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+        } else {
+            ret += 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+        }
+        ret += groupIdStr.replaceAll("\\.", "/")
+        ret += "/"
+        ret += project.publishArtifactName
+        ret += "/"
+        ret += project.publishVersion
+        printMsg(ret)
+    }
 }
