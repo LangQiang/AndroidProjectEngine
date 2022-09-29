@@ -45,6 +45,8 @@ dependencies {
 
     implementation 'io.github.langqiang:base-core:1.2.0-SNAPSHOT'
 
+    implementation project(':component-factory:StatisticWidget')
+
 
     kapt 'io.github.langqiang:processor:1.0.0-SNAPSHOT'
 

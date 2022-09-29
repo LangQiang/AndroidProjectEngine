@@ -25,4 +25,11 @@
         android:layout_width="60dp"
         android:layout_height="30dp"/>
 
+    <com.godq.statisticwidget.histogram.HistogramView
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#ebebeb"
+        android:id="@+id/histogram_view"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

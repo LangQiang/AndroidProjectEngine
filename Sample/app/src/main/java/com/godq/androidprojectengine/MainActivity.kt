@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
 //        }
 
 
-
+        HistogramTest.init(findViewById(R.id.histogram_view))
 
     }
 }
