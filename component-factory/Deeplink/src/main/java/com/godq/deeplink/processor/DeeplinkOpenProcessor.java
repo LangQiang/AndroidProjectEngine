@@ -2,8 +2,6 @@ package com.godq.deeplink.processor;
 
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-
 import com.godq.deeplink.DeeplinkResult;
 import com.godq.deeplink.OnResultCallback;
 import com.godq.deeplink.intercept.IIntercept;
@@ -19,7 +17,7 @@ public class DeeplinkOpenProcessor implements IProcessor {
 
     private final List<IIntercept> globalIntercept;
 
-    DeeplinkOpenProcessor(@NonNull Uri uri, @NonNull ProcessorParam processorParam, List<IIntercept> globalIntercept) {
+    DeeplinkOpenProcessor(Uri uri, ProcessorParam processorParam, List<IIntercept> globalIntercept) {
 
         this.uri = uri;
 

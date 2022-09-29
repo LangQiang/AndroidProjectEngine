@@ -1,7 +1,5 @@
 package com.lazylite.bridge.router.deeplink.route;
 
-import androidx.annotation.NonNull;
-
 import com.godq.deeplink.route.AbsRouter;
 import com.godq.deeplink.route.impl.EmptyRouter;
 
@@ -16,7 +14,6 @@ public class RouteMapping {
 
     private static final Map<String, String> ROUTE_MAP = new HashMap<>();
 
-    @NonNull
     public static AbsRouter get(String path) {
 
         AbsRouter absRouter = null;

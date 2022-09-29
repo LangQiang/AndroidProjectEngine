@@ -2,8 +2,6 @@ package com.godq.deeplink.processor;
 
 import android.net.Uri;
 
-import androidx.annotation.NonNull;
-
 import com.godq.deeplink.DeepLinkConstants;
 import com.godq.deeplink.intercept.IIntercept;
 
@@ -24,7 +22,6 @@ public class DeeplinkProcessorFactory {
         return new DeeplinkOpenProcessor(uri, processorParam, globalIntercept);
     }
 
-    @NonNull
     public static IProcessor createProcessorByHost(Uri uri, ProcessorParam processorParam, List<IIntercept> globalIntercept) {
         String host = uri.getHost();
         if (DeepLinkConstants.HOST_OPEN.equals(host)) {

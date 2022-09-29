@@ -1,7 +1,5 @@
 package com.godq.deeplink;
 
-import androidx.annotation.NonNull;
-
 public class DeeplinkResult {
 
     public static final String TYPE_OPEN = "open";
@@ -38,7 +36,6 @@ public class DeeplinkResult {
 
     public String finalRoutePath;
 
-    @NonNull
     @Override
     public String toString() {
         return "DeeplinkResult{" +

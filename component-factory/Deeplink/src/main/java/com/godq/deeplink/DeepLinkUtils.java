@@ -3,11 +3,6 @@ package com.godq.deeplink;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.UiThread;
-
-import com.godq.deeplink.inject.IExecutor;
 import com.godq.deeplink.intercept.IIntercept;
 import com.godq.deeplink.processor.DeeplinkProcessorFactory;
 
@@ -30,7 +25,7 @@ import timber.log.Timber;
  */
 public class DeepLinkUtils {
 
-    public static void init(@Nullable DeepLinkConfig config) {
+    public static void init(DeepLinkConfig config) {
         if (config == null) return;
         if (!TextUtils.isEmpty(config.schemeName)) {
             DeepLinkConstants.SCHEME = config.schemeName;
@@ -40,14 +35,11 @@ public class DeepLinkUtils {
         }
     }
 
-    @NonNull
-    @UiThread
     public static com.godq.deeplink.DeepLinkReq load(String scheme) {
         Timber.d(scheme);
         return new com.godq.deeplink.DeepLinkReq(scheme);
     }
 
-    @UiThread
     static void dispatchDeepLink(com.godq.deeplink.DeepLinkReq req) {
 
         //跳转全局捕获异常
@@ -96,7 +88,7 @@ public class DeepLinkUtils {
     /**
      * 将PsrcInfo等信息拼接到scheme中
      * */
-    private static void buildSchemeWithParam(@NonNull Uri schemeUri, String extra, boolean fromAppStart) {
+    private static void buildSchemeWithParam(Uri schemeUri, String extra, boolean fromAppStart) {
         if (extra == null) {
             return ;
         }

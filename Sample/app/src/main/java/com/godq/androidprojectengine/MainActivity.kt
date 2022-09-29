@@ -10,6 +10,7 @@ import com.godq.deeplink.inject.IExecutor
 import com.godq.threadpool.TASK_MODE_DEFAULT
 import com.godq.threadpool.TASK_MODE_IO
 import com.godq.threadpool.ThreadPool
+import com.lazylite.mod.global.BaseConfig
 import com.lazylite.mod.global.CommonInit
 import com.lazylite.mod.http.mgr.KwHttpMgr
 import com.lazylite.mod.http.mgr.model.RequestInfo
@@ -26,17 +27,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val config = DeepLinkConfig()
-        config.schemeName = "test"
-        config.iExecutor = IExecutor {
-            ThreadPool.exec {
-                it.run()
-            }
-        }
-        DeepLinkUtils.init(config)
         var mainScope = MainScope()
         setContentView(R.layout.activity_main)
-        CommonInit.initOnAppCreate(this.applicationContext)
+        val baseConfig = BaseConfig()
+        baseConfig.allowProxy = true
+        baseConfig.deepLinkScheme = "test"
+        CommonInit.initOnAppCreate(this.applicationContext, baseConfig)
         KwHttpMgr.getInstance().kwHttpFetch.asyncGet(RequestInfo.newGet("http://kuwo.cn"), null)
 
         findViewById<View>(R.id.btn1).setOnClickListener {

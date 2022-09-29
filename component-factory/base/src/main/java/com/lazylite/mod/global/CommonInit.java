@@ -4,13 +4,19 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 
-import com.example.basemodule.BuildConfig;
+import androidx.annotation.NonNull;
+
+import com.godq.deeplink.DeepLinkConfig;
+import com.godq.deeplink.DeepLinkUtils;
+import com.godq.deeplink.inject.IExecutor;
+import com.godq.threadpool.TasksKt;
+import com.godq.threadpool.ThreadPool;
 import com.lazylite.mod.App;
 import com.lazylite.mod.http.mgr.KwHttpConfig;
 import com.lazylite.mod.http.mgr.KwHttpMgr;
 import com.lazylite.mod.imageloader.fresco.load.impl.FrescoImageLoader;
-import com.lazylite.mod.log.LogMgr;
 import com.lazylite.mod.receiver.network.NetworkStateUtil;
 import com.lazylite.mod.receiver.sdcard.SDCardUtils;
 import com.lazylite.mod.utils.AppInfo;
@@ -24,7 +30,6 @@ import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -35,17 +40,13 @@ public class CommonInit {
 
     private static boolean isInit;
 
-    final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
-        public boolean verify(String hostname, SSLSession session) {
-            return true;
-        }
-    };
+    final static HostnameVerifier DO_NOT_VERIFY = (hostname, session) -> true;
 
-    public static void initAfterAgreeProtocol(Context context) {
-        //
+    public static void initOnAppCreate(@NonNull Context context) {
+        initOnAppCreate(context, null);
     }
 
-    public static void initOnAppCreate(Context context) {
+    public static void initOnAppCreate(@NonNull Context context, BaseConfig config) {
 
         if (isInit) {
             return;
@@ -54,18 +55,21 @@ public class CommonInit {
         isInit = true;
 
         App.init(context);
+        DeepLinkConfig deepLinkConfig = new DeepLinkConfig();
+        deepLinkConfig.schemeName = config == null || TextUtils.isEmpty(config.deepLinkScheme) ? "debug" : config.deepLinkScheme;
+        deepLinkConfig.iExecutor = runnable -> ThreadPool.exec(TasksKt.TASK_MODE_IO, runnable);
+        DeepLinkUtils.init(deepLinkConfig);
         MMKV.initialize(context.getFilesDir().getAbsolutePath() + "/mmkv", MMKVLogLevel.LevelNone);
         DeviceInfo.initScreenInfo(context);
         AppInfo.init(context);
         FrescoImageLoader.getInstance().initialize(context);
         //http
         KwHttpConfig.Builder builder = KwHttpConfig.newOkHttpBuilder(context, new Handler(Looper.getMainLooper()));
-        if(BuildConfig.IS_ALLOW_PROXY) {
+        if(config != null && config.allowProxy) {
             builder.setHostnameVerifier(DO_NOT_VERIFY);
             builder.setTrustManager(getX509TrustManager());
             builder.setSslSocketFactory(getSSLSocketFactory());
         }
-        LogMgr.e("https",BuildConfig.IS_ALLOW_PROXY + "");
         KwHttpMgr.getInstance().init(context, builder.build());
         //
         NetworkStateUtil.init(context);
@@ -74,6 +78,13 @@ public class CommonInit {
         if (isDebug(context)) {
             Timber.plant(new Timber.DebugTree());
         }
+    }
+
+    public static void initAfterAgreeProtocol(@NonNull Context context) {
+        initAfterAgreeProtocol(context, null);
+    }
+    public static void initAfterAgreeProtocol(@NonNull Context context, BaseConfig config) {
+        //
     }
 
     private static boolean isDebug(Context context) {
@@ -95,7 +106,7 @@ public class CommonInit {
             sc.init(null,  new TrustManager[] { getX509TrustManager() }, new SecureRandom());
 
             ssfFactory = sc.getSocketFactory();
-        } catch (Exception e) {
+        } catch (Exception ignore) {
         }
 
         return ssfFactory;

@@ -6,7 +6,7 @@ plugins {
 }
 
 ext {
-    publishVersion = '1.0.0-SNAPSHOT'
+    publishVersion = '1.1.2-SNAPSHOT'
     publishArtifactName = 'base-core'
     publishComponentType = 'aar-release'
 }
@@ -79,4 +79,8 @@ dependencies {
     api('com.facebook.fresco:fresco:0.13.0') {
         exclude module: 'support-v4'
     }
+
+    api 'io.github.langqiang:DeepLink:1.1.0-SNAPSHOT'
+
+    api 'io.github.langqiang:ThreadPool:1.2.0-SNAPSHOT'
 }
