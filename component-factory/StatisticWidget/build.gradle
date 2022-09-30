@@ -1,8 +1,14 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'maven-publish'
 }
-
+ext {
+    publishVersion = '1.0.0-SNAPSHOT'
+    publishArtifactName = 'StatisticView'
+    publishComponentType = 'aar-release'
+}
+apply from:'../../publish-tool.gradle'
 android {
     compileSdk 32
 

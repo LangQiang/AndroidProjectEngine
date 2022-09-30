@@ -4,9 +4,9 @@ import android.view.ScaleGestureDetector
 
 interface HistogramGestureListener {
 
-    fun onScale(detector: ScaleGestureDetector?): Boolean
+    fun onScale(detector: ScaleGestureDetector?)
 
-    fun onScaleBegin(detector: ScaleGestureDetector?): Boolean
+    fun onScaleBegin(detector: ScaleGestureDetector?)
 
     fun onScaleEnd(detector: ScaleGestureDetector?)
 
