@@ -23,6 +23,11 @@ class ThreadPool {
             })
         }
 
+        @JvmStatic
+        fun exec(runnable: Runnable) {
+            exec(TASK_MODE_IO, runnable)
+        }
+
         fun getCurrentSchedulerInfo(): String = scheduler.getCurrentSchedulerInfo()
     }
 }

@@ -2,8 +2,17 @@ package com.godq.androidprojectengine
 
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Pair
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import com.godq.compose.UICompose
+import com.godq.compose.UIComposeConfig
+import com.godq.compose.botnav.BottomItemData
+import com.godq.compose.botnav.BottomLayoutView
+import com.godq.compose.botnav.BottomNavAdapter
+import com.godq.compose.botnav.wrapper.ViewPagerWrapper
 import com.godq.deeplink.DeepLinkConfig
 import com.godq.deeplink.DeepLinkUtils
 import com.godq.deeplink.inject.IExecutor
@@ -20,6 +29,10 @@ import java.util.concurrent.atomic.AtomicLong
 
 class MainActivity : AppCompatActivity() {
 
+    private var bottomLayoutView: BottomLayoutView? = null
+    private var vp: ViewPager? = null
+
+
     var countMark = AtomicLong(0)
     var finalCount = AtomicLong(0)
     var exit = false
@@ -28,7 +41,34 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var mainScope = MainScope()
+        with(UIComposeConfig()) {
+            this.fontAssetsPath = "fonts/iconfont.ttf"
+            UICompose.init(this@MainActivity, this)
+        }
         setContentView(R.layout.activity_main)
+        bottomLayoutView= findViewById(R.id.bottom_layout)
+        vp= findViewById(R.id.vp)
+
+        val pairs: ArrayList<Pair<BottomItemData, Fragment>> = ArrayList()
+        pairs.add(Pair(BottomItemData("first",R.string.bottom_index_select_icon,
+            R.string.bottom_index_normal_icon), Fragment()))
+        pairs.add(Pair(BottomItemData("last",R.string.bottom_mine_select_icon,
+            R.string.bottom_mine_normal_icon), Fragment()))
+
+        if (!pairs.isNullOrEmpty()) {
+            bottomLayoutView?.mAdapter = BottomNavAdapter(pairs)
+            bottomLayoutView?.bind(ViewPagerWrapper(vp))
+            val mAdapter = HomePageAdapter(supportFragmentManager, pairs)
+            vp?.offscreenPageLimit = 4
+            vp?.adapter = mAdapter
+            bottomLayoutView?.setOnTabClickListener(object :BottomLayoutView.OnTabClickListener{
+                override fun onClick(view: View,pos:Int) {
+                    vp?.currentItem = pos
+                }
+
+            })
+        }
+
         val baseConfig = BaseConfig()
         baseConfig.allowProxy = true
         baseConfig.deepLinkScheme = "test"

@@ -1,4 +1,4 @@
-package com.lazylite.mod.global;
+package com.lazylite.bridge.init;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -10,10 +10,10 @@ import androidx.annotation.NonNull;
 
 import com.godq.deeplink.DeepLinkConfig;
 import com.godq.deeplink.DeepLinkUtils;
-import com.godq.deeplink.inject.IExecutor;
 import com.godq.threadpool.TasksKt;
 import com.godq.threadpool.ThreadPool;
 import com.lazylite.mod.App;
+import com.lazylite.mod.global.BaseConfig;
 import com.lazylite.mod.http.mgr.KwHttpConfig;
 import com.lazylite.mod.http.mgr.KwHttpMgr;
 import com.lazylite.mod.imageloader.fresco.load.impl.FrescoImageLoader;
@@ -36,15 +36,11 @@ import javax.net.ssl.X509TrustManager;
 
 import timber.log.Timber;
 
-public class CommonInit {
+class CommonInit {
 
     private static boolean isInit;
 
     final static HostnameVerifier DO_NOT_VERIFY = (hostname, session) -> true;
-
-    public static void initOnAppCreate(@NonNull Context context) {
-        initOnAppCreate(context, null);
-    }
 
     public static void initOnAppCreate(@NonNull Context context, BaseConfig config) {
 
@@ -80,9 +76,6 @@ public class CommonInit {
         }
     }
 
-    public static void initAfterAgreeProtocol(@NonNull Context context) {
-        initAfterAgreeProtocol(context, null);
-    }
     public static void initAfterAgreeProtocol(@NonNull Context context, BaseConfig config) {
         //
     }

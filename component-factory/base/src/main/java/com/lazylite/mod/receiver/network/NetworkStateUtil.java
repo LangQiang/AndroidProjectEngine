@@ -7,8 +7,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.godq.threadpool.ThreadPool;
 import com.lazylite.mod.messagemgr.MessageManager;
-import com.lazylite.mod.threadpool.KwThreadPool;
 
 // by haiping
 public class NetworkStateUtil extends BroadcastReceiver {
@@ -50,12 +50,9 @@ public class NetworkStateUtil extends BroadcastReceiver {
 		final long timeNow = System.currentTimeMillis();
 		if (timeNow - l > 20000) {//最多20秒刷一次
 			l = timeNow;
-			KwThreadPool.runThread(KwThreadPool.JobType.IMMEDIATELY, new Runnable() {
-				@Override
-				public void run() {
-					if (sContext != null) {
-						getNetworkInfo(sContext);
-					}
+			ThreadPool.exec(() -> {
+				if (sContext != null) {
+					getNetworkInfo(sContext);
 				}
 			});
 		}
@@ -121,22 +118,19 @@ public class NetworkStateUtil extends BroadcastReceiver {
 
 	@Override
 	public final void onReceive(final Context context, final Intent intent) {
-		KwThreadPool.runThread(KwThreadPool.JobType.NORMAL, new Runnable() {
-			@Override
-			public void run() {
-				boolean lastIsNetworkAvaliable = isNetworkAvaliable;
-				boolean lastIsWifiAvaliable = isWifiAvaliable;
-				getNetworkInfo(context);
-				if (lastIsNetworkAvaliable != isNetworkAvaliable
-						|| lastIsWifiAvaliable != isWifiAvaliable) {
-					MessageManager.getInstance().asyncNotify(INetworkObserver.EVENT_ID,
-							new MessageManager.Caller<INetworkObserver>() {
-								public void call() {
-									ob.onNetworkChanged(
-											isNetworkAvaliable, isWifiAvaliable);
-								}
-							});
-				}
+		ThreadPool.exec(() -> {
+			boolean lastIsNetworkAvaliable = isNetworkAvaliable;
+			boolean lastIsWifiAvaliable = isWifiAvaliable;
+			getNetworkInfo(context);
+			if (lastIsNetworkAvaliable != isNetworkAvaliable
+					|| lastIsWifiAvaliable != isWifiAvaliable) {
+				MessageManager.getInstance().asyncNotify(INetworkObserver.EVENT_ID,
+						new MessageManager.Caller<INetworkObserver>() {
+							public void call() {
+								ob.onNetworkChanged(
+										isNetworkAvaliable, isWifiAvaliable);
+							}
+						});
 			}
 		});
 	}

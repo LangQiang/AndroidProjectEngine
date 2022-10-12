@@ -3,8 +3,8 @@ package com.lazylite.mod.log;
 import android.os.Environment;
 import android.text.TextUtils;
 
+import com.godq.threadpool.ThreadPool;
 import com.lazylite.mod.App;
-import com.lazylite.mod.threadpool.KwThreadPool;
 import com.lazylite.mod.utils.KwFileUtils;
 
 import java.io.BufferedReader;
@@ -51,15 +51,12 @@ public class DiskLogUtils {
             return;
         }
 
-        KwThreadPool.runThread(new Runnable() {
-            @Override
-            public void run() {
-                File root = new File(mPath);
-                if (!root.exists()) {
-                    root.mkdir();
-                }
-                writeToFile(mFilePath, contents);
+        ThreadPool.exec(() -> {
+            File root = new File(mPath);
+            if (!root.exists()) {
+                root.mkdir();
             }
+            writeToFile(mFilePath, contents);
         });
     }
 
@@ -114,43 +111,35 @@ public class DiskLogUtils {
 
 
     public static void deleteCache() {
-        KwThreadPool.runThread(new Runnable() {
-            @Override
-            public void run() {
-                KwFileUtils.deleteFile(mFilePath);
-            }
-        });
+        ThreadPool.exec(() -> KwFileUtils.deleteFile(mFilePath));
     }
 
 
     public static void readFileContent(final OnReadFileContentListener listener) {
-        KwThreadPool.runThread(new Runnable() {
-            @Override
-            public void run() {
-                File file = new File(mFilePath);
-                BufferedReader reader = null;
-                StringBuffer sbf = new StringBuffer();
-                try {
-                    reader = new BufferedReader(new FileReader(file));
-                    String tempStr;
-                    while ((tempStr = reader.readLine()) != null) {
-                        sbf.append(tempStr);
-                    }
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (reader != null) {
-                        try {
-                            reader.close();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
+        ThreadPool.exec(() -> {
+            File file = new File(mFilePath);
+            BufferedReader reader = null;
+            StringBuffer sbf = new StringBuffer();
+            try {
+                reader = new BufferedReader(new FileReader(file));
+                String tempStr;
+                while ((tempStr = reader.readLine()) != null) {
+                    sbf.append(tempStr);
+                }
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
                     }
                 }
-                if (listener != null) {
-                    listener.onContent(sbf.toString());
-                }
+            }
+            if (listener != null) {
+                listener.onContent(sbf.toString());
             }
         });
     }

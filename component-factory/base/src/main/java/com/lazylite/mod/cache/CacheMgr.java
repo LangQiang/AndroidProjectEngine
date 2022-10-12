@@ -2,11 +2,11 @@ package com.lazylite.mod.cache;
 
 import android.os.Handler;
 
+import com.godq.threadpool.ThreadPool;
 import com.lazylite.mod.cache.fixcache.LockEntity;
 import com.lazylite.mod.cache.fixcache.LockPool;
 import com.lazylite.mod.log.LogMgr;
 import com.lazylite.mod.messagemgr.MessageManager;
-import com.lazylite.mod.threadpool.KwThreadPool;
 import com.lazylite.mod.utils.KwDebug;
 import com.lazylite.mod.utils.KwDirs;
 
@@ -152,25 +152,22 @@ public final class CacheMgr {
 	public void asyncGetCategorySize(final String[] categories, final GetCategorySizeListener listener,
 			final Handler tarHandler) {
 		KwDebug.classicAssert(listener != null);
-		KwThreadPool.runThread(KwThreadPool.JobType.IMMEDIATELY, new Runnable() {
-			@Override
-			public void run() {
-				long[] result = new long[categories.length];
-				for (int i = 0; i < categories.length; ++i) {
-					if(categories[i] != null && categories[i].equals(KwDirs.getDir(KwDirs.AUTODOWN_CACHE))){
-						result[i] = mgr.getDirectorySize(KwDirs.getDir(KwDirs.AUTODOWN_CACHE));
-					} else {
-					    result[i] = mgr.getCategorySize(categories[i]);
-					}
+		ThreadPool.exec(() -> {
+			long[] result = new long[categories.length];
+			for (int i = 0; i < categories.length; ++i) {
+				if(categories[i] != null && categories[i].equals(KwDirs.getDir(KwDirs.AUTODOWN_CACHE))){
+					result[i] = mgr.getDirectorySize(KwDirs.getDir(KwDirs.AUTODOWN_CACHE));
+				} else {
+					result[i] = mgr.getCategorySize(categories[i]);
 				}
-				final long[] sizes=result;
-				MessageManager.getInstance().asyncRunTargetHandler(tarHandler, new MessageManager.Runner() {
-					@Override
-					public void call() {
-						listener.onGetCategorySizeListener(categories, sizes);
-					}
-				});
 			}
+			final long[] sizes=result;
+			MessageManager.getInstance().asyncRunTargetHandler(tarHandler, new MessageManager.Runner() {
+				@Override
+				public void call() {
+					listener.onGetCategorySizeListener(categories, sizes);
+				}
+			});
 		});
 	}
 

@@ -4,11 +4,11 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 
+import com.godq.threadpool.ThreadPool;
 import com.lazylite.mod.http.mgr.HttpWrapper;
 import com.lazylite.mod.http.mgr.IHttpResultCheckPolicy;
 import com.lazylite.mod.http.mgr.IKwHttpFetcher;
@@ -19,7 +19,7 @@ import com.lazylite.mod.http.mgr.model.IResponseInfo;
 import com.lazylite.mod.http.mgr.model.RequestInfoDelete;
 import com.lazylite.mod.http.okhttp.model.CallbackInfo;
 import com.lazylite.mod.http.okhttp.model.OkResponseInfo;
-import com.lazylite.mod.threadpool.KwThreadPool;
+import com.lazylite.mod.log.LogMgr;
 import com.lazylite.mod.utils.LRSign;
 
 import java.io.File;
@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import okhttp3.Call;
@@ -70,7 +71,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
                 responseInfo.errorMsg = "okHttp IOException";
             } catch (Exception e) {
                 responseInfo.code = OkHttpConstants.CODE_EXCEPTION; //702
-                responseInfo.errorMsg = (null != e&&null != e.getLocalizedMessage())?e.getLocalizedMessage(): "okHttp IOException";
+                responseInfo.errorMsg = null != e.getLocalizedMessage() ?e.getLocalizedMessage(): "okHttp IOException";
             }
         } catch (Exception e) {
             responseInfo.code = OkHttpConstants.CODE_HTTP_URL_BUILD_ERROR; //705
@@ -126,7 +127,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
             okHttpClient.newCall(request).enqueue(new Callback() {
 
                 @Override
-                public void onFailure(Call call, IOException e
+                public void onFailure(@NonNull Call call, @NonNull IOException e
                 ) {
                     responseInfo.code = OkHttpConstants.CODE_FAILURE; // 703
                     responseInfo.errorMsg = "okHttp IOException" + e;
@@ -134,7 +135,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
                 }
 
                 @Override
-                public void onResponse(Call call, Response response) {
+                public void onResponse(@NonNull Call call, @NonNull Response response) {
                     if (fetchCallback != null) {
                         assignmentResult(responseInfo, response);
                         checkResultByPolicy(responseInfo);
@@ -169,7 +170,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
             okHttpClient.newCall(request).enqueue(new Callback() {
 
                 @Override
-                public void onFailure(Call call, IOException e) {
+                public void onFailure(@NonNull Call call, @NonNull IOException e) {
                     responseInfo.code = OkHttpConstants.CODE_FAILURE; // 703
                     responseInfo.errorMsg = "okHttp IOException";
 
@@ -177,7 +178,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
                 }
 
                 @Override
-                public void onResponse(Call call, Response response) {
+                public void onResponse(@NonNull Call call, @NonNull Response response) {
                     if (fetchCallback != null) {
                         assignmentResult(responseInfo, response);
                         checkResultByPolicy(responseInfo);
@@ -200,12 +201,9 @@ public class OkHttpFetcher implements IKwHttpFetcher {
         }
 
         if (callbackHandler != null && callbackHandler.getLooper().getThread() != Thread.currentThread()) {
-            callbackHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (httpWrapper.getCallback() != null) {
-                        httpWrapper.getCallback().onFetch(responseInfo);
-                    }
+            callbackHandler.post(() -> {
+                if (httpWrapper.getCallback() != null) {
+                    httpWrapper.getCallback().onFetch(responseInfo);
                 }
             });
         } else {
@@ -217,18 +215,13 @@ public class OkHttpFetcher implements IKwHttpFetcher {
 
     @Override
     public void download(final IDownloadInfo iDownloadInfo, final DownloadListener downloadListener) {
-        innerDownload(iDownloadInfo, null, new HttpWrapper<DownloadListener>(downloadListener));
+        innerDownload(iDownloadInfo, null, new HttpWrapper<>(downloadListener));
     }
 
     @Override
     public HttpWrapper<DownloadListener> asyncDownload(final IDownloadInfo iDownloadInfo, final Handler handler, final DownloadListener downloadListener) {
         final HttpWrapper<DownloadListener> httpWrapper = new HttpWrapper<>(downloadListener);
-        KwThreadPool.runThread(new Runnable() {
-            @Override
-            public void run() {
-                innerDownload(iDownloadInfo, handler == null ? defaultMainHandler : handler, httpWrapper);
-            }
-        });
+        ThreadPool.exec(() -> innerDownload(iDownloadInfo, handler == null ? defaultMainHandler : handler, httpWrapper));
         return httpWrapper;
     }
 
@@ -288,17 +281,14 @@ public class OkHttpFetcher implements IKwHttpFetcher {
 
                 if (body instanceof ProgressResponseBody) {
                     final long finalStartPos = startPos;
-                    ((ProgressResponseBody) body).setProgressListener(new ProgressResponseBody.ProgressListener() {
-                        @Override
-                        public void onResponseProgress(long alreadyRead, long contentLength, boolean done) {
+                    ((ProgressResponseBody) body).setProgressListener((alreadyRead, contentLength, done) -> {
 
-                            callbackInfo.currentPos = alreadyRead + finalStartPos;
-                            callbackInfo.totalLength = totalLength;
-                            postDownCallback(OkHttpConstants.CALLBACK_TYPE.CALLBACK_TYPE_PROGRESS, callbackInfo);
+                        callbackInfo.currentPos = alreadyRead + finalStartPos;
+                        callbackInfo.totalLength = totalLength;
+                        postDownCallback(OkHttpConstants.CALLBACK_TYPE.CALLBACK_TYPE_PROGRESS, callbackInfo);
 
-                            if (KwHttpMgr.isDebug()) {
-                                Log.i(OkHttpConstants.TAG, String.format("bytesRead: %d  contentLength: %d  down: %s", alreadyRead, contentLength, done + ""));
-                            }
+                        if (KwHttpMgr.isDebug()) {
+                            LogMgr.i(OkHttpConstants.TAG, String.format(Locale.CHINA,"bytesRead: %d  contentLength: %d  down: %s", alreadyRead, contentLength, done + ""));
                         }
                     });
                 }
@@ -356,12 +346,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
         }
 
         if (callbackInfo.handler != null && callbackInfo.handler.getLooper().getThread() != Thread.currentThread()) {
-            callbackInfo.handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    postDownCallbackInCorrectThread(callbackType, callbackInfo);
-                }
-            });
+            callbackInfo.handler.post(() -> postDownCallbackInCorrectThread(callbackType, callbackInfo));
         } else {
             postDownCallbackInCorrectThread(callbackType, callbackInfo);
         }
@@ -413,7 +398,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
         builder.headers(headers);
 
         if ("post".equals(method)) {
-            String contentType = headers.get("Content-Type");;
+            String contentType = headers.get("Content-Type");
             if (contentType == null) {
             //application/x-www-form-urlencoded 默认
                 contentType = "application/x-www-form-urlencoded";

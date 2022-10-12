@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <View
+        android:background="@drawable/ui_compose_white_conner_100"
+        android:id="@+id/bg_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="92dp"
+        android:layout_height="40dp"/>
+
+    <com.godq.compose.iconview.IconView
+        app:layout_constraintTop_toTopOf="@+id/bg_view"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_view"
+        app:layout_constraintStart_toStartOf="@+id/bg_view"
+        app:layout_constraintEnd_toStartOf="@+id/text_tv"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:id="@+id/icon_view"
+        android:textSize="24dp"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        tools:textColor="@color/black"
+        android:layout_height="wrap_content"
+        tools:ignore="SpUsage" />
+
+    <TextView
+        tools:text="首页"
+        tools:textColor="@color/black"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toTopOf="@+id/bg_view"
+        app:layout_constraintBottom_toBottomOf="@+id/bg_view"
+        app:layout_constraintEnd_toEndOf="@+id/bg_view"
+        app:layout_constraintStart_toEndOf="@+id/icon_view"
+        android:id="@+id/text_tv"
+        android:textSize="12sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

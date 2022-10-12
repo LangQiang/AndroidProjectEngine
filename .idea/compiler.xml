@@ -25,6 +25,7 @@
       <module name="AndroidProjectEngine.component-factory.Deeplink" target="11" />
       <module name="AndroidProjectEngine.component-factory.StatisticWidget" target="11" />
       <module name="AndroidProjectEngine.component-factory.ThreadPool" target="11" />
+      <module name="AndroidProjectEngine.component-factory.UICompose" target="11" />
       <module name="AndroidProjectEngine.Sample.app" target="11" />
       <module name="AndroidProjectEngine.test" target="11" />
     </bytecodeTargetLevel>

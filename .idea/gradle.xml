@@ -16,6 +16,7 @@
             <option value="$PROJECT_DIR$/component-factory/Deeplink" />
             <option value="$PROJECT_DIR$/component-factory/StatisticWidget" />
             <option value="$PROJECT_DIR$/component-factory/ThreadPool" />
+            <option value="$PROJECT_DIR$/component-factory/UICompose" />
             <option value="$PROJECT_DIR$/component-factory/annotationLib" />
             <option value="$PROJECT_DIR$/component-factory/base" />
             <option value="$PROJECT_DIR$/component-factory/processorlib" />

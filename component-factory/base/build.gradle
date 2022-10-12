@@ -6,7 +6,7 @@ plugins {
 }
 
 ext {
-    publishVersion = '1.3.0-SNAPSHOT'
+    publishVersion = '1.5.2-SNAPSHOT'
     publishArtifactName = 'base-core'
     publishComponentType = 'aar-release'
 }
@@ -86,5 +86,5 @@ dependencies {
 
     api 'io.github.langqiang:DeepLink:1.1.0-SNAPSHOT'
 
-    api 'io.github.langqiang:ThreadPool:1.2.0-SNAPSHOT'
+    api 'io.github.langqiang:ThreadPool:1.3.0-SNAPSHOT'
 }
