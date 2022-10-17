@@ -28,6 +28,10 @@ public class OkResponseInfo implements IResponseInfo {
 
     public String finalRequestUrl;
 
+    public String requestHeaderOperatorPath;
+
+    public String requestParamOperatorPath;
+
     @Override
     public int getCode() {
         return code;
@@ -101,5 +105,15 @@ public class OkResponseInfo implements IResponseInfo {
     @Override
     public String getFinalRequestUrl() {
         return finalRequestUrl;
+    }
+
+    @Override
+    public String getRequestHeaderOperatorPath() {
+        return requestHeaderOperatorPath;
+    }
+
+    @Override
+    public String getRequestParamOperatorPath() {
+        return requestParamOperatorPath;
     }
 }

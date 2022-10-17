@@ -19,8 +19,8 @@ import com.godq.deeplink.inject.IExecutor
 import com.godq.threadpool.TASK_MODE_DEFAULT
 import com.godq.threadpool.TASK_MODE_IO
 import com.godq.threadpool.ThreadPool
+import com.lazylite.bridge.init.ComponentInit
 import com.lazylite.mod.global.BaseConfig
-import com.lazylite.mod.global.CommonInit
 import com.lazylite.mod.http.mgr.KwHttpMgr
 import com.lazylite.mod.http.mgr.model.RequestInfo
 import kotlinx.coroutines.MainScope
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         val baseConfig = BaseConfig()
         baseConfig.allowProxy = true
         baseConfig.deepLinkScheme = "test"
-        CommonInit.initOnAppCreate(this.applicationContext, baseConfig)
+        ComponentInit.initOnAppCreate(this.applicationContext, baseConfig)
         KwHttpMgr.getInstance().kwHttpFetch.asyncGet(RequestInfo.newGet("http://kuwo.cn"), null)
 
         findViewById<View>(R.id.btn1).setOnClickListener {
@@ -153,6 +153,6 @@ class MainActivity : AppCompatActivity() {
 
 
         HistogramTest.init(findViewById(R.id.histogram_view))
-
+        TestHttp().main()
     }
 }

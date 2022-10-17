@@ -5,13 +5,11 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 
-import com.lazylite.mod.config.ConfMgr;
-import com.lazylite.mod.config.IConfDef;
+import com.lazylite.mod.http.mgr.model.CommonParam;
 import com.lazylite.mod.http.okhttp.OkHttpCreator;
-import com.lazylite.mod.receiver.network.NetworkStateUtil;
-import com.lazylite.mod.utils.AppInfo;
-import com.lazylite.mod.utils.LRSign;
+import com.lazylite.mod.http.okhttp.model.OkResponseInfo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,13 +22,11 @@ import javax.net.ssl.X509TrustManager;
 
 public class KwHttpConfig {
 
-    private ICommHeaderPolicy commExtraHeaderPolicy;
+    private final List<ICommonParamProvider> commonParamProviderList = new ArrayList<>();
 
     private List<IHttpResultCheckPolicy> resultCheckPolicies;
 
     private IKwHttpFetcher iKwHttpFetcher;
-
-    private Map<String, String> commonHeaders;
 
     private HostnameVerifier hostnameVerifier;
 
@@ -51,27 +47,40 @@ public class KwHttpConfig {
         return iKwHttpFetcher;
     }
 
-    Map<String, String> getCommonHeaders() {
-        if (commonHeaders == null) {
-            commonHeaders = new HashMap<>();
+    @NonNull
+    public synchronized CommonParam getCommonHeaders() {
+        StringBuilder opt = new StringBuilder();
+        Map<String, String> headersMap = new HashMap<>();
+        for (ICommonParamProvider iCommonParamProvider : commonParamProviderList) {
+            Map<String, String> map = iCommonParamProvider.getCommonHeads();
+            if (map != null) {
+                opt.append("[").append(iCommonParamProvider.providerName()).append("] ");
+                headersMap.putAll(map);
+            }
         }
-        if(null != commExtraHeaderPolicy && commExtraHeaderPolicy.isCanUse()){
-            commExtraHeaderPolicy.configParams(commonHeaders);
-        }
-        return commonHeaders;
+        return new CommonParam(headersMap, opt.toString());
     }
 
-    List<IHttpResultCheckPolicy> getResultCheckPolicies(){
+    @NonNull
+    public CommonParam getCommonQueryParams() {
+        StringBuilder opt = new StringBuilder();
+        Map<String, String> params = new HashMap<>();
+        for (ICommonParamProvider iCommonParamProvider : commonParamProviderList) {
+            Map<String, String> map = iCommonParamProvider.getCommonQueryParams();
+            if (map != null) {
+                opt.append("[").append(iCommonParamProvider.providerName()).append("] ");
+                params.putAll(map);
+            }
+        }
+        return new CommonParam(params, opt.toString());
+    }
+
+    synchronized void addCommonParamProvider(ICommonParamProvider commonParamProvider) {
+        commonParamProviderList.add(commonParamProvider);
+    }
+
+    public List<IHttpResultCheckPolicy> getResultCheckPolicies(){
         return resultCheckPolicies;
-    }
-
-    public static Builder newOkHttpBuilder(Context context, Handler handler) {
-        Builder builder = new Builder();
-        builder.setContext(context);
-        builder.setHandler(handler);
-        builder.setCommonHeaders(buildCommonHeaders());
-        builder.setCommExtraHeaderPolicy(new AccountHeaderPolicy());
-        return builder;
     }
 
     public X509TrustManager getTrustManager() {
@@ -94,34 +103,9 @@ public class KwHttpConfig {
         return handler;
     }
 
-    private static Map<String, String> buildCommonHeaders() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("X-Auth-Platform", "Android");
-        return headers;
-    }
-
-    public Map<String, String> getCommonParams() {
-        Map<String, String> params = new HashMap<>();
-        params.put("loginUid",ConfMgr.getLongValue(IConfDef.SEC_LR_LOGIN, IConfDef.KEY_LOGIN_UID, 0) + "");
-        params.put("appuid", AppInfo.getAppUid());
-        params.put("nonceStr", LRSign.getRandomString(6));
-        params.put("timestamp", System.currentTimeMillis() + "");
-        params.put("appPkg", "com.tencent.metarare");
-        params.put("appVer", AppInfo.VERSION_CODE);
-        params.put("appStore", AppInfo.INSTALL_CHANNEL);
-        params.put("osName", "Android");
-        params.put("netType", NetworkStateUtil.getNetworkTypeName());
-
-        return params;
-    }
-
     public static class Builder {
 
-        @NonNull private final IKwHttpFetcher iKwHttpFetcher = new EmptyHttpFetcher();
-
-        private ICommHeaderPolicy commExtraHeaderPolicy;
         private List<IHttpResultCheckPolicy> resultCheckPolicies;
-        private final Map<String, String> commonHeaders = new HashMap<>();
         private HostnameVerifier hostnameVerifier;
         private X509TrustManager trustManager;
         private SSLSocketFactory sslSocketFactory;
@@ -133,10 +117,6 @@ public class KwHttpConfig {
             return this;
         }
 
-        public Builder setCommExtraHeaderPolicy(ICommHeaderPolicy commExtraHeaderPolicy) {
-            this.commExtraHeaderPolicy = commExtraHeaderPolicy;
-            return this;
-        }
 
         public Builder setHttpResultCheckPolicy(List<IHttpResultCheckPolicy> resultCheckPolicies) {
             this.resultCheckPolicies = resultCheckPolicies;
@@ -145,11 +125,6 @@ public class KwHttpConfig {
 
         public Builder setHandler(Handler handler) {
             this.handler = handler;
-            return this;
-        }
-
-        public Builder setCommonHeaders(Map<String, String> headers) {
-            commonHeaders.putAll(headers);
             return this;
         }
 
@@ -171,13 +146,11 @@ public class KwHttpConfig {
 
         public KwHttpConfig build() {
             KwHttpConfig kwHttpConfig = new KwHttpConfig();
-            kwHttpConfig.commonHeaders = this.commonHeaders;
             kwHttpConfig.hostnameVerifier = this.hostnameVerifier;
             kwHttpConfig.context = this.context;
             kwHttpConfig.handler = this.handler;
             kwHttpConfig.trustManager = this.trustManager;
             kwHttpConfig.sslSocketFactory = this.sslSocketFactory;
-            kwHttpConfig.commExtraHeaderPolicy = this.commExtraHeaderPolicy;
             kwHttpConfig.resultCheckPolicies = this.resultCheckPolicies;
             if(null == kwHttpConfig.resultCheckPolicies){
                 kwHttpConfig.resultCheckPolicies = new LinkedList<>();

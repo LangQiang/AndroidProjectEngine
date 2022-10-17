@@ -60,7 +60,9 @@ class CommonInit {
         AppInfo.init(context);
         FrescoImageLoader.getInstance().initialize(context);
         //http
-        KwHttpConfig.Builder builder = KwHttpConfig.newOkHttpBuilder(context, new Handler(Looper.getMainLooper()));
+        KwHttpConfig.Builder builder = new KwHttpConfig.Builder();
+        builder.setContext(context);
+        builder.setHandler(new Handler(Looper.getMainLooper()));
         if(config != null && config.allowProxy) {
             builder.setHostnameVerifier(DO_NOT_VERIFY);
             builder.setTrustManager(getX509TrustManager());

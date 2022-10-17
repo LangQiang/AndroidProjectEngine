@@ -25,4 +25,8 @@ public interface IResponseInfo {
     String getServeMsg();
 
     String getFinalRequestUrl();
+
+    String getRequestHeaderOperatorPath();
+
+    String getRequestParamOperatorPath();
 }

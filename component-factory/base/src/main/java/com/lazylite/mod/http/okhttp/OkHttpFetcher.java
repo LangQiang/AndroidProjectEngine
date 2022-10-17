@@ -12,7 +12,9 @@ import com.godq.threadpool.ThreadPool;
 import com.lazylite.mod.http.mgr.HttpWrapper;
 import com.lazylite.mod.http.mgr.IHttpResultCheckPolicy;
 import com.lazylite.mod.http.mgr.IKwHttpFetcher;
+import com.lazylite.mod.http.mgr.KwHttpConfig;
 import com.lazylite.mod.http.mgr.KwHttpMgr;
+import com.lazylite.mod.http.mgr.model.CommonParam;
 import com.lazylite.mod.http.mgr.model.IDownloadInfo;
 import com.lazylite.mod.http.mgr.model.IRequestInfo;
 import com.lazylite.mod.http.mgr.model.IResponseInfo;
@@ -48,9 +50,12 @@ public class OkHttpFetcher implements IKwHttpFetcher {
 
     private final Handler defaultMainHandler;
 
-    OkHttpFetcher(OkHttpClient okHttpClient, Handler defaultMainHandler) {
+    private final KwHttpConfig kwHttpConfig;
+
+    OkHttpFetcher(OkHttpClient okHttpClient, KwHttpConfig kwHttpConfig) {
         this.okHttpClient = okHttpClient;
-        this.defaultMainHandler = defaultMainHandler;
+        this.defaultMainHandler = kwHttpConfig.getHandler();
+        this.kwHttpConfig = kwHttpConfig;
     }
 
     @Override
@@ -59,8 +64,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
         OkResponseInfo responseInfo = new OkResponseInfo();
 
         try {
-            Request request = buildRequest(requestInfo, "get");
-            responseInfo.finalRequestUrl = request.url().toString();
+            Request request = buildRequest(requestInfo, "get", responseInfo);
 
             try {
                 Response response = okHttpClient.newCall(request).execute();
@@ -88,8 +92,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
         OkResponseInfo responseInfo = new OkResponseInfo();
 
         try {
-            Request request = buildRequest(requestInfo, "post");
-            responseInfo.finalRequestUrl = request.url().toString();
+            Request request = buildRequest(requestInfo, "post", responseInfo);
 
             try {
                 Response response = okHttpClient.newCall(request).execute();
@@ -120,9 +123,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
         final Handler finalHandler = requestInfo.getHandler() == null ? defaultMainHandler : requestInfo.getHandler();
 
         try {
-            Request request = buildRequest(requestInfo, "get");
-
-            responseInfo.finalRequestUrl = request.url().toString();
+            Request request = buildRequest(requestInfo, "get", responseInfo);
 
             okHttpClient.newCall(request).enqueue(new Callback() {
 
@@ -163,9 +164,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
         final Handler finalHandler = requestInfo.getHandler() == null ? defaultMainHandler : requestInfo.getHandler();
 
         try {
-            Request request = buildRequest(requestInfo, "post");
-
-            responseInfo.finalRequestUrl = request.url().toString();
+            Request request = buildRequest(requestInfo, "post", responseInfo);
 
             okHttpClient.newCall(request).enqueue(new Callback() {
 
@@ -389,12 +388,12 @@ public class OkHttpFetcher implements IKwHttpFetcher {
     }
 
 
-    private Request buildRequest(IRequestInfo httpSession, String method) {
+    private Request buildRequest(IRequestInfo httpSession, String method, OkResponseInfo responseInfo) {
 
         Request.Builder builder = new Request.Builder();
-        final String finalUrl = addCommParams(httpSession.getUrl());
+        final String finalUrl = addCommParams(httpSession.getUrl(), responseInfo);
         builder.url(finalUrl);
-        Headers headers = mergeHeaders(finalUrl, httpSession.getHeaders());
+        Headers headers = mergeHeaders(finalUrl, httpSession.getHeaders(), responseInfo);
         builder.headers(headers);
 
         if ("post".equals(method)) {
@@ -412,14 +411,18 @@ public class OkHttpFetcher implements IKwHttpFetcher {
             builder.delete();
         }
 
+        responseInfo.finalRequestUrl = finalUrl;
+
         return builder.build();
     }
 
-    private String addCommParams(String url) {
+    private String addCommParams(String url, OkResponseInfo responseInfo) {
         try {
             Uri uri = Uri.parse(url);
             Uri.Builder builder = uri.buildUpon();
-            Map<String, String> params = KwHttpMgr.getInstance().getCommonParams();
+            CommonParam commonParam = kwHttpConfig.getCommonQueryParams();
+            Map<String, String> params = commonParam.getParams();
+            responseInfo.requestParamOperatorPath = commonParam.getOperatorPath();
             for (Map.Entry<String, String> stringStringEntry : params.entrySet()) {
                 builder.appendQueryParameter(stringStringEntry.getKey(), stringStringEntry.getValue());
             }
@@ -430,9 +433,13 @@ public class OkHttpFetcher implements IKwHttpFetcher {
     }
 
     @NonNull
-    private Headers mergeHeaders(String finalUrl, Map<String, String> onceHeaders) {
+    private Headers mergeHeaders(String finalUrl, Map<String, String> onceHeaders, OkResponseInfo responseInfo) {
+
+        CommonParam commonParam = kwHttpConfig.getCommonHeaders();
+
         //global
-        Map<String, String> finalHeaders = new HashMap<>(KwHttpMgr.getInstance().getCommonHeaders());
+        Map<String, String> finalHeaders = new HashMap<>(commonParam.getParams());
+        responseInfo.requestHeaderOperatorPath = commonParam.getOperatorPath();
 
         //once
         if (onceHeaders != null) {
@@ -474,7 +481,7 @@ public class OkHttpFetcher implements IKwHttpFetcher {
     }
 
     private void checkResultByPolicy(OkResponseInfo responseInfo){
-        List<IHttpResultCheckPolicy> resultCheckPolicy = KwHttpMgr.getInstance().getResultCheckPolicies();
+        List<IHttpResultCheckPolicy> resultCheckPolicy = kwHttpConfig.getResultCheckPolicies();
         try {
             for (int i = resultCheckPolicy.size() - 1; i >= 0; i--) {
                 IHttpResultCheckPolicy policy = resultCheckPolicy.get(i);

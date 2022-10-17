@@ -42,20 +42,20 @@ public class KwHttpMgr {
         }
     }
 
-    @NonNull
-    public Map<String, String> getCommonHeaders() {
-        return kwHttpConfig.getCommonHeaders();
-    }
-
-    @NonNull
-    public Map<String, String> getCommonParams() {
-        return kwHttpConfig.getCommonParams();
-    }
-
-    @NonNull
-    public List<IHttpResultCheckPolicy> getResultCheckPolicies(){
-        return kwHttpConfig.getResultCheckPolicies();
-    }
+//    @NonNull
+//    public Map<String, String> getCommonHeaders() {
+//        return kwHttpConfig.getCommonHeaders();
+//    }
+//
+//    @NonNull
+//    public Map<String, String> getCommonParams() {
+//        return kwHttpConfig.getCommonParams();
+//    }
+//
+//    @NonNull
+//    public List<IHttpResultCheckPolicy> getResultCheckPolicies(){
+//        return kwHttpConfig.getResultCheckPolicies();
+//    }
 
     @NonNull
     public IKwHttpFetcher getKwHttpFetch() {
@@ -71,6 +71,10 @@ public class KwHttpMgr {
         }
 
         return kwHttpFetch;
+    }
+
+    public void addCommonParamProvider(ICommonParamProvider commonParamProvider) {
+        kwHttpConfig.addCommonParamProvider(commonParamProvider);
     }
 
     public static void setDebugEnable(boolean enable) {

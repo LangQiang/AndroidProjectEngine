@@ -76,7 +76,7 @@ public class OkHttpCreator {
         dispatcher.setMaxRequestsPerHost(128);
         builder.dispatcher(dispatcher);
 
-        return new OkHttpFetcher(builder.build(), kwHttpConfig.getHandler() );
+        return new OkHttpFetcher(builder.build(), kwHttpConfig);
     }
 
 
