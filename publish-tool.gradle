@@ -4,6 +4,28 @@ def printMsg(msg) {
 
 var groupIdStr = 'io.github.langqiang'
 
+task sourceJar(type: Jar) {
+    switch (project.publishComponentType) {
+        case 'aar-debug':
+            from android.sourceSets.main.java.srcDirs
+            break
+        case 'aar-release':
+            from android.sourceSets.main.java.srcDirs
+            break
+        case 'apk-debug':
+            from android.sourceSets.main.java.srcDirs
+            break
+        case 'apk-release':
+            from android.sourceSets.main.java.srcDirs
+            break
+        case 'java':
+            from sourceSets.main.allSource
+            break
+        default:
+//                        忽略平台 web
+            break
+    }
+}
 
 def publishCloser = {
     publishing {
@@ -36,12 +58,18 @@ def publishCloser = {
                         break
                     case 'aar-release':
                         from components.release
+                        artifact sourceJar {
+                            classifier "sources"
+                        }
                         break
                     case 'apk-debug':
                         from components.debug_apk
                         break
                     case 'apk-release':
                         from components.release_apk
+                        artifact sourceJar {
+                            classifier "sources"
+                        }
                         break
                     case 'java':
                         from components.java
