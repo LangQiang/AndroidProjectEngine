@@ -15,7 +15,7 @@ class TestHttp {
         testScope.launch {
             withContext(Dispatchers.IO) {
                 KwHttpMgr.getInstance().kwHttpFetch.get(RequestInfo.newGet("http://150.158.55.208/account/list"))?.apply {
-                    Timber.tag("http").e("$requestHeaderOperatorPath ----- $requestParamOperatorPath")
+                    Timber.tag("http").e(dataToString())
                 }
             }
 
@@ -39,9 +39,12 @@ class TestHttp {
             })
             withContext(Dispatchers.IO) {
                 KwHttpMgr.getInstance().kwHttpFetch.get(RequestInfo.newGet("http://150.158.55.208/account/list"))?.apply {
-                    Timber.tag("http").e("$requestHeaderOperatorPath ----- $requestParamOperatorPath")
+                    Timber.tag("http").e(dataToString())
+
                 }
             }
+            Timber.tag("http").e(KwHttpMgr.printCommonParamInfo())
+
         }
     }
 }

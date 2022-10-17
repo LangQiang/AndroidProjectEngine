@@ -7,7 +7,9 @@ import androidx.annotation.NonNull;
 
 import com.lazylite.mod.http.mgr.model.CommonParam;
 import com.lazylite.mod.http.okhttp.OkHttpCreator;
-import com.lazylite.mod.http.okhttp.model.OkResponseInfo;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,6 +103,38 @@ public class KwHttpConfig {
 
     public Handler getHandler() {
         return handler;
+    }
+
+    public synchronized String printCommonParamInfo() {
+        JSONObject paramObj = new JSONObject();
+        JSONObject headerObj = new JSONObject();
+        JSONObject queryObj = new JSONObject();
+        try {
+            paramObj.putOpt("headerParam", headerObj);
+            paramObj.putOpt("queryParam", queryObj);
+            for (ICommonParamProvider iCommonParamProvider : commonParamProviderList) {
+                JSONArray headerArr = new JSONArray();
+                headerObj.putOpt(iCommonParamProvider.providerName() + "#" + iCommonParamProvider.getClass().getSimpleName(), headerArr);
+                Map<String, String> headerMap = iCommonParamProvider.getCommonHeads();
+                if (headerMap != null) {
+                    for (Map.Entry<String, String> stringStringEntry : headerMap.entrySet()) {
+                        headerArr.put(stringStringEntry);
+                    }
+                }
+                JSONArray queryArr = new JSONArray();
+                queryObj.putOpt(iCommonParamProvider.providerName() + "#" + iCommonParamProvider.getClass().getSimpleName(), queryArr);
+                Map<String, String> queryMap = iCommonParamProvider.getCommonQueryParams();
+                if (queryMap != null) {
+                    for (Map.Entry<String, String> stringStringEntry : queryMap.entrySet()) {
+                        queryArr.put(stringStringEntry);
+                    }
+                }
+            }
+        } catch (Exception ignore) {
+
+        }
+
+        return paramObj.toString();
     }
 
     public static class Builder {

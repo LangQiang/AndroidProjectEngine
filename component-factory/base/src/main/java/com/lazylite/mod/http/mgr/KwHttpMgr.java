@@ -109,6 +109,10 @@ public class KwHttpMgr {
         return url.startsWith("http") || url.startsWith("https");
     }
 
+    public static String printCommonParamInfo() {
+        return getInstance().kwHttpConfig.printCommonParamInfo();
+    }
+
     private static class Inner {
         private static final KwHttpMgr inner = new KwHttpMgr();
     }
