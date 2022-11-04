@@ -1,5 +1,6 @@
 package com.godq.androidprojectengine
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Pair
@@ -154,5 +155,8 @@ class MainActivity : AppCompatActivity() {
 
         HistogramTest.init(findViewById(R.id.histogram_view))
         TestHttp().main()
+        findViewById<View>(R.id.preview).setOnClickListener {
+            startActivity(Intent(this, PreviewTestActivity::class.java))
+        }
     }
 }

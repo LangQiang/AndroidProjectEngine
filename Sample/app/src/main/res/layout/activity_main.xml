@@ -44,4 +44,13 @@
         android:layout_height="@dimen/lrlite_base_bottom_height"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    <Button
+        android:id="@+id/preview"
+        android:text="preview"
+        app:layout_constraintLeft_toLeftOf="@+id/btn1"
+        app:layout_constraintBottom_toTopOf="@+id/btn1"
+        android:layout_marginBottom="30dp"
+        android:layout_width="80dp"
+        android:layout_height="40dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

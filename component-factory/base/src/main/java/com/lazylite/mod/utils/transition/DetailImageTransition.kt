@@ -18,9 +18,11 @@ import androidx.dynamicanimation.animation.SpringAnimation
 import androidx.dynamicanimation.animation.SpringForce
 import com.facebook.drawee.drawable.FadeDrawable
 import com.facebook.drawee.drawable.ScaleTypeDrawable
+import com.facebook.drawee.drawable.ScalingUtils
 import com.facebook.drawee.generic.RootDrawable
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.imagepipeline.image.ImageInfo
+import com.lazylite.mod.App
 import com.lazylite.mod.imageloader.fresco.ImageLoaderWapper
 import com.lazylite.mod.imageloader.fresco.config.ImageLoadConfig
 import com.lazylite.mod.imageloader.fresco.listener.IDisplayImageListener
@@ -34,19 +36,21 @@ class DetailImageTransition(
     private val rootView: ViewGroup,
     private val fadeView: View,
     private val enterShareEleView: View,
-    private val targetView: View) {
+    private val targetView: View,
+    excludeStatusBar: Boolean) {
 
     var entering: Boolean = false
 
     var exiting: Boolean = false
 
-    var mDuration: Long = 320L
+    var mDuration: Long = 5320L
 
     private val deviceGrade = DeviceInfo.GRADE_MIDDLE
 
-    private val springStartValue = -25f
+    private var springStartValue = -25f
 
-    private var imageConfig = ImageLoadConfig.Builder().setFadeDuration(0).setFailureDrawable(null).setLoadingDrawable(null).create()
+    private var imageConfig = ImageLoadConfig.Builder().setScaleType(
+        ScalingUtils.ScaleType.FIT_CENTER).setFadeDuration(0).setFailureDrawable(null).setLoadingDrawable(null).create()
 
     private var enterAnimatorSet: AnimatorSet? = null
 
@@ -70,6 +74,15 @@ class DetailImageTransition(
     var onExitAnimEndListener: (() -> Unit)? = null
 
     var onExitAnimStartListener: (() -> Unit)? = null
+
+    var excludeStatusBarHeight = 0
+
+    init {
+        if (excludeStatusBar) {
+            excludeStatusBarHeight = ScreenUtility.dip2px(
+                ScreenUtility.getTitleBarHeightDP(App.getInstance()).toFloat())
+        }
+    }
 
     @MainThread
     fun enterTransition() {
@@ -100,7 +113,9 @@ class DetailImageTransition(
             rootView.visibility = View.VISIBLE
 
             enterShareEleView.getLocationOnScreen(shareEleLocation)
+            shareEleLocation[1] = shareEleLocation[1] - excludeStatusBarHeight
             targetView.getLocationOnScreen(targetLocation)
+            targetLocation[1] = targetLocation[1] - excludeStatusBarHeight
 
             val targetWidth = targetView.width
             val targetHeight = targetView.height
@@ -137,7 +152,7 @@ class DetailImageTransition(
             Timber.d("scale: $scaleRatio  fw: $finalWidth  fh: $finalHeight  dw: $diffW  dh: $diffH")
 
             val animView = SimpleDraweeView(context)
-            animView.scaleType = ImageView.ScaleType.CENTER_CROP
+            animView.scaleType = ImageView.ScaleType.FIT_CENTER
             animView.pivotX = 0f
             animView.pivotY = 0f
 
@@ -232,7 +247,10 @@ class DetailImageTransition(
 
 
         enterShareEleView.getLocationOnScreen(shareEleLocation)
+        shareEleLocation[1] = shareEleLocation[1] - excludeStatusBarHeight
         targetView.getLocationOnScreen(targetLocation)
+        targetLocation[1] = targetLocation[1] - excludeStatusBarHeight
+
 
         val targetWidth = enterShareEleView.width
         val targetHeight = enterShareEleView.height
@@ -267,7 +285,7 @@ class DetailImageTransition(
         Timber.d("scale: $scaleRatio  fw: $finalWidth  fh: $finalHeight  dw: $diffW  dh: $diffH")
 
         val animView = SimpleDraweeView(context)
-        animView.scaleType = ImageView.ScaleType.CENTER_CROP
+        animView.scaleType = ImageView.ScaleType.FIT_CENTER
         animView.pivotX = 0f
         animView.pivotY = 0f
 
@@ -361,6 +379,8 @@ class DetailImageTransition(
                     val scaleTypeDrawable = fadeDrawable?.getDrawable(2) as? ScaleTypeDrawable
                     w = scaleTypeDrawable?.current?.intrinsicWidth ?: 0
                     h = scaleTypeDrawable?.current?.intrinsicHeight ?: 0
+                    w = rootDrawable?.bounds?.width() ?: 0
+                    h = rootDrawable?.bounds?.height() ?: 0
                 } catch (e: Exception) {
                 }
 

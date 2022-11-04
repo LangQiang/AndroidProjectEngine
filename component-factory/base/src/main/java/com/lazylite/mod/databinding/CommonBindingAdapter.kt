@@ -1,14 +1,18 @@
 package com.lazylite.mod.databinding
 
+import android.graphics.drawable.Animatable
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.GradientDrawable
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.facebook.drawee.view.SimpleDraweeView
+import com.facebook.imagepipeline.image.ImageInfo
 import com.lazylite.mod.imageloader.fresco.ImageLoaderWapper
 import com.lazylite.mod.imageloader.fresco.config.ImageConfigFactory
 import com.lazylite.mod.imageloader.fresco.config.ImageLoadConfig
+import com.lazylite.mod.imageloader.fresco.listener.IDisplayImageListener
 import com.lazylite.mod.utils.ColorUtils
 import com.lazylite.mod.widget.richtext.RichTextInfo
 import com.lazylite.mod.widget.richtext.RichTextView
@@ -18,6 +22,38 @@ import java.lang.ref.WeakReference
 fun loadFrescoImg(simpleDraweeView: SimpleDraweeView?, imageUrl: String?, config: ImageLoadConfig?) {
     imageUrl ?: return
     val tempConfig = config ?: ImageConfigFactory.createFrescoConfig(ImageConfigFactory.TINGSHU_DEFAULT_SQUARE)
+    simpleDraweeView?.layoutParams?.apply {
+        if (width == ViewGroup.LayoutParams.WRAP_CONTENT && height != ViewGroup.LayoutParams.WRAP_CONTENT) {
+            ImageLoaderWapper.getInstance().load(simpleDraweeView, imageUrl, tempConfig, object :
+                IDisplayImageListener<ImageInfo> {
+                override fun onSuccess(result: ImageInfo?, animatable: Animatable?) {
+                    result?: return
+                    width = (result.width.toFloat() / result.height * height).toInt()
+                    simpleDraweeView.requestLayout()
+                }
+
+                override fun onFailure(throwable: Throwable?) {
+                }
+
+            })
+            return
+        }
+        if (width != ViewGroup.LayoutParams.WRAP_CONTENT && height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+            ImageLoaderWapper.getInstance().load(simpleDraweeView, imageUrl, tempConfig, object :
+                IDisplayImageListener<ImageInfo> {
+                override fun onSuccess(result: ImageInfo?, animatable: Animatable?) {
+                    result?: return
+                    height = (result.height.toFloat() / result.width * width).toInt()
+                    simpleDraweeView.requestLayout()
+                }
+
+                override fun onFailure(throwable: Throwable?) {
+                }
+
+            })
+            return
+        }
+    }
     ImageLoaderWapper.getInstance().load(simpleDraweeView, imageUrl, tempConfig)
 }
 
