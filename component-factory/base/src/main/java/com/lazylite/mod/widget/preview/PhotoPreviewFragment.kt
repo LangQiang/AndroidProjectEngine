@@ -14,25 +14,18 @@ import com.lazylite.mod.imageloader.fresco.config.ImageLoadConfig
 import com.lazylite.mod.utils.transition.DetailImageTransition
 import com.lazylite.mod.widget.BaseFragment
 import timber.log.Timber
-import java.lang.ref.WeakReference
 
 class PhotoPreviewFragment: BaseFragment() {
 
     companion object {
-        fun getInstance(shareEleView: View?, imgUrl: String, excludeStatusBar: Boolean): PhotoPreviewFragment {
+        fun getInstance(config: PhotoPreviewConfig): PhotoPreviewFragment {
             val fragment = PhotoPreviewFragment()
-            fragment.mShareEleUrl = imgUrl
-            fragment.weakReference = WeakReference(shareEleView)
-            fragment.excludeStatusBar = excludeStatusBar
+            fragment.config = config
             return fragment
         }
     }
 
-    private var mShareEleUrl: String? = null
-
-    var weakReference: WeakReference<View>? = null
-
-    private var excludeStatusBar = false
+    private var config: PhotoPreviewConfig? = null
 
     private var detailImageTransition: DetailImageTransition? = null
 
@@ -76,7 +69,7 @@ class PhotoPreviewFragment: BaseFragment() {
             }
 
         })
-        ImageLoaderWapper.getInstance().load(imageView, mShareEleUrl, ImageLoadConfig.Builder().setScaleType(
+        ImageLoaderWapper.getInstance().load(imageView, config?.imgUrl, ImageLoadConfig.Builder().setScaleType(
             ScalingUtils.ScaleType.FIT_CENTER).create())
 
         initAnim()
@@ -112,11 +105,11 @@ class PhotoPreviewFragment: BaseFragment() {
 
     private fun initAnim() {
 
-        val url = mShareEleUrl ?: return
+        val url = config?.imgUrl ?: return
 
         val tContext = context ?: return
 
-        val enterView = weakReference?.get() ?: return
+        val enterView = config?.shareEleView?.get() ?: return
 
         val rootView = mRootView as? ViewGroup ?: return
 
@@ -131,7 +124,9 @@ class PhotoPreviewFragment: BaseFragment() {
             tContentView,
             enterView,
             tImageView,
-            excludeStatusBar)
+            config?.excludeStatusBar?: false,
+            config?.withEndSpringAnim ?: true)
+        detailImageTransition?.mDuration = config?.animDuration ?: 320L
 
         detailImageTransition?.onEnterAnimStartListener = {
             tImageView.alpha = 0f

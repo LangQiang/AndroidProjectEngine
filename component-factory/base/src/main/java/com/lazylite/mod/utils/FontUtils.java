@@ -11,9 +11,6 @@ public class FontUtils {
 
     private Context mContext;
     private Typeface iconFontTypeface;
-    private Typeface dinRegular;
-    private Typeface numTypeface;
-    private Typeface monospaceTypeface;  //数字等宽字体
 
 
     private FontUtils(Context context) {
@@ -38,26 +35,5 @@ public class FontUtils {
         return iconFontTypeface;
     }
 
-    public Typeface getDinBoldType() {
-        if (numTypeface == null) {
-            numTypeface = Typeface.createFromAsset(mContext.getAssets(),
-                    "fonts/D-DIN-Bold.ttf");
-        }
-        return numTypeface;
-    }
 
-    public Typeface getDinRegularType() {
-        if (dinRegular == null) {
-            dinRegular = Typeface.createFromAsset(mContext.getAssets(), "fonts/D-DIN.ttf");
-        }
-        return dinRegular;
-    }
-
-    public Typeface getNumMonoSpaceType() {
-        if (monospaceTypeface == null) {
-            monospaceTypeface = Typeface.createFromAsset(mContext.getAssets(),
-                    "fonts/D-DIN-NUMBER.ttf");
-        }
-        return monospaceTypeface;
-    }
 }

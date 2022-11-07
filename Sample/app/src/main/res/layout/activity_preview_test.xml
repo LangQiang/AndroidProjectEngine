@@ -10,10 +10,10 @@
         android:id="@+id/test_sdv"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="400dp"
         android:layout_marginLeft="50dp"
         android:layout_width="108dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="192dp"/>
 
     <FrameLayout
         android:id="@+id/fragment_container"

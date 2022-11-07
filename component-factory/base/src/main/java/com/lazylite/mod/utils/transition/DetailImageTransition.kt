@@ -37,13 +37,15 @@ class DetailImageTransition(
     private val fadeView: View,
     private val enterShareEleView: View,
     private val targetView: View,
-    excludeStatusBar: Boolean) {
+    excludeStatusBar: Boolean,
+    private val withEndSpringAnim: Boolean) {
+
 
     var entering: Boolean = false
 
     var exiting: Boolean = false
 
-    var mDuration: Long = 5320L
+    var mDuration: Long = 320L
 
     private val deviceGrade = DeviceInfo.GRADE_MIDDLE
 
@@ -81,6 +83,9 @@ class DetailImageTransition(
         if (excludeStatusBar) {
             excludeStatusBarHeight = ScreenUtility.dip2px(
                 ScreenUtility.getTitleBarHeightDP(App.getInstance()).toFloat())
+        }
+        if (!withEndSpringAnim) {
+            springStartValue = 0f
         }
     }
 
@@ -195,29 +200,38 @@ class DetailImageTransition(
                 playTogether(animX, animY, scaleX, scaleY)
                 duration = mDuration
                 doOnEnd {
-                    val springForce = SpringForce(targetLocation[1].toFloat())
-                    springForce.dampingRatio = SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY
-                    springForce.stiffness = SpringForce.STIFFNESS_LOW
-                    val springAnimY = SpringAnimation(animView, SpringAnimation.TRANSLATION_Y)
-                    springAnimY.addEndListener(object : DynamicAnimation.OnAnimationEndListener{
-                        override fun onAnimationEnd(
-                            animation: DynamicAnimation<*>?,
-                            canceled: Boolean,
-                            value: Float,
-                            velocity: Float
-                        ) {
-                            animation?.removeEndListener(this)
-                            entering = false
-                            onEnterAnimEndListener?.invoke()
-                            enterShareEleView.alpha = 1f
-                            rootView.removeView(animView)
-                            rootView.removeView(interceptView)
-                        }
+                    if (withEndSpringAnim) {
+                        val springForce = SpringForce(targetLocation[1].toFloat())
+                        springForce.dampingRatio = SpringForce.DAMPING_RATIO_MEDIUM_BOUNCY
+                        springForce.stiffness = SpringForce.STIFFNESS_LOW
+                        val springAnimY = SpringAnimation(animView, SpringAnimation.TRANSLATION_Y)
+                        springAnimY.addEndListener(object :
+                            DynamicAnimation.OnAnimationEndListener {
+                            override fun onAnimationEnd(
+                                animation: DynamicAnimation<*>?,
+                                canceled: Boolean,
+                                value: Float,
+                                velocity: Float
+                            ) {
+                                animation?.removeEndListener(this)
+                                entering = false
+                                onEnterAnimEndListener?.invoke()
+                                enterShareEleView.alpha = 1f
+                                rootView.removeView(animView)
+                                rootView.removeView(interceptView)
+                            }
 
-                    })
-                    springAnimY.spring = springForce
-                    springAnimY.setStartValue(targetLocation[1].toFloat() + springStartValue)
-                    springAnimY.start()
+                        })
+                        springAnimY.spring = springForce
+                        springAnimY.setStartValue(targetLocation[1].toFloat() + springStartValue)
+                        springAnimY.start()
+                    } else {
+                        entering = false
+                        onEnterAnimEndListener?.invoke()
+                        enterShareEleView.alpha = 1f
+                        rootView.removeView(animView)
+                        rootView.removeView(interceptView)
+                    }
 
                 }
                 start()
@@ -323,29 +337,37 @@ class DetailImageTransition(
             playTogether(animX, animY, scaleX, scaleY)
             duration = mDuration
             doOnEnd {
-                val springForce = SpringForce(shareEleLocation[1].toFloat())
-                springForce.dampingRatio = SpringForce.DAMPING_RATIO_LOW_BOUNCY
-                springForce.stiffness = SpringForce.STIFFNESS_LOW
-                val springAnimY = SpringAnimation(animView, SpringAnimation.TRANSLATION_Y)
-                springAnimY.addEndListener(object : DynamicAnimation.OnAnimationEndListener{
-                    override fun onAnimationEnd(
-                        animation: DynamicAnimation<*>?,
-                        canceled: Boolean,
-                        value: Float,
-                        velocity: Float
-                    ) {
-                        animation?.removeEndListener(this)
-                        exiting = false
-                        enterShareEleView.alpha = 1f
-                        rootView.removeView(animView)
-                        rootView.removeView(interceptView)
-                        onExitAnimEndListener?.invoke()
-                    }
+                if (withEndSpringAnim) {
+                    val springForce = SpringForce(shareEleLocation[1].toFloat())
+                    springForce.dampingRatio = SpringForce.DAMPING_RATIO_LOW_BOUNCY
+                    springForce.stiffness = SpringForce.STIFFNESS_LOW
+                    val springAnimY = SpringAnimation(animView, SpringAnimation.TRANSLATION_Y)
+                    springAnimY.addEndListener(object : DynamicAnimation.OnAnimationEndListener {
+                        override fun onAnimationEnd(
+                            animation: DynamicAnimation<*>?,
+                            canceled: Boolean,
+                            value: Float,
+                            velocity: Float
+                        ) {
+                            animation?.removeEndListener(this)
+                            exiting = false
+                            enterShareEleView.alpha = 1f
+                            rootView.removeView(animView)
+                            rootView.removeView(interceptView)
+                            onExitAnimEndListener?.invoke()
+                        }
 
-                })
-                springAnimY.spring = springForce
-                springAnimY.setStartValue(shareEleLocation[1].toFloat() - springStartValue)
-                springAnimY.start()
+                    })
+                    springAnimY.spring = springForce
+                    springAnimY.setStartValue(shareEleLocation[1].toFloat() - springStartValue)
+                    springAnimY.start()
+                } else {
+                    exiting = false
+                    enterShareEleView.alpha = 1f
+                    rootView.removeView(animView)
+                    rootView.removeView(interceptView)
+                    onExitAnimEndListener?.invoke()
+                }
             }
             start()
         }
@@ -379,8 +401,6 @@ class DetailImageTransition(
                     val scaleTypeDrawable = fadeDrawable?.getDrawable(2) as? ScaleTypeDrawable
                     w = scaleTypeDrawable?.current?.intrinsicWidth ?: 0
                     h = scaleTypeDrawable?.current?.intrinsicHeight ?: 0
-                    w = rootDrawable?.bounds?.width() ?: 0
-                    h = rootDrawable?.bounds?.height() ?: 0
                 } catch (e: Exception) {
                 }
 

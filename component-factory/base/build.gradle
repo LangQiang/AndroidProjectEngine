@@ -6,7 +6,7 @@ plugins {
 }
 
 ext {
-    publishVersion = '1.7.0-SNAPSHOT'
+    publishVersion = '1.7.3-SNAPSHOT'
     publishArtifactName = 'base-core'
     publishComponentType = 'aar-release'
 }

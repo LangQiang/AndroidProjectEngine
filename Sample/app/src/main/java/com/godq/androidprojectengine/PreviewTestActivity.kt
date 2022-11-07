@@ -9,7 +9,9 @@ import com.facebook.imagepipeline.image.ImageInfo
 import com.lazylite.mod.imageloader.fresco.ImageLoaderWapper
 import com.lazylite.mod.imageloader.fresco.config.ImageLoadConfig
 import com.lazylite.mod.imageloader.fresco.listener.IDisplayImageListener
+import com.lazylite.mod.widget.preview.PhotoPreviewConfig
 import com.lazylite.mod.widget.preview.PhotoPreviewFragment
+import java.lang.ref.WeakReference
 
 class PreviewTestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,9 +39,10 @@ class PreviewTestActivity : AppCompatActivity() {
             })
 
             this.setOnClickListener {
+                val config = PhotoPreviewConfig(WeakReference(this), imageUrl, true, 320, false)
                 supportFragmentManager.beginTransaction()
                     .addToBackStack("1")
-                    .add(R.id.fragment_container, PhotoPreviewFragment.getInstance(this, imageUrl, true), "1")
+                    .add(R.id.fragment_container, PhotoPreviewFragment.getInstance(config), "1")
                     .commit()
 //                FragmentOperation.getInstance().showFullFragment(PhotoPreviewFragment.getInstance(this, imageUrl))
             }

@@ -10,6 +10,7 @@
         <entry key="component-factory/UICompose/src/main/res/layout/yuanxi_app_bottom_tab.xml" value="0.13802083333333334" />
         <entry key="component-factory/base/src/main/res/layout/base_photo_preview_fragment.xml" value="0.15885416666666666" />
         <entry key="component-factory/base/src/main/res/layout/lrlite_base_item_loading.xml" value="0.1" />
+        <entry key="component-factory/base/src/main/res/layout/lrlite_base_layout_progress_loading.xml" value="0.11865942028985507" />
         <entry key="component-factory/base/src/main/res/layout/lrlite_base_titlebar.xml" value="0.1" />
         <entry key="test/src/main/res/layout/activity_test.xml" value="0.2318840579710145" />
       </map>
