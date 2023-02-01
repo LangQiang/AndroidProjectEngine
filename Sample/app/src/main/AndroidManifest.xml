@@ -4,6 +4,7 @@
     package="com.godq.androidprojectengine">
 
     <application
+        android:name=".SampleApp"
         android:allowBackup="true"
         android:icon="@mipmap/engine_logo"
         android:label="@string/app_name"
@@ -11,20 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProjectEngine"
         android:usesCleartextTraffic="true"
+        tools:replace="android:icon, android:label"
         tools:ignore="UnusedAttribute">
-        <activity
-            android:name=".PreviewTestActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

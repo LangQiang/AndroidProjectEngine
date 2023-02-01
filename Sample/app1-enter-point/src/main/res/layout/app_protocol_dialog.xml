@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/lrlite_base_rounded_rectangle_fff7ef"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="5dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="温馨提示"
+            android:textColor="@color/black80"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_ok"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="不同意"
+            android:textColor="@color/black60"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_agree"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_above="@+id/tv_ok"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/base_shape_blue_25_bg"
+            android:gravity="center"
+            android:text="同意"
+            android:textColor="#ffffff"
+            android:textSize="14sp" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_agree"
+            android:layout_below="@id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:fadeScrollbars="false"
+            android:scrollbarThumbVertical="@drawable/base_scroll_view"
+            >
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lineSpacingExtra="6dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:textColor="@color/black80"
+                android:textSize="14sp" />
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
+</FrameLayout>

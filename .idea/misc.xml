@@ -3,8 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../.gradle/caches/transforms-3/c25a76e3261acebe2668fd0acd2adcbf/transformed/jetified-base-core-1.7.3-SNAPSHOT/res/drawable/lrlite_base_rounded_rectangle_fff7ef.xml" value="0.1595" />
         <entry key="Sample/app/src/main/res/layout/activity_main.xml" value="0.18541666666666667" />
         <entry key="Sample/app/src/main/res/layout/activity_preview_test.xml" value="0.24139492753623187" />
+        <entry key="Sample/app1-enter-point/src/main/res/layout/activity_main.xml" value="0.225" />
+        <entry key="Sample/home/src/main/res/drawable-v21/launch_background.xml" value="0.1075" />
+        <entry key="Sample/home/src/main/res/drawable-xxhdpi/launcher_bg.xml" value="0.1075" />
+        <entry key="Sample/home/src/main/res/drawable/launch_background.xml" value="0.1075" />
+        <entry key="Sample/home/src/main/res/drawable/launcher_bg.xml" value="0.1075" />
+        <entry key="Sample/home/src/main/res/layout/activity_main.xml" value="0.175" />
+        <entry key="Sample/home/src/main/res/layout/view_discover_tips.xml" value="0.13958333333333334" />
         <entry key="component-factory/BottomNavigation/src/main/res/drawable/lrlite_base_white_conner_100.xml" value="0.15416666666666667" />
         <entry key="component-factory/BottomNavigation/src/main/res/layout/yuanxi_app_bottom_tab.xml" value="0.11786647918301116" />
         <entry key="component-factory/UICompose/src/main/res/layout/yuanxi_app_bottom_tab.xml" value="0.13802083333333334" />
@@ -12,6 +20,7 @@
         <entry key="component-factory/base/src/main/res/layout/lrlite_base_item_loading.xml" value="0.1" />
         <entry key="component-factory/base/src/main/res/layout/lrlite_base_layout_progress_loading.xml" value="0.11865942028985507" />
         <entry key="component-factory/base/src/main/res/layout/lrlite_base_titlebar.xml" value="0.1" />
+        <entry key="test/src/main/res/drawable/ic_launcher_background.xml" value="0.1075" />
         <entry key="test/src/main/res/layout/activity_test.xml" value="0.2318840579710145" />
       </map>
     </option>

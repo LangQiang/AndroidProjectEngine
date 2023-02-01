@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    首页底部icon-->
+    <string name="bottom_index_select_icon">&#xe6e0;</string>
+    <string name="bottom_index_normal_icon">&#xe6e1;</string>
+    <string name="bottom_mine_select_icon">&#xe6d8;</string>
+    <string name="bottom_mine_normal_icon">&#xe6dc;</string>
+
+    <string name="app_name">轻缘</string>
+    <!-- 用户服务协议 默认协议先去掉-->
+    <string name="app_user_service_agreement_content">加载中..</string>
+
+    <!--隐私政策 默认协议先去掉-->
+    <string name="app_privacy_policy_content">加载中..</string>
+
+    <string name="protocol_dialog_content">欢迎您使用轻缘！\n 1.您可以通过仔细阅读 用户服务协议 及 隐私政策 了解我们收集、处理您个人信息的情况以及您享有的相关权利。\n 2.当您使用我们服务时，我们将收集、使用必要的信息。
+   \n 3.当您使用头像上传等服务时，我们可能会申请获取您的相机、相册等权限，您有权拒绝或取消授权。\n 4.您可以查询、更正、补充、删除或撤回授权您的个人信息，我们也为您提供注销帐号的渠道。我们将严格按照以上文件内容为您提供服务，并且我们采用业界领先的技术保护措施来保护您的个人信息。
+    \n 点击“同意”按钮表示您同意《%1$s》及《%2$s》。</string>
+</resources>

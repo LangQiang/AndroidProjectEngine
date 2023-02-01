@@ -12,6 +12,13 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Sample" />
             <option value="$PROJECT_DIR$/Sample/app" />
+            <option value="$PROJECT_DIR$/Sample/app1-enter-point" />
+            <option value="$PROJECT_DIR$/Sample/business1" />
+            <option value="$PROJECT_DIR$/Sample/business1-api" />
+            <option value="$PROJECT_DIR$/Sample/business2" />
+            <option value="$PROJECT_DIR$/Sample/business2-api" />
+            <option value="$PROJECT_DIR$/Sample/business3" />
+            <option value="$PROJECT_DIR$/Sample/business3-api" />
             <option value="$PROJECT_DIR$/component-factory" />
             <option value="$PROJECT_DIR$/component-factory/Deeplink" />
             <option value="$PROJECT_DIR$/component-factory/StatisticWidget" />
@@ -23,7 +30,6 @@
             <option value="$PROJECT_DIR$/test" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

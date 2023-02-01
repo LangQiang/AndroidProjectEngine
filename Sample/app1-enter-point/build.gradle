@@ -1,0 +1,56 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdk
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation rootProject.ext.core_ktx
+
+    implementation rootProject.ext.appcompat
+
+    implementation rootProject.ext.material
+
+    implementation rootProject.ext.constraintlayout
+
+    kapt rootProject.ext.base_core_processor
+    kapt rootProject.ext.databinding_compiler // DataBinding 注解处理依赖
+    api rootProject.ext.base_core
+    api rootProject.ext.ui_compose
+
+
+    implementation project(":Sample:business1")
+    implementation project(":Sample:business1-api")
+    implementation project(":Sample:business2")
+    implementation project(":Sample:business2-api")
+    implementation project(":Sample:business3")
+    implementation project(":Sample:business3-api")
+}
