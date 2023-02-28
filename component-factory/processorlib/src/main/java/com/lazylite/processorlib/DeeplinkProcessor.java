@@ -75,31 +75,33 @@ public class DeeplinkProcessor extends AbstractProcessor {
 
             deepLinkClassInfo.setPath(element.getAnnotation(DeepLink.class).path());
 
-            File file = new File("./.idea/deeplink.config");
-            File dir = new File("./.idea");
-            if(!dir.exists()){
-                if(!dir.mkdirs()){
-                    return;
+            synchronized (InitProcessor.lock) {
+                File file = new File("./.idea/deeplink.config");
+                File dir = new File("./.idea");
+                if (!dir.exists()) {
+                    if (!dir.mkdirs()) {
+                        return;
+                    }
                 }
-            }
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    return;
+                if (!file.exists()) {
+                    if (!file.createNewFile()) {
+                        return;
+                    } else {
+                        log("create deeplink.config");
+                    }
                 } else {
-                    log("create deeplink.config");
+                    log("deeplink.config exists");
                 }
-            } else {
-                log("deeplink.config exists");
-            }
 
-            try {
-                FileWriter fileWriter = new FileWriter(file,true);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                bufferedWriter.write(deepLinkClassInfo.toJson());
-                bufferedWriter.newLine();
-                bufferedWriter.close();
-            } catch (Exception ioe) {
-                ioe.printStackTrace();
+                try {
+                    FileWriter fileWriter = new FileWriter(file, true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    bufferedWriter.write(deepLinkClassInfo.toJson());
+                    bufferedWriter.newLine();
+                    bufferedWriter.close();
+                } catch (Exception ioe) {
+                    ioe.printStackTrace();
+                }
             }
         }
         log("-----------DeeplinkProcessor end------------");

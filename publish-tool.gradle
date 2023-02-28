@@ -38,10 +38,13 @@ def publishCloser = {
                     url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
                     printMsg('repo maven release')
                 }
-                printMsg('repo maven credentials :' + sonaTypeUserName + " " + sonaTypePassWord)
+                var prop = getLocalProperties()
+                var name = prop.get("sonaTypeUserName")
+                var pw = prop.get("sonaTypePassWord")
+                printMsg('repo maven credentials :' + name + " " + pw)
                 credentials {
-                    username sonaTypeUserName
-                    password sonaTypePassWord
+                    username name
+                    password pw
                 }
             }
         }
@@ -109,3 +112,14 @@ afterEvaluate {
         printMsg(ret)
     }
 }
+
+def getLocalProperties() {
+    Properties localProperties = new Properties()
+    File file = project.rootProject.file('local.properties')
+    if (file.exists()) {
+        localProperties.load(file.newReader("UTF-8"))
+    }
+    return localProperties
+}
+
+println(getLocalProperties().get("sonaTypeUserName") + "==========")

@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/Sample/business3" />
             <option value="$PROJECT_DIR$/Sample/business3-api" />
             <option value="$PROJECT_DIR$/component-factory" />
+            <option value="$PROJECT_DIR$/component-factory/AppLogcat" />
             <option value="$PROJECT_DIR$/component-factory/Deeplink" />
             <option value="$PROJECT_DIR$/component-factory/StatisticWidget" />
             <option value="$PROJECT_DIR$/component-factory/ThreadPool" />

@@ -2,7 +2,7 @@ apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
 ext {
-    publishVersion = '1.0.0-SNAPSHOT'
+    publishVersion = '1.0.1-SNAPSHOT'
     publishArtifactName = 'processor'
     publishComponentType = 'java'
 }

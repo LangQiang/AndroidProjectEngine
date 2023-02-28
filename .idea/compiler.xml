@@ -21,6 +21,8 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
+      <module name="AndroidProjectEngine.component-factory.applogcat" target="11" />
+      <module name="AndroidProjectEngine.component-factory.AppLogcat" target="11" />
       <module name="AndroidProjectEngine.component-factory.base" target="11" />
       <module name="AndroidProjectEngine.component-factory.Deeplink" target="11" />
       <module name="AndroidProjectEngine.component-factory.StatisticWidget" target="11" />

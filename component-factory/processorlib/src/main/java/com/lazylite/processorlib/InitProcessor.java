@@ -45,6 +45,8 @@ import javax.tools.Diagnostic;
 @AutoService(Processor.class)
 public class InitProcessor extends AbstractProcessor {
 
+    public final static Object lock = new Object();
+
     private static Set<String> supportOptions = new LinkedHashSet<>();
 
     static {
@@ -178,29 +180,37 @@ public class InitProcessor extends AbstractProcessor {
 
             JavaFile.builder(Constants.PACKAGE,builder.build()).build().writeTo(mFiler);
 
-
-            File file = new File("./.idea/init.config");
-            if (!file.exists()) {
-                if (!file.createNewFile()) {
-                    return;
-                } else {
-                    log("create init.config");
+            synchronized (lock) {
+                File dir = new File("./.idea");
+                if (!dir.exists()) {
+                    dir.mkdirs();
                 }
-            } else {
-                log("init.config exists");
+                File file = new File(dir, "init.config");
+                if (!file.exists()) {
+                    if (!file.createNewFile()) {
+                        log("init.config create Failed");
+                        return;
+                    } else {
+                        log("create init.config");
+                    }
+                } else {
+                    log("init.config exists");
+                }
+
+                try {
+                    FileWriter fileWriter = new FileWriter(file,true);
+                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                    bufferedWriter.write(initClassInfo.toJson());
+                    bufferedWriter.newLine();
+                    bufferedWriter.close();
+                } catch (Exception ioe) {
+                    ioe.printStackTrace();
+                }
+
+                log("Generated InitImpl finish");
             }
 
-            try {
-                FileWriter fileWriter = new FileWriter(file,true);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                bufferedWriter.write(initClassInfo.toJson());
-                bufferedWriter.newLine();
-                bufferedWriter.close();
-            } catch (Exception ioe) {
-                ioe.printStackTrace();
-            }
 
-            log("Generated InitImpl finish");
         }
     }
 
