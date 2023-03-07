@@ -5,13 +5,14 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.MainThread
 import cn.godq.applogcat.databinding.AlcMainLayoutBinding
 import cn.godq.applogcat.ui.color.AlcColor
+import cn.godq.applogcat.ui.content.IContent
+import cn.godq.applogcat.ui.content.IContentEvent
 import cn.godq.applogcat.utils.OnDragTouchListener
 import cn.godq.applogcat.utils.UIHelper
 import cn.godq.applogcat.utils.runOnUiThread
@@ -21,7 +22,7 @@ import cn.godq.applogcat.utils.runOnUiThread
  * @author  GodQ
  * @date  2023/3/3 5:37 下午
  */
-class LogcatComponent(private val mContext: Context) {
+class LogcatComponent(private val mContext: Context, private val contentViewCtrl: IContent) {
 
     private val vm = LogcatVm()
 
@@ -38,20 +39,28 @@ class LogcatComponent(private val mContext: Context) {
     private var attached = false
 
     init {
+
         initView()
+
         vm.onLogCallback = { logs: List<LogcatEntity>, type: Int ->
             when (type) {
                 LogcatVm.TYPE_NEW -> {
-                    dataBinding.logTv.text = ""
-                    logs.forEach { notifyView(it) }
+                    contentViewCtrl.setNewData(logs)
                 }
                 LogcatVm.TYPE_ADD -> {
-                    logs.forEach { notifyView(it) }
+                    contentViewCtrl.addData(logs)
                 }
                 LogcatVm.TYPE_CLEAR -> {}
                 else -> {}
             }
         }
+
+        contentViewCtrl.setContentEvent(object : IContentEvent{
+            override fun onNewLogComeViewVisible(visible: Boolean) {
+                setNewMsgComeViewVisible(visible)
+            }
+        })
+
     }
 
     fun isAttached() = attached
@@ -63,16 +72,14 @@ class LogcatComponent(private val mContext: Context) {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initView() {
-        with(dataBinding.logTv) {
-            this.isVerticalScrollBarEnabled = true
-            this.movementMethod = ScrollingMovementMethod.getInstance()
-            this.setTextIsSelectable(true)
 
-            log("顶部区域拖拽")
-            log("打印日志：AppLogcat.getInstance().log(log);", "", null)
+        contentViewCtrl.getView(mContext)?.also {
+            dataBinding.alcContentView.addView(it, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
         }
+
         dataBinding.alcClearBtn.setOnClickListener {
-            clear()
+//            clear()
+            log("asdfasdfasfd")
         }
 
         dataBinding.dragArea.setOnTouchListener(OnDragTouchListener(dataBinding.root))
@@ -89,9 +96,27 @@ class LogcatComponent(private val mContext: Context) {
 
         dataBinding.alcIcon.setOnTouchListener(OnDragTouchListener(dataBinding.root))
 
+        dataBinding.scrollToBottomBtn.setOnClickListener {
+            contentViewCtrl.scrollToBottom()
+        }
+
+        setInitXY()
+
+        log("顶部区域拖拽")
+        log("打印日志：AppLogcat.getInstance().log(log);", "", null)
+
         runOnUiThread {
             vm.forceRefresh()
         }
+    }
+
+    private fun setNewMsgComeViewVisible(b: Boolean) {
+        dataBinding.scrollToBottomBtn.visibility = if (b) View.VISIBLE else View.GONE
+    }
+
+    private fun setInitXY() {
+        dataBinding.root.x = 0f
+        dataBinding.root.y = UIHelper.getTitleBarHeight(mContext).toFloat()
     }
 
     private fun clear() {
@@ -100,7 +125,7 @@ class LogcatComponent(private val mContext: Context) {
         builder.setMessage("确认删除log")
         builder.setCancelable(false)
         builder.setPositiveButton("确定") { _: DialogInterface?, _: Int ->
-            dataBinding.logTv.text = ""
+            contentViewCtrl.clear()
         }
         builder.setNegativeButton("取消") { dialog: DialogInterface?, _: Int ->
             UIHelper.safeDismissDialog(dialog, activity)
@@ -111,17 +136,6 @@ class LogcatComponent(private val mContext: Context) {
     fun detach(): View {
         attached = false
         return dataBinding.root
-    }
-
-    private fun notifyView(logcatEntity: LogcatEntity) {
-        logcatEntity.formatForTextView().forEach {
-            dataBinding.logTv.append(it)
-        }
-        val scrollAmount = (dataBinding.logTv.layout?.getLineTop(dataBinding.logTv.lineCount) ?: 0) - dataBinding.logTv.height
-        if (scrollAmount > 0) dataBinding.logTv.scrollTo(
-            0,
-            scrollAmount
-        ) else dataBinding.logTv.scrollTo(0, 0)
     }
 
     @MainThread

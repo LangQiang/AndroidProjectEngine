@@ -27,6 +27,7 @@ public class OnDragTouchListener implements View.OnTouchListener {
                 ViewParent parent = draggedView.getParent();
                 if (parent instanceof View) {
                     ((View) parent).getLocationOnScreen(location);
+                    location[1] = location[1] + UIHelper.getTitleBarHeight(v.getContext());
                     parentWidth = ((View) parent).getWidth();
                     parentHeight = ((View) parent).getHeight();
                 }

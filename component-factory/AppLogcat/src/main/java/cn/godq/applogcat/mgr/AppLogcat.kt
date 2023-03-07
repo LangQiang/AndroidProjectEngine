@@ -5,6 +5,7 @@ import android.app.Application
 import android.view.ViewGroup
 import cn.godq.applogcat.ui.LogcatComponent
 import cn.godq.applogcat.ui.color.AlcColor
+import cn.godq.applogcat.ui.content.recycler.ContentRecyclerViewCtrl
 import cn.godq.applogcat.utils.proxyOtherLog
 import cn.godq.applogcat.utils.runOnUiThread
 
@@ -25,7 +26,7 @@ class AppLogcat: IAlcApi {
 
     private var init = false
 
-    private var mContext: Application? = null
+    internal var mContext: Application? = null
 
     private var logcatComponent: LogcatComponent? = null
 
@@ -39,7 +40,7 @@ class AppLogcat: IAlcApi {
 
         mContext = context
 
-        logcatComponent = LogcatComponent(context)
+        logcatComponent = LogcatComponent(context, ContentRecyclerViewCtrl())
 
         context.registerActivityLifecycleCallbacks(ALCActivityLifeCircleCallback())
 

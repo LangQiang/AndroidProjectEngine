@@ -24,4 +24,16 @@ data class LogcatEntity(val log: String, val tag: String, val color: AlcColor, v
         dateSpannable.setSpan(timeColorSpan, 0, date.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         return listOf(dateSpannable, " ", spannable, "\n")
     }
+
+    fun formatForRecyclerView(): List<CharSequence> {
+        val spannable: Spannable = SpannableString(log)
+        val colorSpan = ForegroundColorSpan(Color.parseColor(color.color))
+        spannable.setSpan(colorSpan, 0, log.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        val date: String = UIHelper.getFormatDate("HH:mm:ss.SSS").toString() + ":"
+        val dateSpannable = SpannableString(date)
+        val timeColorSpan = ForegroundColorSpan(Color.parseColor("#3993d4"))
+        dateSpannable.setSpan(timeColorSpan, 0, date.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        return listOf(dateSpannable, " ", spannable)
+    }
 }

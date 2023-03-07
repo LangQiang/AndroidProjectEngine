@@ -2,6 +2,8 @@ package cn.godq.applogcat.utils
 
 import android.os.Handler
 import android.os.Looper
+import android.view.MotionEvent
+import android.view.View
 
 
 /**
@@ -19,4 +21,21 @@ fun runOnUiThread(delay: Int = 0, runnable: (() -> Unit)) {
     } else {
         handle.postDelayed(runnable, delay.toLong())
     }
+}
+
+fun runOnUiThread(delay: Int, runnable: Runnable) {
+    runOnUiThread(delay) {
+        runnable.run()
+    }
+}
+
+fun isTouchInView(view: View?, event: MotionEvent): Boolean {
+    if (view == null) {
+        return false
+    }
+    val location = IntArray(2)
+    view.getLocationOnScreen(location)
+    val x = location[0]
+    val y = location[1]
+    return x < event.rawX && event.rawX < x + view.width && y < event.rawY && event.rawY < y + view.height
 }

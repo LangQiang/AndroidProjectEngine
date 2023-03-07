@@ -14,10 +14,13 @@
     </data>
 
     <FrameLayout
+        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:visibility="invisible"
+            tools:visibility="visible"
             android:id="@+id/alc_container"
             android:orientation="vertical"
             android:background="@drawable/alc_bg"
@@ -63,6 +66,16 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"/>
 
+                <View
+                    android:background="@drawable/alc_scroll_to_bottom_icon"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/scroll_to_bottom_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"/>
+
                 <TextView
                     android:onClick="@{()-> vm.onTagClick(logcatComponent.currentVisibleActivity)}"
                     android:id="@+id/logcat_tag_tv"
@@ -87,19 +100,16 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"/>
             </LinearLayout>
-            <TextView
-                android:padding="3dp"
-                android:id="@+id/log_tv"
-                android:textSize="12dp"
-                android:lineSpacingExtra="5dp"
-                android:textColor="#ffffff"
-                tools:text="asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf"
+
+            <FrameLayout
+                android:id="@+id/alc_content_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"/>
+
         </LinearLayout>
 
         <View
-            android:visibility="invisible"
+            android:visibility="visible"
             android:layout_margin="10dp"
             android:layout_gravity="end"
             android:id="@+id/alc_icon"

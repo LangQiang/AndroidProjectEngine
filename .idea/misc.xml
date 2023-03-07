@@ -17,6 +17,9 @@
         <entry key="component-factory/AppLogcat/src/main/res/drawable/alc_btn_bg.xml" value="0.1595" />
         <entry key="component-factory/AppLogcat/src/main/res/drawable/alc_tag_bg.xml" value="0.1595" />
         <entry key="component-factory/AppLogcat/src/main/res/layout/activity_aaa.xml" value="0.175" />
+        <entry key="component-factory/AppLogcat/src/main/res/layout/alc_content_item_layout.xml" value="0.33645833333333336" />
+        <entry key="component-factory/AppLogcat/src/main/res/layout/alc_content_recycler_view.xml" value="0.33541666666666664" />
+        <entry key="component-factory/AppLogcat/src/main/res/layout/alc_content_text_view.xml" value="0.33645833333333336" />
         <entry key="component-factory/AppLogcat/src/main/res/layout/alc_main_layout.xml" value="0.2693437806072478" />
         <entry key="component-factory/BottomNavigation/src/main/res/drawable/lrlite_base_white_conner_100.xml" value="0.15416666666666667" />
         <entry key="component-factory/BottomNavigation/src/main/res/layout/yuanxi_app_bottom_tab.xml" value="0.11786647918301116" />
