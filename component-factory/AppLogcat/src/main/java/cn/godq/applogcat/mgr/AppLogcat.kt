@@ -68,7 +68,7 @@ class AppLogcat: IAlcApi {
     }
 
     override fun log(log: String?, tag: String?) {
-        log(log, null, null)
+        log(log, tag, null)
     }
 
     override fun log(log: String?, tag: String?, color: AlcColor?) {

@@ -78,8 +78,7 @@ class LogcatComponent(private val mContext: Context, private val contentViewCtrl
         }
 
         dataBinding.alcClearBtn.setOnClickListener {
-//            clear()
-            log("asdfasdfasfd")
+            clear()
         }
 
         dataBinding.dragArea.setOnTouchListener(OnDragTouchListener(dataBinding.root))
