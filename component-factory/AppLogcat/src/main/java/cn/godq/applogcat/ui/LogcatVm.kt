@@ -55,7 +55,7 @@ class LogcatVm {
         activity?: return
         val array = arrayOfNulls<String>(tagSet.size)
         tagSet.toArray(array)
-        AlertDialog.Builder(activity).setItems(array) { dialog, which ->
+        AlertDialog.Builder(activity).setItems(array) { _, which ->
             val last = uiState.currentTag
             uiState.currentTag = array[which] ?: DEFAULT_TAG
             if (last != uiState.currentTag) {
