@@ -46,7 +46,7 @@ class LogcatComponent(private val mContext: Context, private val contentViewCtrl
         vm.onLogCallback = { logs: List<LogcatEntity>, type: Int ->
             when (type) {
                 LogcatVm.TYPE_NEW -> {
-                    contentViewCtrl.setNewData(logs)
+                    contentViewCtrl.setNewData(logs, vm.uiState.currentTag)
                 }
                 LogcatVm.TYPE_ADD -> {
                     contentViewCtrl.addData(logs)

@@ -15,7 +15,7 @@ interface IContent {
 
     fun getView(context: Context): View?
 
-    fun setNewData(logs: List<LogcatEntity>)
+    fun setNewData(logs: List<LogcatEntity>, currentTag: String)
 
     fun addData(logs: List<LogcatEntity>)
 

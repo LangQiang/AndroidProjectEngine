@@ -38,7 +38,7 @@ class ContentTextCtrl: IContent {
         textView.setTextIsSelectable(true)
     }
 
-    override fun setNewData(logs: List<LogcatEntity>) {
+    override fun setNewData(logs: List<LogcatEntity>, currentTag: String) {
         mTextView?.text = ""
         logs.forEach { notifyView(it) }
     }

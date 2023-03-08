@@ -8,6 +8,7 @@ import cn.godq.applogcat.R
 import cn.godq.applogcat.ui.LogcatEntity
 import cn.godq.applogcat.ui.content.IContent
 import cn.godq.applogcat.ui.content.IContentEvent
+import cn.godq.applogcat.utils.runOnUiThread
 
 
 /**
@@ -58,18 +59,21 @@ class ContentRecyclerViewCtrl: IContent {
     private fun scrollWhenUpdate() {
         val count = mAdapter.itemCount - 1
         if (count >= 0) {
-            val layoutManager = mRecyclerView?.layoutManager as? LinearLayoutManager
-            if ((layoutManager?.findLastVisibleItemPosition()?: 0) > count - 5) {
-                mRecyclerView?.scrollToPosition(mAdapter.itemCount - 1)
-            } else {
-                event?.onNewLogComeViewVisible(true)
+            runOnUiThread {
+                val layoutManager = mRecyclerView?.layoutManager as? LinearLayoutManager
+                if ((layoutManager?.findLastVisibleItemPosition()?: 0) > count - 5) {
+                    mRecyclerView?.scrollToPosition(mAdapter.itemCount - 1)
+                } else {
+                    event?.onNewLogComeViewVisible(true)
+                }
             }
         }
     }
 
-    override fun setNewData(logs: List<LogcatEntity>) {
+    override fun setNewData(logs: List<LogcatEntity>, currentTag: String) {
+        mAdapter.currentTag = currentTag
         mAdapter.setNewData(logs)
-        scrollWhenUpdate()
+        scrollToBottom()
     }
 
     override fun addData(logs: List<LogcatEntity>) {

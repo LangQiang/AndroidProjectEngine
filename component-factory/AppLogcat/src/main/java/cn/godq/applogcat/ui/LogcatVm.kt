@@ -32,7 +32,9 @@ class LogcatVm {
 
     fun appendLog(logcatEntity: LogcatEntity) {
         with(logcatEntity) {
-            tagSet.add(logcatEntity.tag)
+            if (logcatEntity.tag != DEFAULT_TAG) {
+                tagSet.add(logcatEntity.tag)
+            }
             repository.insertLog(this)
             if (checkTag(this)) {
                 onLogCallback?.invoke(listOf(this), TYPE_ADD)
@@ -47,8 +49,9 @@ class LogcatVm {
 
     fun onTagClick(activity: Activity?) {
         activity?: return
-        val array = arrayOfNulls<String>(tagSet.size)
-        tagSet.toArray(array)
+        val list = mutableListOf(DEFAULT_TAG)
+        list.addAll(tagSet)
+        val array =list.toTypedArray()
         AlertDialog.Builder(activity).apply {
             setItems(array) { _, which ->
                 val last = uiState.currentTag

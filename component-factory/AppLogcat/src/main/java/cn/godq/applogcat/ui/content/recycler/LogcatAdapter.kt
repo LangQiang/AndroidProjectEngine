@@ -6,9 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import cn.godq.applogcat.R
-import cn.godq.applogcat.mgr.AppLogcat
 import cn.godq.applogcat.ui.LogcatEntity
-import cn.godq.applogcat.utils.UIHelper
 import java.lang.ref.WeakReference
 
 
@@ -17,6 +15,8 @@ import java.lang.ref.WeakReference
  * @date  2023/3/7 5:11 下午
  */
 class LogcatAdapter(data: List<LogcatEntity>?, private val layoutId: Int): RecyclerView.Adapter<LogcatAdapter.ViewHolder>() {
+
+    var currentTag: String? = null
 
     private var currentTextView: TextView? = null
 
@@ -35,7 +35,7 @@ class LogcatAdapter(data: List<LogcatEntity>?, private val layoutId: Int): Recyc
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.logTv?.text = ""
         mData[position].apply {
-            formatForRecyclerView().forEach {
+            formatForRecyclerView(currentTag).forEach {
                 holder.logTv?.append(it)
             }
             holder.data = this

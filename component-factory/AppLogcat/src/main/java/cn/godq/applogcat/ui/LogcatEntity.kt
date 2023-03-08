@@ -35,13 +35,14 @@ data class LogcatEntity(
         return listOf(dateSpannable, " ", spannable, "\n")
     }
 
-    fun formatForRecyclerView(): List<CharSequence> {
+    fun formatForRecyclerView(currentTag: String?): List<CharSequence> {
         val spannable: Spannable = SpannableString(log)
         val colorSpan = ForegroundColorSpan(UIHelper.parseColor(color.getColorStr(), 0xffffffff.toInt()))
         spannable.setSpan(colorSpan, 0, log.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         val isMainThreadStr = if (isMainThread) "MainT" else "OtherT"
-        val date = "${UIHelper.getFormatDate("HH:mm:ss.SSS")}/$isMainThreadStr:"
+        val showTag = if (currentTag == LogcatVm.DEFAULT_TAG) "/$tag" else ""
+        val date = "${UIHelper.getFormatDate("HH:mm:ss.SSS")}/$isMainThreadStr$showTag:"
         val dateSpannable = SpannableString(date)
         val timeColorSpan = ForegroundColorSpan(Color.parseColor("#3993d4"))
         dateSpannable.setSpan(timeColorSpan, 0, date.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
