@@ -59,7 +59,7 @@ class ContentRecyclerViewCtrl: IContent {
         val count = mAdapter.itemCount - 1
         if (count >= 0) {
             val layoutManager = mRecyclerView?.layoutManager as? LinearLayoutManager
-            if ((layoutManager?.findLastVisibleItemPosition()?: 0) > count - 3) {
+            if ((layoutManager?.findLastVisibleItemPosition()?: 0) > count - 5) {
                 mRecyclerView?.scrollToPosition(mAdapter.itemCount - 1)
             } else {
                 event?.onNewLogComeViewVisible(true)

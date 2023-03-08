@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import cn.godq.applogcat.ui.LogcatComponent
 import cn.godq.applogcat.ui.color.AlcColor
 import cn.godq.applogcat.ui.content.recycler.ContentRecyclerViewCtrl
+import cn.godq.applogcat.utils.buildLogcatEntity
 import cn.godq.applogcat.utils.proxyOtherLog
 import cn.godq.applogcat.utils.runOnUiThread
 
@@ -73,8 +74,9 @@ class AppLogcat: IAlcApi {
 
     override fun log(log: String?, tag: String?, color: AlcColor?) {
         logcatComponent?: return
+        val entity = buildLogcatEntity(log, tag, color) ?: return
         runOnUiThread {
-            logcatComponent?.log(log, tag, color)
+            logcatComponent?.log(entity)
         }
     }
 

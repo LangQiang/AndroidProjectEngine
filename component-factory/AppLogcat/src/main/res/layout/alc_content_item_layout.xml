@@ -10,8 +10,9 @@
         android:lineSpacingExtra="5dp"
         android:textColor="#ffffff"
         android:textIsSelectable="true"
+        android:selectAllOnFocus="true"
         tools:textColor="#000000"
         tools:text="asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </FrameLayout>

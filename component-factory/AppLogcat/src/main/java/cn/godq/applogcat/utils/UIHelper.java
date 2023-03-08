@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -126,4 +127,11 @@ public class UIHelper {
         toast.show();
     }
 
+    public static int parseColor(String colorStr, int defaultColor) {
+        try {
+            return Color.parseColor(colorStr);
+        } catch (Exception e) {
+            return defaultColor;
+        }
+    }
 }

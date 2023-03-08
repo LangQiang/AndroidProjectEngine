@@ -5,8 +5,7 @@ import android.app.AlertDialog
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import cn.godq.applogcat.BR
-import cn.godq.applogcat.ui.color.AlcColor
-import cn.godq.applogcat.ui.color.ColorSelector
+import cn.godq.applogcat.utils.UIHelper
 
 
 /**
@@ -25,20 +24,15 @@ class LogcatVm {
 
     private val repository = LogcatRepository()
 
-    private val colorSelector = ColorSelector()
-
     private val tagSet = HashSet<String>()
 
     val uiState = UIState()
 
     var onLogCallback: ((logs: List<LogcatEntity>, type: Int) -> Unit)? = null
 
-    fun appendLog(log: String?, tag: String?, color: AlcColor?) {
-        log?: return
-        val tTag: String = if (tag.isNullOrEmpty()) DEFAULT_TAG else tag
-        val tColor = color?: colorSelector.nextColor()
-        with(LogcatEntity(log, tTag, tColor, System.currentTimeMillis())) {
-            tagSet.add(tTag)
+    fun appendLog(logcatEntity: LogcatEntity) {
+        with(logcatEntity) {
+            tagSet.add(logcatEntity.tag)
             repository.insertLog(this)
             if (checkTag(this)) {
                 onLogCallback?.invoke(listOf(this), TYPE_ADD)
@@ -55,12 +49,16 @@ class LogcatVm {
         activity?: return
         val array = arrayOfNulls<String>(tagSet.size)
         tagSet.toArray(array)
-        AlertDialog.Builder(activity).setItems(array) { _, which ->
-            val last = uiState.currentTag
-            uiState.currentTag = array[which] ?: DEFAULT_TAG
-            if (last != uiState.currentTag) {
-                onLogCallback?.invoke(repository.getLogsByTag(uiState.currentTag), TYPE_NEW)
+        AlertDialog.Builder(activity).apply {
+            setItems(array) { _, which ->
+                val last = uiState.currentTag
+                uiState.currentTag = array[which] ?: DEFAULT_TAG
+                if (last != uiState.currentTag) {
+                    onLogCallback?.invoke(repository.getLogsByTag(uiState.currentTag), TYPE_NEW)
+                }
             }
+            setNegativeButton("取消"
+            ) { dialog, _ -> UIHelper.safeDismissDialog(dialog, activity) }
         }.show()
     }
 

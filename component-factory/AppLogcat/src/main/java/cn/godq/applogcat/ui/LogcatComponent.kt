@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.MainThread
 import cn.godq.applogcat.databinding.AlcMainLayoutBinding
+import cn.godq.applogcat.mgr.AppLogcat
 import cn.godq.applogcat.ui.color.AlcColor
 import cn.godq.applogcat.ui.content.IContent
 import cn.godq.applogcat.ui.content.IContentEvent
@@ -101,8 +102,8 @@ class LogcatComponent(private val mContext: Context, private val contentViewCtrl
 
         setInitXY()
 
-        log("顶部区域拖拽")
-        log("打印日志：AppLogcat.getInstance().log(log);", "", null)
+        AppLogcat.getInstance().log("顶部区域拖拽")
+        AppLogcat.getInstance().log("打印日志：AppLogcat.getInstance().log(log);", "", null)
 
         runOnUiThread {
             vm.forceRefresh()
@@ -138,8 +139,8 @@ class LogcatComponent(private val mContext: Context, private val contentViewCtrl
     }
 
     @MainThread
-    fun log(log: String?, tag: String? = null, color: AlcColor? = null) {
-        vm.appendLog(log, tag, color)
+    fun log(logcatEntity: LogcatEntity) {
+        vm.appendLog(logcatEntity)
     }
 
 }

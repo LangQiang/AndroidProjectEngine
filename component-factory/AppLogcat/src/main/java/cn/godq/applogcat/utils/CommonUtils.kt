@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.MotionEvent
 import android.view.View
+import cn.godq.applogcat.mgr.AppLogcat
 
 
 /**
@@ -38,4 +39,13 @@ fun isTouchInView(view: View?, event: MotionEvent): Boolean {
     val x = location[0]
     val y = location[1]
     return x < event.rawX && event.rawX < x + view.width && y < event.rawY && event.rawY < y + view.height
+}
+
+fun isMainThread(): Boolean {
+    return Thread.currentThread() == Looper.getMainLooper().thread
+}
+
+fun isMainProcess(): Boolean {
+    val context = AppLogcat.INSTANCE.mContext ?: return true
+    return context.packageName == getCurrentProcessName(context)
 }

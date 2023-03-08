@@ -5,7 +5,6 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
-import android.util.Log
 import cn.godq.applogcat.BuildConfig
 import cn.godq.applogcat.mgr.AppLogcat
 import cn.godq.applogcat.utils.isDebug
@@ -18,8 +17,6 @@ import cn.godq.applogcat.utils.printAppInfo
  */
 class ALCInitProvider: ContentProvider() {
     override fun onCreate(): Boolean {
-        Log.e("alc", "ALCInitProvider onCreate")
-
         (context as? Application)?.takeIf {
             isDebug(it) || BuildConfig.FORCE_SHOW_ALC
         }?.apply {

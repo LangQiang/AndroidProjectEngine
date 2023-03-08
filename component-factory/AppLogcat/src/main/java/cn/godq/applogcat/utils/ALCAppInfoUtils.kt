@@ -1,9 +1,16 @@
 package cn.godq.applogcat.utils
 
 import android.annotation.SuppressLint
+import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.os.Build
+import android.os.Process
+import android.text.TextUtils
 import android.util.Log
+import java.io.BufferedReader
+import java.io.FileReader
+import java.io.IOException
 import java.lang.StringBuilder
 
 
@@ -11,6 +18,10 @@ import java.lang.StringBuilder
  * @author  GodQ
  * @date  2023/3/3 4:17 下午
  */
+
+private var currentProcessName: String? = null
+
+
 fun isDebug(context: Context): Boolean {
     val info: ApplicationInfo
     try {
@@ -21,6 +32,76 @@ fun isDebug(context: Context): Boolean {
     return false
 }
 
+// 当前进程名
+fun getCurrentProcessName(application: Application?): String? {
+    currentProcessName?.also {
+        return it
+    }
+    var processName = getProcessNameAboveP()
+    if (!TextUtils.isEmpty(processName)) {
+        return processName
+    }
+    processName = getProcessNameFile()
+    if (!TextUtils.isEmpty(processName)) {
+        return processName
+    }
+    processName = getProcessNameReflect(application)
+    return (if (!TextUtils.isEmpty(processName)) {
+        processName
+    } else null).apply { currentProcessName = this }
+}
+
+// android p
+private fun getProcessNameAboveP(): String? {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        Application.getProcessName()
+    } else null
+}
+
+// 通过文件
+private fun getProcessNameFile(): String? {
+    var processName: String?
+    var reader: BufferedReader? = null
+    try {
+        reader = BufferedReader(FileReader("/proc/" + Process.myPid() + "/cmdline"))
+        processName = reader.readLine()
+        if (!TextUtils.isEmpty(processName)) {
+            processName = processName.trim { it <= ' ' }
+        }
+        return processName
+    } catch (throwable: Throwable) {
+        throwable.printStackTrace()
+    } finally {
+        try {
+            reader?.close()
+        } catch (exception: IOException) {
+            exception.printStackTrace()
+        }
+    }
+    return null
+}
+
+// 通过反射
+private fun getProcessNameReflect(application: Application?): String? {
+    var processName: String? = null
+    try {
+        if (null == application) {
+            return ""
+        }
+        val loadedApkField = application.javaClass.getField("mLoadedApk")
+        loadedApkField.isAccessible = true
+        val loadedApk = loadedApkField[application]
+        val activityThreadField = loadedApk.javaClass.getDeclaredField("mActivityThread")
+        activityThreadField.isAccessible = true
+        val activityThread = activityThreadField[loadedApk]
+        val getProcessName = activityThread.javaClass.getDeclaredMethod("getProcessName")
+        processName = getProcessName.invoke(activityThread) as String
+    } catch (e: java.lang.Exception) {
+        e.printStackTrace()
+    }
+    return processName
+}
+
 @SuppressLint("LogNotTimber")
 fun printAppInfo(context: Context) {
     val sb = StringBuilder()
@@ -29,6 +110,7 @@ fun printAppInfo(context: Context) {
 
     sb.append("\npackageName: ${context.packageName} \n")
     sb.append("isDebug: ${isDebug(context)} \n")
+    sb.append("isMainProcess: ${isMainProcess()} \n")
     sb.append("hasTimber: ${assembleWithTimber()} \n")
 
 
