@@ -57,13 +57,13 @@ public class UIHelper {
         }
     }
 
-    public static String getFormatDate(final String format) {
+    public static String getFormatDate(final String format, long timestamp) {
         if(dateFormat == null){
             dateFormat  = new SimpleDateFormat(format, Locale.CHINA);
         }else{
             dateFormat.applyPattern(format);
         }
-        return dateFormat.format(new Date());
+        return dateFormat.format(new Date(timestamp));
     }
 
     public static int getTitleBarHeight(Context context) {

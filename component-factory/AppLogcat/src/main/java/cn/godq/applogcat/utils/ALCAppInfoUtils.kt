@@ -4,14 +4,16 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Process
 import android.text.TextUtils
 import android.util.Log
+import cn.godq.applogcat.init.ALCConfig
+import cn.godq.applogcat.mgr.AppLogcat
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
-import java.lang.StringBuilder
 
 
 /**
@@ -112,9 +114,29 @@ fun printAppInfo(context: Context) {
     sb.append("isDebug: ${isDebug(context)} \n")
     sb.append("isMainProcess: ${isMainProcess()} \n")
     sb.append("hasTimber: ${assembleWithTimber()} \n")
+    sb.append("bootMark: ${AppLogcat.INSTANCE.thisBootMark} \n")
+    sb.append("forceBootAlc: ${getMetaDataConfig(context)?.forceBootAlc} \n")
 
 
     sb.append("=================================\n\n ")
     Log.e("alc", sb.toString())
 
+}
+
+fun getMetaDataConfig(context: Context): ALCConfig? {
+    val packageManager: PackageManager = context.packageManager
+    val applicationInfo: ApplicationInfo
+    try {
+        applicationInfo = packageManager.getApplicationInfo(
+            context.packageName, PackageManager.GET_META_DATA
+        )
+        if (applicationInfo.metaData != null) {
+            return ALCConfig(
+                applicationInfo.metaData.getBoolean("force_boot_alc"),
+            )
+        }
+    } catch (e: Exception) {
+
+    }
+    return null
 }

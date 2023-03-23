@@ -22,6 +22,7 @@
             <option value="$PROJECT_DIR$/component-factory" />
             <option value="$PROJECT_DIR$/component-factory/AppLogcat" />
             <option value="$PROJECT_DIR$/component-factory/Deeplink" />
+            <option value="$PROJECT_DIR$/component-factory/SideSlideMenuWidget" />
             <option value="$PROJECT_DIR$/component-factory/StatisticWidget" />
             <option value="$PROJECT_DIR$/component-factory/ThreadPool" />
             <option value="$PROJECT_DIR$/component-factory/UICompose" />

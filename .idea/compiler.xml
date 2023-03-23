@@ -25,6 +25,7 @@
       <module name="AndroidProjectEngine.component-factory.AppLogcat" target="11" />
       <module name="AndroidProjectEngine.component-factory.base" target="11" />
       <module name="AndroidProjectEngine.component-factory.Deeplink" target="11" />
+      <module name="AndroidProjectEngine.component-factory.SideSlideMenuWidget" target="11" />
       <module name="AndroidProjectEngine.component-factory.StatisticWidget" target="11" />
       <module name="AndroidProjectEngine.component-factory.ThreadPool" target="11" />
       <module name="AndroidProjectEngine.component-factory.UICompose" target="11" />

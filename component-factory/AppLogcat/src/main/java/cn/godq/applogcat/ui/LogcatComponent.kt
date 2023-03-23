@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.annotation.MainThread
 import cn.godq.applogcat.databinding.AlcMainLayoutBinding
 import cn.godq.applogcat.mgr.AppLogcat
-import cn.godq.applogcat.ui.color.AlcColor
 import cn.godq.applogcat.ui.content.IContent
 import cn.godq.applogcat.ui.content.IContentEvent
 import cn.godq.applogcat.utils.OnDragTouchListener
@@ -102,11 +101,10 @@ class LogcatComponent(private val mContext: Context, private val contentViewCtrl
 
         setInitXY()
 
-        AppLogcat.getInstance().log("顶部区域拖拽")
-        AppLogcat.getInstance().log("打印日志：AppLogcat.getInstance().log(log);", "", null)
-
         runOnUiThread {
-            vm.forceRefresh()
+            AppLogcat.getInstance().log("顶部区域拖拽")
+            AppLogcat.getInstance().log("打印日志：AppLogcat.getInstance().log(log);", "", null)
+            vm.initReqLogs()
         }
     }
 

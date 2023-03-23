@@ -3,12 +3,16 @@ package cn.godq.applogcat.mgr
 import android.app.Activity
 import android.app.Application
 import android.view.ViewGroup
+import cn.godq.applogcat.repo.LogcatRepository
 import cn.godq.applogcat.ui.LogcatComponent
+import cn.godq.applogcat.ui.LogcatEntity
 import cn.godq.applogcat.ui.color.AlcColor
 import cn.godq.applogcat.ui.content.recycler.ContentRecyclerViewCtrl
 import cn.godq.applogcat.utils.buildLogcatEntity
 import cn.godq.applogcat.utils.proxyOtherLog
 import cn.godq.applogcat.utils.runOnUiThread
+import kotlinx.coroutines.*
+import java.util.*
 
 
 /**
@@ -29,6 +33,8 @@ class AppLogcat: IAlcApi {
 
     internal var mContext: Application? = null
 
+    internal val thisBootMark = UUID.randomUUID().toString()
+
     private var logcatComponent: LogcatComponent? = null
 
     internal fun init(context: Application) {
@@ -46,6 +52,10 @@ class AppLogcat: IAlcApi {
         context.registerActivityLifecycleCallbacks(ALCActivityLifeCircleCallback())
 
         proxyOtherLog()
+
+        MainScope().launch(Dispatchers.IO) {
+            LogcatRepository.clearDiskLogData(System.currentTimeMillis() - 1000 * 30)
+        }
     }
 
     internal fun attach(activity: Activity) {
@@ -73,12 +83,15 @@ class AppLogcat: IAlcApi {
     }
 
     override fun log(log: String?, tag: String?, color: AlcColor?) {
+        log(log, tag, color, LogcatEntity.getDefaultOptFlag())
+    }
+
+    override fun log(log: String?, tag: String?, color: AlcColor?, flag: Long) {
+        if (!init) return
         logcatComponent?: return
-        val entity = buildLogcatEntity(log, tag, color) ?: return
+        val entity = buildLogcatEntity(log, tag, color, flag) ?: return
         runOnUiThread {
             logcatComponent?.log(entity)
         }
     }
-
-
 }

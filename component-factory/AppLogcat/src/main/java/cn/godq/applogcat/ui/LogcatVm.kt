@@ -5,7 +5,11 @@ import android.app.AlertDialog
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import cn.godq.applogcat.BR
+import cn.godq.applogcat.filter.filter
+import cn.godq.applogcat.repo.LogcatRepository
 import cn.godq.applogcat.utils.UIHelper
+import cn.godq.applogcat.utils.hasOptFlag
+import kotlinx.coroutines.*
 
 
 /**
@@ -22,7 +26,7 @@ class LogcatVm {
         const val DEFAULT_TAG = "default"
     }
 
-    private val repository = LogcatRepository()
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     private val tagSet = HashSet<String>()
 
@@ -35,7 +39,9 @@ class LogcatVm {
             if (logcatEntity.tag != DEFAULT_TAG) {
                 tagSet.add(logcatEntity.tag)
             }
-            repository.insertLog(this)
+            if (!logcatEntity.optFLag.hasOptFlag(LogcatEntity.OPT_FLAG_NOT_SAVE_LOCAL)) {
+                LogcatRepository.insertLog(this)
+            }
             if (checkTag(this)) {
                 onLogCallback?.invoke(listOf(this), TYPE_ADD)
             }
@@ -55,9 +61,9 @@ class LogcatVm {
         AlertDialog.Builder(activity).apply {
             setItems(array) { _, which ->
                 val last = uiState.currentTag
-                uiState.currentTag = array[which] ?: DEFAULT_TAG
+                uiState.currentTag = array[which]
                 if (last != uiState.currentTag) {
-                    onLogCallback?.invoke(repository.getLogsByTag(uiState.currentTag), TYPE_NEW)
+                    initReqLogs()
                 }
             }
             setNegativeButton("取消"
@@ -65,8 +71,11 @@ class LogcatVm {
         }.show()
     }
 
-    fun forceRefresh() {
-        onLogCallback?.invoke(repository.getLogsByTag(uiState.currentTag), TYPE_NEW)
+    fun initReqLogs() {
+        scope.launch {
+            val list = LogcatRepository.getHistoryLogsByTag(uiState.currentTag).reversed()
+            onLogCallback?.invoke(filter(list), TYPE_NEW)
+        }
     }
 
     class UIState: BaseObservable() {

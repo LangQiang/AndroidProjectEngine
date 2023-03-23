@@ -1,0 +1,40 @@
+
+Properties localPropertiesArg = new Properties()
+File localPropertiesFile = file("$rootDir/local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesArg.load(localPropertiesFile.newDataInputStream())
+}
+
+def getSystemProperty(String name, String defaultStr) {
+    if (providers.systemProperty(name).forUseAtConfigurationTime().present) {
+        return providers.systemProperty(name).forUseAtConfigurationTime().get()
+    }
+    return defaultStr
+}
+
+ext.readEnvString = { String name, String defValue = null ->
+    // 1. 支持 System properties 覆盖
+    String value = getSystemProperty(name,null)
+    if (value != null) {
+        return value
+    }
+
+    // 2. 支持 local.properties 覆盖
+    value = localPropertiesArg.getProperty(name, null)
+    if (value != null) {
+        return value
+    }
+
+    // 3. 支持 gradle构建命令-P参数
+    if (project.hasProperty(name)) {
+        value = project.getProperties().get(name)
+    }
+
+    if (value != null) {
+        return value
+    }
+
+    return defValue
+}
+
+

@@ -5,8 +5,9 @@ import android.content.ContentProvider
 import android.content.ContentValues
 import android.database.Cursor
 import android.net.Uri
-import cn.godq.applogcat.BuildConfig
+import cn.godq.applogcat.db.ALCDBManager
 import cn.godq.applogcat.mgr.AppLogcat
+import cn.godq.applogcat.utils.getMetaDataConfig
 import cn.godq.applogcat.utils.isDebug
 import cn.godq.applogcat.utils.printAppInfo
 
@@ -16,12 +17,21 @@ import cn.godq.applogcat.utils.printAppInfo
  * @date  2023/3/3 3:22 下午
  */
 class ALCInitProvider: ContentProvider() {
+
+    companion object {
+        @JvmStatic
+        fun init(context: Application) {
+            ALCDBManager.init(context)
+            printAppInfo(context)
+            AppLogcat.INSTANCE.init(context)
+        }
+    }
+
     override fun onCreate(): Boolean {
         (context as? Application)?.takeIf {
-            isDebug(it) || BuildConfig.FORCE_SHOW_ALC
+            isDebug(it) || (getMetaDataConfig(it)?.forceBootAlc?: false)
         }?.apply {
-            printAppInfo(this)
-            AppLogcat.INSTANCE.init(this)
+            init(this)
         }
         return false
     }
