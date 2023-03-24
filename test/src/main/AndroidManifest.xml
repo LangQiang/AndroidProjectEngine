@@ -9,8 +9,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProjectEngine">
+        <activity
+            android:name=".sideslidewidget.SideSlideMenuActivity"
+            android:exported="false" />
 
-        <meta-data android:name="force_boot_alc" android:value="${FORCE_BOOT_ALC}"/>
+        <meta-data
+            android:name="force_boot_alc"
+            android:value="${FORCE_BOOT_ALC}" />
 
         <activity
             android:name=".TwoActivity"

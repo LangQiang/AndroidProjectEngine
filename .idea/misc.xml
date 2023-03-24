@@ -29,9 +29,12 @@
         <entry key="component-factory/base/src/main/res/layout/lrlite_base_layout_progress_loading.xml" value="0.11865942028985507" />
         <entry key="component-factory/base/src/main/res/layout/lrlite_base_titlebar.xml" value="0.1" />
         <entry key="test/src/main/res/drawable/ic_launcher_background.xml" value="0.1075" />
+        <entry key="test/src/main/res/drawable/test_btn_bg.xml" value="0.198" />
         <entry key="test/src/main/res/layout/activity_other_process.xml" value="0.175" />
+        <entry key="test/src/main/res/layout/activity_side_slide_menu.xml" value="0.33645833333333336" />
         <entry key="test/src/main/res/layout/activity_test.xml" value="0.2318840579710145" />
         <entry key="test/src/main/res/layout/activity_two.xml" value="0.175" />
+        <entry key="test/src/main/res/layout/side_slide_menu_item_layout.xml" value="0.33541666666666664" />
       </map>
     </option>
   </component>

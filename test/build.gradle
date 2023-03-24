@@ -54,4 +54,5 @@ dependencies {
 
     implementation project(":component-factory:base")
     implementation project(":component-factory:AppLogcat")
+    implementation project(":component-factory:SideSlideMenuWidget")
 }
