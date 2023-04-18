@@ -97,6 +97,32 @@ public class ComponentInit {
                         ) {
                             ((ServiceImpl) instance).register(init.getServicePair().first, init.getServicePair().second);
                         }
+                    }
+
+                } catch (Throwable throwable) {
+                    continue;
+                }
+
+                LogMgr.e("base", o.getClass().getSimpleName() + "register service" + " process:" + ApplicationUtils.getCurrentProcessName());
+            }
+        }
+
+        for (String className : classNames) {
+            Object o;
+            try {
+//                Log.e("LazyLite", className + (isOnCreate ? " init" : " initAfterAgreeProtocol"));
+                o = Class.forName(className).getConstructor().newInstance();
+            } catch (ClassNotFoundException
+                    | IllegalAccessException
+                    | InstantiationException
+                    | NoSuchMethodException
+                    | InvocationTargetException notFoundE) {
+                continue;
+            }
+            if (o instanceof Init) {
+                Init init = (Init)o;
+                try {
+                    if (isOnCreate) {
                         init.init(context);
                     } else {
                         init.initAfterAgreeProtocol(context);

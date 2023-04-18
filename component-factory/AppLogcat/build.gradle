@@ -6,7 +6,7 @@ plugins {
 }
 
 ext {
-    publishVersion = '1.0.6-test-SNAPSHOT'
+    publishVersion = '1.0.7-test-SNAPSHOT'
     publishArtifactName = 'AppLogcat'
     publishComponentType = 'aar-release'
 }

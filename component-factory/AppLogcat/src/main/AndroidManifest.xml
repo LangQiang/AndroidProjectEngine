@@ -4,6 +4,10 @@
 
     <application>
 
+        <meta-data
+            android:name="force_boot_alc"
+            android:value="${FORCE_BOOT_ALC}" />
+
         <provider
             android:name=".init.ALCInitProvider"
             android:authorities="${applicationId}.alcinitprovider"
