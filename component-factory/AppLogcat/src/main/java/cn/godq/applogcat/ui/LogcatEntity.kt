@@ -61,4 +61,10 @@ data class LogcatEntity(
         return listOf(dateSpannable, " ", spannable)
     }
 
+    fun formatForNormalSaveStr(currentTag: String?): String {
+        val isMainThreadStr = if (isMainThread) "MainT" else "OtherT"
+        val showTag = if (currentTag == LogcatVm.DEFAULT_TAG) "/$tag" else ""
+        val date = "${UIHelper.getFormatDate("HH:mm:ss.SSS", this.timestamp)}/$isMainThreadStr$showTag:"
+        return "${date}${log}"
+    }
 }

@@ -7,6 +7,7 @@ import androidx.databinding.Bindable
 import cn.godq.applogcat.BR
 import cn.godq.applogcat.filter.filter
 import cn.godq.applogcat.repo.LogcatRepository
+import cn.godq.applogcat.save.ALCExport
 import cn.godq.applogcat.utils.UIHelper
 import cn.godq.applogcat.utils.hasOptFlag
 import kotlinx.coroutines.*
@@ -75,6 +76,17 @@ class LogcatVm {
         scope.launch {
             val list = LogcatRepository.getHistoryLogsByTag(uiState.currentTag).reversed()
             onLogCallback?.invoke(filter(list), TYPE_NEW)
+        }
+    }
+
+    fun save() {
+        scope.launch {
+            val savePath = ALCExport.exportByTag(uiState.currentTag)
+            if (savePath == null) {
+                UIHelper.showToast("保存失败")
+            } else {
+                UIHelper.showToast("保存成功：${savePath}")
+            }
         }
     }
 

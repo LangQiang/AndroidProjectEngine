@@ -1,11 +1,13 @@
 package cn.godq.applogcat.utils;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
 import java.lang.reflect.Field;
 
+@SuppressLint("SoonBlockedPrivateApi")
 public class ToastCompat {
     private static Field sField_TN;
     private static Field sField_TN_Handler;

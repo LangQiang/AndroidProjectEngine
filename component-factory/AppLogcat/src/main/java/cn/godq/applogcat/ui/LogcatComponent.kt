@@ -81,6 +81,10 @@ class LogcatComponent(private val mContext: Context, private val contentViewCtrl
             clear()
         }
 
+        dataBinding.alcSaveBtn.setOnClickListener {
+            vm.save()
+        }
+
         dataBinding.dragArea.setOnTouchListener(OnDragTouchListener(dataBinding.root))
 
         dataBinding.alcIcon.setOnClickListener {
