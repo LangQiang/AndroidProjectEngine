@@ -9,7 +9,6 @@ import cn.godq.applogcat.ui.LogcatEntity
 import cn.godq.applogcat.ui.color.AlcColor
 import cn.godq.applogcat.ui.content.recycler.ContentRecyclerViewCtrl
 import cn.godq.applogcat.utils.buildLogcatEntity
-import cn.godq.applogcat.utils.proxyOtherLog
 import cn.godq.applogcat.utils.runOnUiThread
 import kotlinx.coroutines.*
 import java.util.*
@@ -50,8 +49,6 @@ class AppLogcat: IAlcApi {
         logcatComponent = LogcatComponent(context, ContentRecyclerViewCtrl())
 
         context.registerActivityLifecycleCallbacks(ALCActivityLifeCircleCallback())
-
-        proxyOtherLog()
 
         MainScope().launch(Dispatchers.IO) {
             LogcatRepository.clearDiskLogData(System.currentTimeMillis() - 1000 * 30)

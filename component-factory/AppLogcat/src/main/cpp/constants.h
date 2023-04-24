@@ -1,0 +1,11 @@
+//
+// Created by 神强 on 2023/4/24.
+//
+
+#ifndef ANDROIDPROJECTENGINE_CONSTANTS_H
+#define ANDROIDPROJECTENGINE_CONSTANTS_H
+
+extern JavaVM *javaVM;
+
+
+#endif //ANDROIDPROJECTENGINE_CONSTANTS_H

@@ -11,6 +11,7 @@ import android.text.TextUtils
 import android.util.Log
 import cn.godq.applogcat.init.ALCConfig
 import cn.godq.applogcat.mgr.AppLogcat
+import cn.godq.applogcat.proxy.assembleWithTimber
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
@@ -123,7 +124,8 @@ fun printAppInfo(context: Context) {
 
 }
 
-fun getMetaDataConfig(context: Context): ALCConfig? {
+fun getMetaDataConfig(context: Context?): ALCConfig? {
+    context?: return null
     val packageManager: PackageManager = context.packageManager
     val applicationInfo: ApplicationInfo
     try {

@@ -1,5 +1,6 @@
-package cn.godq.applogcat.utils
+package cn.godq.applogcat.proxy
 
+import cn.godq.applogcat.init.ALCConfig
 import cn.godq.applogcat.mgr.AppLogcat
 import timber.log.Timber
 
@@ -9,8 +10,9 @@ import timber.log.Timber
  * @date  2023/3/7 3:35 下午
  */
 
-fun proxyOtherLog() {
+fun proxyOtherLog(config: ALCConfig?) {
     try {
+        //Timber
         if (assembleWithTimber()) {
             Timber.plant(object : Timber.Tree(){
                 override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
@@ -18,6 +20,9 @@ fun proxyOtherLog() {
                 }
             })
         }
+
+        //android.util.log
+        SysLogHooker.load()
     } catch (e: Exception) {
 
     }

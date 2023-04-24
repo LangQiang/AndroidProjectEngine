@@ -29,6 +29,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
@@ -53,4 +56,6 @@ dependencies {
     implementation project(":Sample:business2-api")
     implementation project(":Sample:business3")
     implementation project(":Sample:business3-api")
+
+    implementation 'io.github.langqiang:AppLogcat:1.1.1-SNAPSHOT'
 }

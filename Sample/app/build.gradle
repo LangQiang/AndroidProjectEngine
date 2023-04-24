@@ -5,6 +5,9 @@ plugins {
     id 'com.lq.plugin.init'
 }
 
+apply from: '../../gradle_utils.gradle'
+
+
 android {
     compileSdkVersion rootProject.ext.compileSdk
 
@@ -15,6 +18,10 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
 
+        manifestPlaceholders = [
+                FORCE_BOOT_ALC    : readEnvString("FORCE_BOOT_ALC", "false"),
+//                ALC_CONFIG_SWITCH_FLAG    : 0x0000_0001,
+        ]
     }
 
     buildTypes {
@@ -29,6 +36,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    dataBinding {
+        enabled true
     }
 }
 

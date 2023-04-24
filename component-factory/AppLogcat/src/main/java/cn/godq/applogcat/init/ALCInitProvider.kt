@@ -10,6 +10,7 @@ import cn.godq.applogcat.mgr.AppLogcat
 import cn.godq.applogcat.utils.getMetaDataConfig
 import cn.godq.applogcat.utils.isDebug
 import cn.godq.applogcat.utils.printAppInfo
+import cn.godq.applogcat.proxy.proxyOtherLog
 
 
 /**
@@ -20,18 +21,20 @@ class ALCInitProvider: ContentProvider() {
 
     companion object {
         @JvmStatic
-        fun init(context: Application) {
+        fun init(context: Application, config: ALCConfig?) {
             ALCDBManager.init(context)
             printAppInfo(context)
             AppLogcat.INSTANCE.init(context)
+            proxyOtherLog(config)
         }
     }
 
     override fun onCreate(): Boolean {
+        val config = getMetaDataConfig(context)
         (context as? Application)?.takeIf {
-            isDebug(it) || (getMetaDataConfig(it)?.forceBootAlc?: false)
+            isDebug(it) || config?.forceBootAlc == true
         }?.apply {
-            init(this)
+            init(this, config)
         }
         return false
     }

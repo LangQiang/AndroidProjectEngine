@@ -6,7 +6,7 @@ plugins {
 }
 
 ext {
-    publishVersion = '1.0.8-SNAPSHOT'
+    publishVersion = '1.1.1-SNAPSHOT'
     publishArtifactName = 'AppLogcat'
     publishComponentType = 'aar-release'
 }
@@ -20,6 +20,14 @@ android {
         targetSdk 32
 
         consumerProguardFiles "consumer-rules.pro"
+        externalNativeBuild {
+            cmake {
+                abiFilters 'armeabi-v7a', 'arm64-v8a'
+                cppFlags ''
+
+            }
+        }
+
     }
 
     buildTypes {
@@ -40,6 +48,21 @@ android {
     dataBinding { // 开启 DataBinding
         enabled true
     }
+
+    buildFeatures {
+        prefab true
+    }
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version '3.18.1'
+
+        }
+    }
+    packagingOptions {
+        exclude '**/libbytehook.so'
+    }
+
 }
 
 dependencies {
@@ -58,5 +81,8 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     // Room的Kotlin扩展和对协程的支持
     implementation "androidx.room:room-ktx:$room_version"
+
+    implementation 'com.bytedance:bytehook:1.0.7'
+
 
 }

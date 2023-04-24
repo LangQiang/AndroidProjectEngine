@@ -1,0 +1,59 @@
+Application Logcat
+
+用于测试阶段手机脱离ide查看日志的场景。
+
+快速开始
+
+1.添加依赖
+    (1) 添加repo地址
+        allprojects {
+            repositories {
+                ...
+                maven {url 'https://s01.oss.sonatype.org/content/repositories/snapshots/'}
+                ...
+            }
+        }
+    （2）在依赖此库module的build.gradle 中添加
+        android {
+            dataBinding {
+                    enabled true
+            }
+            dependencies {
+                    implementation 'io.github.langqiang:AppLogcat:1.0.9-alpha-SNAPSHOT'
+            }
+        }
+    (3) 在主工程build.gradle 中添加
+        android {
+            defaultConfig {
+               ...
+               manifestPlaceholders = [
+                               FORCE_BOOT_ALC    : false,
+                       ]
+               ...
+            }
+            dataBinding {
+                    enabled true
+            }
+        }
+    (4) 注意因为此库使用了databinding 所以要在依赖此库的module到主module依赖树之间的所有module中都要添加
+        android {
+                dataBinding {
+                        enabled true
+                }
+        }
+2.初始化
+    无需手动初始化，此库在provider中自动初始化，所以优先于Application的onCreate,注意！！
+
+3.配置
+    默认debug包才会初始化此库，可以通过manifestPlaceholders配置FORCE_BOOT_ALC选项为true来强制初始化此库，不可用于生产环境。
+    其他配置：三方日志库代理选项配置，默认开启代理，目前代理了两个
+        1）系统日志（android.util.log）
+        2）Timber日志
+        ！！！！目前版本还未支持配置。之后可以通过manifestPlaceholders配置ALC_CONFIG_SWITCH_FLAG字段来关闭代理，
+               接收long类型，默认传0开启所有代理，
+               0x0000_0001代表关闭系统日志，0x0000_0010代表关闭timber代理，同时关闭传0x0000_0011 ！！！！
+4.使用
+    AppLogcat.getInstance().log("xxx")，共4个重载方法，参考IAlcApi接口
+
+5.混淆
+    -keep class cn.godq.applogcat.**{*;}

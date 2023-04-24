@@ -7,6 +7,9 @@
         <meta-data
             android:name="force_boot_alc"
             android:value="${FORCE_BOOT_ALC}" />
+<!--        <meta-data-->
+<!--            android:name="alc_config_switch_flag"-->
+<!--            android:value="@{ALC_CONFIG_SWITCH_FLAG}" />-->
 
         <provider
             android:name=".init.ALCInitProvider"

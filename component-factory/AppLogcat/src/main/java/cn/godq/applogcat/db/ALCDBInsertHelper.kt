@@ -1,6 +1,5 @@
 package cn.godq.applogcat.db
 
-import android.util.Log
 import androidx.annotation.MainThread
 import cn.godq.applogcat.db.log.LogDBEntity
 import cn.godq.applogcat.ui.LogcatEntity
@@ -25,7 +24,6 @@ object ALCDBInsertHelper {
 
     @MainThread
     fun insertOne(log: LogcatEntity) {
-        Log.e("xxx", "insertOne  log=${log.log}")
         tempWaitingInsertList.add(log.transform2LogDBEntity())
         doExecute()
     }

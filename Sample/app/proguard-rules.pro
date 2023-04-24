@@ -51,6 +51,8 @@
     public static void init(android.content.Context, int);
 }
 
+-keep class cn.godq.applogcat.**{*;}
+
 -dontwarn okio.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn okhttp3.**
