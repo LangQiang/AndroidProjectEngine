@@ -43,7 +43,16 @@ class SideSlideRVItemTouchListener : RecyclerView.OnItemTouchListener {
                 if (currentTouchView != lastView) {
                     lastView?.close()
                 } else {
-                    rv.parent.requestDisallowInterceptTouchEvent(true)
+                    if (lastView != null) {
+                        //打开状态且右滑拦截
+                        if (!lastView.currentStateIsClose() && diffX > 0) {
+                            rv.parent.requestDisallowInterceptTouchEvent(true)
+                        }
+                        //关闭状态且左滑拦截
+                        if (lastView.currentStateIsClose() && diffX < 0) {
+                            rv.parent.requestDisallowInterceptTouchEvent(true)
+                        }
+                    }
                 }
                 finalIntercept = true
                 return true

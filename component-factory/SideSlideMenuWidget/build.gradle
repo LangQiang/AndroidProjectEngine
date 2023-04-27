@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-    publishVersion = '1.0.2-SNAPSHOT'
+    publishVersion = '1.0.3-SNAPSHOT'
     publishArtifactName = 'SideSlideMenuWidget'
     publishComponentType = 'aar-release'
 }

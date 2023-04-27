@@ -31,6 +31,8 @@ class SideSlideMenuLayout
 
     private var maxSlideWidth = 0
 
+    private var currentStateIsClose = true
+
     private val mScroller = Scroller(this.context)
     private var mLastX = 0f
 
@@ -54,6 +56,7 @@ class SideSlideMenuLayout
 
                 val dstScrollX = scrollX + dx.toInt()
                 scrollX = min(max(0, dstScrollX), maxSlideWidth)
+                currentStateIsClose = scrollX == 0
                 if (!mScroller.isFinished) {
                     sendEmptyMessage(1)
                 }
@@ -87,6 +90,7 @@ class SideSlideMenuLayout
             mCurrentDistanceX = distanceX
             val dstScrollX = scrollX + distanceX.toInt()
             scrollX = min(max(0, dstScrollX), maxSlideWidth)
+
             return true
         }
 
@@ -146,6 +150,7 @@ class SideSlideMenuLayout
             menuShowStateCallback?.invoke(false)
             0
         }
+        currentStateIsClose = dstScrollX == 0
         startAnim(dstScrollX)
     }
 
@@ -158,5 +163,9 @@ class SideSlideMenuLayout
 
     fun close() {
         startAnim(0)
+    }
+
+    fun currentStateIsClose(): Boolean {
+        return currentStateIsClose
     }
 }
