@@ -4,9 +4,11 @@ package com.lazylite.mod.widget.swipeback.app;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.lazylite.mod.utils.DeviceInfo;
 import com.lazylite.mod.widget.swipeback.SwipeBackLayout;
 
 
@@ -21,6 +23,15 @@ public class SwipeBackFragment extends Fragment implements SwipeBackFragmentBase
         if (isNeedSwipeBack()) {
             mHelper = new SwipeBackFragmentHelper(this);
             mHelper.onFragmentCreateView();
+            Integer size = getEdgeSize();
+            if (size != null) {
+                getSwipeBackLayout().setEdgeSize(size);
+            } else {
+                int screenWidth = DeviceInfo.WIDTH;
+                if (screenWidth != 0) {
+                    getSwipeBackLayout().setEdgeSize(screenWidth);
+                }
+            }
         }
         setSwipeBackEnable(isNeedSwipeBack());
     }
@@ -64,5 +75,10 @@ public class SwipeBackFragment extends Fragment implements SwipeBackFragmentBase
      */
     public boolean isNeedSwipeBack() {
         return false;
+    }
+
+    @Nullable
+    public Integer getEdgeSize() {
+        return null;
     }
 }

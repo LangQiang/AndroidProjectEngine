@@ -159,8 +159,6 @@ public class SwipeBackLayout extends FrameLayout {
         int edgeSize = a.getDimensionPixelSize(R.styleable.SwipeBackLayout_edge_size, -1);
         if (edgeSize > 0)
             setEdgeSize(edgeSize);
-        else
-        	setEdgeSize(DeviceInfo.WIDTH); // 若为0，则全屏都能滑动，仅限于左右滑动 modify by huqian
         int mode = EDGE_FLAGS[a.getInt(R.styleable.SwipeBackLayout_edge_flag, 0)];
         setEdgeTrackingEnabled(mode);
 
