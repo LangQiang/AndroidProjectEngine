@@ -42,12 +42,17 @@ class SideSlideRVItemTouchListener : RecyclerView.OnItemTouchListener {
                 currentTouchView = findSideSlideLayout(rv.findChildViewUnder(e.x, e.y))
                 if (currentTouchView != lastView) {
                     lastView?.close()
+                } else {
+                    rv.parent.requestDisallowInterceptTouchEvent(true)
                 }
                 finalIntercept = true
                 return true
             }
             lastView?.close()
             finalIntercept = false
+        }
+        else if (e.actionMasked == MotionEvent.ACTION_CANCEL || e.actionMasked == MotionEvent.ACTION_UP) {
+            rv.parent.requestDisallowInterceptTouchEvent(false)
         }
         return false
     }
