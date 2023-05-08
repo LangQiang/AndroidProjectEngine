@@ -28,6 +28,8 @@ public:
 
     void onLog(const char *tag, const char *log) const;
 
+//    void onThread() const;
+
     jobject callback_J;
 };
 

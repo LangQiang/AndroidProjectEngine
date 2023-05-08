@@ -7,4 +7,5 @@ package cn.godq.applogcat.proxy
  */
 interface PLTHookCallback {
     fun onLog(tag: String, log: String) {}
+//    fun onNewTread() {} //test
 }
