@@ -6,20 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cn.godq.sideslidemenuwidget.SideSlideRVItemTouchListener
 import com.godq.test.R
+import com.lazylite.mod.widget.BaseFragment
 
-class SideSlideMenuActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_side_slide_menu)
-        val rv = findViewById<RecyclerView>(R.id.rv)
-        rv.layoutManager = LinearLayoutManager(this)
+class SideSlideMenuFragment : BaseFragment() {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return View.inflate(context, R.layout.activity_side_slide_menu, null)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val rv = view.findViewById<RecyclerView>(R.id.rv)
+        rv.layoutManager = LinearLayoutManager(context)
         rv.adapter = MyAdapter()
-
         rv.addOnItemTouchListener(SideSlideRVItemTouchListener())
     }
 
@@ -28,7 +31,7 @@ class SideSlideMenuActivity : AppCompatActivity() {
         private val data = mutableListOf<String>()
 
         init {
-            for (i in 0 .. 100) {
+            for (i in 0 .. 8) {
                 data.add("item-$i")
             }
         }
@@ -60,5 +63,9 @@ class SideSlideMenuActivity : AppCompatActivity() {
                 Log.e("slide", "menu=$data")
             }
         }
+    }
+
+    override fun getEdgeSize(): Int {
+        return 1080
     }
 }

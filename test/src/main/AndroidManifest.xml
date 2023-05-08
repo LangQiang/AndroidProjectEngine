@@ -9,9 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProjectEngine">
-        <activity
-            android:name=".sideslidewidget.SideSlideMenuActivity"
-            android:exported="false" />
 
         <activity
             android:name=".TwoActivity"
