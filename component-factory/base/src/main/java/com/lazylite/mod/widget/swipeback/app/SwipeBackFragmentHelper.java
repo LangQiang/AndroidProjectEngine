@@ -11,15 +11,15 @@ import com.lazylite.mod.widget.swipeback.SwipeBackLayout;
 
 public class SwipeBackFragmentHelper {
 
-	private SwipeBackFragment mFragment;
+	private final SwipeBackFragmentBase mFragment;
     private SwipeBackLayout mSwipeBackLayout;
 
-    public SwipeBackFragmentHelper(SwipeBackFragment fragment) {
+    public SwipeBackFragmentHelper(SwipeBackFragmentBase fragment) {
     	mFragment = fragment;
     }
     
     public void onFragmentCreateView(){
-        mSwipeBackLayout = (SwipeBackLayout) LayoutInflater.from(mFragment.getActivity()).inflate(R.layout.lrlite_base_swipeback_layout,null);
+        mSwipeBackLayout = (SwipeBackLayout) LayoutInflater.from(mFragment.getHostActivity()).inflate(R.layout.lrlite_base_swipeback_layout,null);
         mSwipeBackLayout.attachToFragment(mFragment);
     }
     

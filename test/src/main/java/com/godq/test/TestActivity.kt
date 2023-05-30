@@ -9,6 +9,7 @@ import com.godq.test.sideslidewidget.SideSlideMenuFragment
 import com.lazylite.mod.fragmentmgr.FragmentOperation
 import com.lazylite.mod.fragmentmgr.IHostActivity
 import com.lazylite.mod.fragmentmgr.OnFragmentStackChangeListener
+import com.lazylite.mod.fragmentmgr.StartParameter
 import timber.log.Timber
 
 class TestActivity : AppCompatActivity() {
@@ -29,37 +30,30 @@ class TestActivity : AppCompatActivity() {
     }
 
     private fun bindFragmentOperation() {
-        FragmentOperation.getInstance().bind(this, object : IHostActivity {
-            override fun onGetManLayerTopFragment(): Fragment? {
-                return null
-            }
 
+        FragmentOperation.getInstance().bind(this, true, object : IHostActivity {
             override fun containerViewId(): Int {
                 return R.id.app_fragment_container
             }
 
+            override fun onShowMainLayer(show: Boolean) {
+            }
+
+            override fun onGetMainLayerTopFragment(): Fragment? {
+                return null
+            }
         }, onFragmentStackChangeListener)
     }
 
     private val onFragmentStackChangeListener: OnFragmentStackChangeListener =
         object : OnFragmentStackChangeListener {
+            override fun onPushFragment(top: Fragment?, startParameter: StartParameter?) {
 
-            override fun onPushFragment(top: Fragment?) {
-//                showMainLayer(true)//有动画，不要隐藏首页
             }
 
-            override fun onPopFragment(top: Fragment?) {
-//                val curPageFragment = getCurPageFragment()
-//                val isStackEmpty = top == curPageFragment
-//                showMainLayer(isStackEmpty)
+            override fun onPopFragment(nowTop: Fragment?) {
             }
 
-            override fun onShowMainLayer(withBottom: Boolean) {
-//                showMainLayer(withBottom)
-            }
-
-            override fun onHideMainLayer(ishide: Boolean) {
-            }
         }//
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {

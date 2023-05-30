@@ -1,6 +1,7 @@
 
 package com.lazylite.mod.widget.swipeback.app;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
@@ -45,6 +46,11 @@ public class SwipeBackFragment extends Fragment implements SwipeBackFragmentBase
     }
 
     @Override
+    public View getFragmentView() {
+        return getView();
+    }
+
+    @Override
     public void setSwipeBackEnable(boolean enable) {
         if (getSwipeBackLayout() != null) {
             getSwipeBackLayout().setEnableGesture(enable);
@@ -81,4 +87,10 @@ public class SwipeBackFragment extends Fragment implements SwipeBackFragmentBase
     public Integer getEdgeSize() {
         return null;
     }
+    @Override
+    public Activity getHostActivity() {
+        return getActivity();
+    }
+
+
 }

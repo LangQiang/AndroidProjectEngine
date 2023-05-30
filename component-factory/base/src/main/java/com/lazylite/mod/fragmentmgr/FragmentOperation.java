@@ -9,10 +9,12 @@ import android.view.KeyEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Lifecycle;
 
 import com.lazylite.mod.log.LogMgr;
 import com.lazylite.mod.utils.KwDebug;
@@ -36,8 +38,8 @@ public class FragmentOperation {
     private StartParameter mDefaultParameter;
     private FragmentManager mFragmentManager;
     private final AtomicInteger mTagAtomic = new AtomicInteger();
-    private OnFragmentStackChangeListener mListener;
 
+    private OnFragmentStackChangeListenerProxy mListenerProxy;
     private Activity mBindActivity;
     private IHostActivity mHostActivityOpt;
 
@@ -54,18 +56,25 @@ public class FragmentOperation {
         return SingletonHolder.INSTANCE;
     }
 
-    public void bind(FragmentActivity activity, IHostActivity optFunInterface, OnFragmentStackChangeListener onFragmentStackChangeListener) {
+    public void bind(FragmentActivity activity,boolean clearStack, IHostActivity optFunInterface, OnFragmentStackChangeListener onFragmentStackChangeListener) {
         mBindActivity = activity;
         mFragmentManager = activity.getSupportFragmentManager();
         mDefaultParameter = getDefaultParameter();
-        if (onFragmentStackChangeListener != null) {
-            mListener = onFragmentStackChangeListener;
-        }
         mHostActivityOpt = optFunInterface;
+        mListenerProxy = new OnFragmentStackChangeListenerProxy(onFragmentStackChangeListener,optFunInterface,mFragmentManager);
+        if (clearStack){
+            mStack.clear();
+        }
     }
 
+    //在未bind前是null
+    @Nullable
     public Activity getBindActivity(){
         return mBindActivity;
+    }
+
+    public IHostActivity getHostActivityOpt(){
+        return mHostActivityOpt;
     }
 
     @NonNull
@@ -82,7 +91,7 @@ public class FragmentOperation {
     public void unBind() {
         mStack.clear();
         mFragmentManager = null;
-        mListener = null;
+        mListenerProxy = null;
     }
 
     /**
@@ -132,13 +141,21 @@ public class FragmentOperation {
         }
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         for (Pair<String, Fragment> pair : mStack) {
+            transaction.setMaxLifecycle(pair.second, Lifecycle.State.STARTED);
             transaction.remove(pair.second);
+        }
+        final IHostActivity hostActivity = mHostActivityOpt;
+        if (null != hostActivity){
+            final Fragment hostActivityTopFragment = hostActivity.onGetMainLayerTopFragment();
+            if (null != hostActivityTopFragment && hostActivityTopFragment.isAdded()) {
+                transaction.setMaxLifecycle(hostActivityTopFragment, Lifecycle.State.RESUMED);
+            }
         }
         transaction.commitAllowingStateLoss();
         mStack.clear();
         mTagAtomic.set(0);
-        if (mListener != null) {
-            mListener.onShowMainLayer(true);
+        if (mListenerProxy != null) {
+            mListenerProxy.onPopFragment(getTopFragment());
         }
     }
     /**
@@ -164,36 +181,52 @@ public class FragmentOperation {
             if (pair == target) {
                 continue;
             }
+            transaction.setMaxLifecycle(pair.second, Lifecycle.State.STARTED);
             transaction.remove(pair.second);
             mStack.remove(pair);
         }
         if (includeTarget) {
             int targetIndex = mStack.indexOf(target);
             if (targetIndex - 1 < 0) {
-                transaction.remove(target.second).commitAllowingStateLoss();
+                transaction.setMaxLifecycle(target.second, Lifecycle.State.STARTED);
+                transaction.remove(target.second);
+                //
+                final IHostActivity hostActivity = mHostActivityOpt;
+                if (null != hostActivity){
+                    final Fragment hostActivityTopFragment = hostActivity.onGetMainLayerTopFragment();
+                    if (null != hostActivityTopFragment && hostActivityTopFragment.isAdded()){
+                        transaction.setMaxLifecycle(hostActivityTopFragment, Lifecycle.State.RESUMED);
+                    }
+                }
+                transaction.commitAllowingStateLoss();
                 mStack.remove(target);
-                if (mListener != null) {
-                    mListener.onShowMainLayer(true);
+                if (mListenerProxy != null) {
+                    mListenerProxy.onPopFragment(getTopFragment());
                 }
                 return;
             } else {
                 showFragment = mStack.get(targetIndex - 1).second;
-                transaction.show(showFragment)
+                transaction.setMaxLifecycle(showFragment, Lifecycle.State.RESUMED);
+                transaction
+                        .setMaxLifecycle(target.second, Lifecycle.State.STARTED)
+                        .show(showFragment)
                         .remove(target.second)
                         .commitNowAllowingStateLoss();
                 mStack.remove(target);
                 safeShowFragmentView(showFragment);
-                showFragment.onResume();
+                //showFragment.onResume();
+
             }
         } else {
             showFragment = target.second;
+            transaction.setMaxLifecycle(showFragment, Lifecycle.State.RESUMED);
             transaction.show(showFragment).commitNowAllowingStateLoss();
             safeShowFragmentView(showFragment);
-            showFragment.onResume();
+            //showFragment.onResume();
         }
         // 移除了n个之后（n>=1）
-        if (mListener != null) {
-            mListener.onPopFragment(getTopFragment());
+        if (mListenerProxy != null) {
+            mListenerProxy.onPopFragment(getTopFragment());
         }
     }
 
@@ -231,10 +264,20 @@ public class FragmentOperation {
         if (!mStack.isEmpty()) {
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
             if (mStack.size() == 1) {
-                transaction.remove(getTopFragment()).commitNowAllowingStateLoss();
+                final Fragment topFragment = getTopFragment();
+                transaction.setMaxLifecycle(topFragment, Lifecycle.State.STARTED);
+                transaction.remove(topFragment);
+                final IHostActivity hostActivity = mHostActivityOpt;
+                if (null != hostActivity){
+                    final Fragment hostActivityTopFragment = hostActivity.onGetMainLayerTopFragment();
+                    if (null != hostActivityTopFragment && hostActivityTopFragment.isAdded()){
+                        transaction.setMaxLifecycle(hostActivityTopFragment, Lifecycle.State.RESUMED);
+                    }
+                }
+                transaction.commitNowAllowingStateLoss();
                 mStack.removeLast();
-                if (mListener != null) {
-                    mListener.onShowMainLayer(true);
+                if (mListenerProxy != null) {
+                    mListenerProxy.onPopFragment(getTopFragment());
                 }
                 return true;
             } else {
@@ -244,14 +287,18 @@ public class FragmentOperation {
                         + "】，and show pre Fragment:"
                         + showFragment.getClass().getName());
                 transaction
+                        .setMaxLifecycle(getTopFragment(), Lifecycle.State.STARTED)
                         .show(showFragment)
                         .remove(getTopFragment())
-                        .commitNowAllowingStateLoss();
+                        .setMaxLifecycle(showFragment, Lifecycle.State.RESUMED)
+                        .commitNowAllowingStateLoss();//这种方式，会让操作的Fragment走完其生命周期，
+                // 例如：remove掉了 getTopFragment()，如果在 topFragment 的 onDestroyView() 方法
+                // 调用了 FragmentOperation 的打开或者remove方法，都会对 FragmentOperation 造成不可预知的影响，甚至出现crash！
                 mStack.removeLast();
                 safeShowFragmentView(showFragment);
-                showFragment.onResume();
-                if (mListener != null) {
-                    mListener.onPopFragment(getTopFragment());
+                //showFragment.onResume();
+                if (mListenerProxy != null) {
+                    mListenerProxy.onPopFragment(getTopFragment());
                 }
                 return true;
             }
@@ -261,29 +308,76 @@ public class FragmentOperation {
     }
 
     /**
-     * 获取top fragment
+     * 获取top fragment，如果栈中为空，获取{@link IHostActivity#onGetMainLayerTopFragment()}
      */
+    @Nullable
     public Fragment getTopFragment() {
-        if (mStack != null && !mStack.isEmpty()) {
+        if (!mStack.isEmpty()) {
             return mStack.getLast().second;
         } else {
             // viewpager
             if (null == mHostActivityOpt) {
                 return null;
             }
-            return mHostActivityOpt.onGetManLayerTopFragment();
+            return mHostActivityOpt.onGetMainLayerTopFragment();
         }
+    }
+
+    @Nullable
+    public IFragment getTopContentFragment(){
+        final Fragment fragment = getTopFragment();
+        if (fragment instanceof IFragment){
+            return findTopContentIFragment((IFragment) fragment);
+        }
+        return null;
+    }
+
+    public String getTopFragmentClassName(){
+        final OnFragmentStackChangeListenerProxy listenerProxy = mListenerProxy;
+        if (null == listenerProxy){
+            return "OnFragmentStackChangeListenerProxy:Null";
+        }
+        return listenerProxy.nowTopFragmentName;
     }
 
     /**
      * 获取前一个fragment，不要滥用，目前就在左滑退出做显示隐藏使用
      */
     public Fragment getPreFragment() {
-        if (mStack == null || mStack.isEmpty() || mStack.size() == 1) {
+        if (mStack.isEmpty() || mStack.size() == 1) {
             // viewpager
             return null;
         } else {
             return mStack.get(mStack.size() - 2).second;
+        }
+    }
+
+    //显示或者隐藏前一个Fragment，只会触发onHideChange()，不会触发其它生命周期方法。
+    public void showPreFragment(boolean show){
+        final Fragment preFragment = getPreFragment();
+        if (null == preFragment) {
+            return;
+        }
+        if (null == mFragmentManager) {
+            return;
+        }
+        final boolean preIsHide = preFragment.isHidden();
+        if (show) {
+            if (preIsHide){
+                mFragmentManager.beginTransaction().show(preFragment).commitNowAllowingStateLoss();
+            }
+        } else {
+            if (!preIsHide){
+                mFragmentManager.beginTransaction().hide(preFragment).commitNowAllowingStateLoss();
+            }
+        }
+    }
+
+    //
+    public void showHostActivityLayer(boolean show){
+        final IHostActivity hostActivity = mHostActivityOpt;
+        if (null != hostActivity){
+            hostActivity.onShowMainLayer(show);
         }
     }
 
@@ -294,20 +388,24 @@ public class FragmentOperation {
         return mStack.size() == 0;
     }
 
-    public OnFragmentStackChangeListener getOnFragmentStackChangeListener() {
-        return mListener;
-    }
-
     /**
      * 精准查找你指定的tag的fragment
      *
      * @param tag
      */
     public Fragment findFragmentByTag(String tag) {
+        final Pair<String,Fragment> pair = internalFindFragmentByTag(tag);
+        if (null != pair){
+            return pair.second;
+        }
+        return null;
+    }
+
+    private Pair<String,Fragment> internalFindFragmentByTag(String tag){
         for (int i = 0, size = mStack.size(); i < size; i++) {
             Pair<String, Fragment> pair = mStack.get(i);
             if (pair.first.equals(tag)) {
-                return pair.second;
+                return pair;
             }
         }
         return null;
@@ -345,18 +443,20 @@ public class FragmentOperation {
             tag = parameter.tag;
         } else if (fragment instanceof IFragment) {
             tag = ((IFragment) fragment).tag();
+            if (TextUtils.isEmpty(tag)){
+                tag = createDefaultTag(fragment);
+            }
         } else {
-            tag = fragment.getClass().getName()
-                    + SEPARATOR
-                    + mTagAtomic.incrementAndGet();
+            tag = createDefaultTag(fragment);
         }
+        //
         if (mStack.isEmpty()) {
             openStandard(fragment, tag, parameter);
         } else {
             handlerStartMode(fragment, tag, parameter);
         }
-        if (mListener != null) {
-            mListener.onPushFragment(fragment);
+        if (mListenerProxy != null) {
+            mListenerProxy.onPushFragment(fragment,parameter.copy());
         }
         LogMgr.d(TAG, "show Fragment 【"
                 + fragment.getClass().getName()
@@ -430,19 +530,23 @@ public class FragmentOperation {
         if (target != null) {
             FragmentTransaction transaction = mFragmentManager.beginTransaction();
             for (Pair<String, Fragment> pair : upList) {
+                transaction.setMaxLifecycle(pair.second, Lifecycle.State.STARTED);
                 transaction.remove(pair.second);
                 mStack.remove(pair);
             }
+            safeSetMaxLifecycle(target,transaction,Lifecycle.State.RESUMED);
+            //transaction.setMaxLifecycle(target, Lifecycle.State.RESUMED);
             transaction.show(target).commitNowAllowingStateLoss();
             ((IFragment) target).onNewIntent(parameter.bundle);
             safeShowFragmentView(target);
-            target.onResume();
+            //target.onResume();
             return;
         }
 
         openStandard(fragment, tag, parameter);
     }
 
+    //走到这里，mStack一定不为空，参见最终 showFragment() 方法中的逻辑
     /**
      * SingleInstance
      * 模拟单例实例，比方播放页
@@ -452,27 +556,37 @@ public class FragmentOperation {
      * @param parameter 跳转参数
      */
     private void openSingleInstance(Fragment fragment, String tag, StartParameter parameter) {
+        if (mFragmentManager == null) {
+            return;
+        }
+        final int containerId = parameter.containerId != -1 ? parameter.containerId : mHostActivityOpt.containerViewId();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         handlerAnimation(fragment, parameter, transaction);
-        transaction.setTransition(FragmentTransaction.TRANSIT_NONE)
-                .add(mHostActivityOpt.containerViewId(), fragment, tag);
+        transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
 
         Fragment preFragment = mStack.getLast().second;
         if (!TextUtils.isEmpty(parameter.popEndTag)) {
-            List<Pair<String, Fragment>> findArrary
-                    = findTargetFragmentAndUpList(parameter.popEndTag);
-            if (findArrary == null || findArrary.isEmpty()) {
-                return;
-            }
-            Pair<String, Fragment> target = findArrary.get(findArrary.size() - 1);
-            for (Pair<String, Fragment> pair : findArrary) {
-                if (!parameter.isIncludePopEnd && pair == target) {
-                    continue;
+            List<Pair<String, Fragment>> findArrary = findTargetFragmentAndUpList(parameter.popEndTag);
+            if (findArrary != null && !findArrary.isEmpty()) {
+                Pair<String, Fragment> target = findArrary.get(findArrary.size() - 1);
+                for (Pair<String, Fragment> pair : findArrary) {
+                    if (!parameter.isIncludePopEnd && pair == target) {
+                        continue;
+                    }
+                    transaction.setMaxLifecycle(pair.second, Lifecycle.State.STARTED);
+                    transaction.remove(pair.second);
+                    mStack.remove(pair);
                 }
-                transaction.remove(pair.second);
-                mStack.remove(pair);
             }
+        } else if(!TextUtils.isEmpty(parameter.removeTags)){
+            final Pair<String, Fragment> forRemove = internalFindFragmentByTag(parameter.removeTags);
+            if (null != forRemove){
+                transaction.setMaxLifecycle(forRemove.second, Lifecycle.State.STARTED);
+                transaction.remove(forRemove.second);
+            }
+            mStack.remove(forRemove);
         } else if (parameter.isPopCurrent) {
+            transaction.setMaxLifecycle(preFragment, Lifecycle.State.STARTED);
             transaction.remove(preFragment);
             mStack.remove(mStack.getLast());
         } else {
@@ -480,8 +594,8 @@ public class FragmentOperation {
             if (parameter.isHideBottomLayer && parameter.enterAnimation == 0) {
                 transaction.hide(preFragment);
             }
-            // 只要前面不pop掉pre就得触发其onPause
-            preFragment.onPause();
+            transaction.setMaxLifecycle(preFragment, Lifecycle.State.STARTED);// 只要前面不pop掉pre就得触发其onPause
+            //preFragment.onPause();
         }
 
         // 把存在的实例都干掉,如果有的话
@@ -489,15 +603,17 @@ public class FragmentOperation {
         while (it.hasNext()) {
             Pair<String, Fragment> element = it.next();
             if (tag.startsWith(getRealTag(element.first))) {
+                transaction.setMaxLifecycle(element.second, Lifecycle.State.STARTED);
                 transaction.remove(element.second);
                 it.remove();
             }
         }
-
+        transaction.add(containerId, fragment, tag);
         transaction.commitAllowingStateLoss();
         mStack.add(new Pair<>(tag, fragment));
     }
 
+    //当 mStack 为空时，无论何种打开方式，都会走到这里；当 mStack 不为空时，如果是标准模式打开，才会走到这里。
     /**
      * 标准启动
      *
@@ -509,15 +625,23 @@ public class FragmentOperation {
         if (mFragmentManager == null) {
             return;
         }
+        final int containerId = parameter.containerId != -1 ? parameter.containerId : mHostActivityOpt.containerViewId();
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         handlerAnimation(fragment, parameter, transaction);
-        transaction.setTransition(FragmentTransaction.TRANSIT_NONE)
-                .add(mHostActivityOpt.containerViewId(), fragment, tag);
+        transaction.setTransition(FragmentTransaction.TRANSIT_NONE);
         if (mStack.isEmpty()) {
-            if (mListener != null) {
+            /*if (mListener != null) {
                 mListener.onHideMainLayer(parameter.isHideBottomLayer
                         && parameter.enterAnimation == 0);
+            }*/
+            final IHostActivity hostActivity = mHostActivityOpt;
+            if (null != hostActivity){
+                final Fragment hostActivityTopFragment = hostActivity.onGetMainLayerTopFragment();
+                if (null != hostActivityTopFragment && hostActivityTopFragment.isAdded()){
+                    transaction.setMaxLifecycle(hostActivityTopFragment, Lifecycle.State.STARTED);
+                }
             }
+            transaction.add(containerId, fragment, tag);
             transaction.commitAllowingStateLoss();
             mStack.add(new Pair<>(tag, fragment));
             return;
@@ -527,18 +651,26 @@ public class FragmentOperation {
         if (!TextUtils.isEmpty(parameter.popEndTag)) {
             List<Pair<String, Fragment>> findArrary
                     = findTargetFragmentAndUpList(parameter.popEndTag);
-            if (findArrary == null || findArrary.isEmpty()) {
-                return;
-            }
-            Pair<String, Fragment> target = findArrary.get(findArrary.size() - 1);
-            for (Pair<String, Fragment> pair : findArrary) {
-                if (!parameter.isIncludePopEnd && pair == target) {
-                    continue;
+            if (findArrary != null && !findArrary.isEmpty()) {
+                Pair<String, Fragment> target = findArrary.get(findArrary.size() - 1);
+                for (Pair<String, Fragment> pair : findArrary) {
+                    if (!parameter.isIncludePopEnd && pair == target) {
+                        continue;
+                    }
+                    transaction.setMaxLifecycle(pair.second, Lifecycle.State.STARTED);
+                    transaction.remove(pair.second);
+                    mStack.remove(pair);
                 }
-                transaction.remove(pair.second);
-                mStack.remove(pair);
             }
+        } else if(!TextUtils.isEmpty(parameter.removeTags)){
+            final Pair<String, Fragment> forRemove = internalFindFragmentByTag(parameter.removeTags);
+            if (null != forRemove){
+                transaction.setMaxLifecycle(forRemove.second, Lifecycle.State.STARTED);
+                transaction.remove(forRemove.second);
+            }
+            mStack.remove(forRemove);
         } else if (parameter.isPopCurrent) {
+            transaction.setMaxLifecycle(preFragment, Lifecycle.State.STARTED);
             transaction.remove(preFragment);
             mStack.remove(mStack.getLast());
         } else {
@@ -546,10 +678,10 @@ public class FragmentOperation {
             if (parameter.isHideBottomLayer && parameter.enterAnimation == 0) {
                 transaction.hide(preFragment);
             }
-            // 只要前面不pop掉pre就得触发其onPause
-            preFragment.onPause();
+            transaction.setMaxLifecycle(preFragment, Lifecycle.State.STARTED); // 只要前面不pop掉pre就得触发其onPause
+            //preFragment.onPause();
         }
-
+        transaction.add(containerId, fragment, tag);
         transaction.commitAllowingStateLoss();
         mStack.add(new Pair<>(tag, fragment));
     }
@@ -584,8 +716,7 @@ public class FragmentOperation {
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Fragment fragment = getTopFragment();
-        return fragment != null
-                && fragment instanceof IFragment
+        return fragment instanceof IFragment
                 && ((IFragment) fragment).onKeyDown(keyCode, event);
     }
 
@@ -594,7 +725,7 @@ public class FragmentOperation {
      * 获取fragment栈队列
      */
     public List<DebugFragmentStack> getStack() {
-        if (mStack == null || mStack.size() == 0) {
+        if (mStack.size() == 0) {
             return null;
         }
         List<DebugFragmentStack> fragmentRecordList = new ArrayList<>();
@@ -611,7 +742,7 @@ public class FragmentOperation {
     private List<DebugFragmentStack> getChildFragmentRecords(Fragment parentFragment) {
         List<DebugFragmentStack> fragmentRecords = new ArrayList<>();
         List<Fragment> fragmentList = parentFragment.getChildFragmentManager().getFragments();
-        if (fragmentList == null || fragmentList.isEmpty()) {
+        if (fragmentList.isEmpty()) {
             return null;
         }
         for (int i = fragmentList.size() - 1; i >= 0; i--) {
@@ -639,6 +770,7 @@ public class FragmentOperation {
             Pair<String, Fragment> pair = accurateIt.previous();
             if (fragment == pair.second) {
                 FragmentTransaction transaction = mFragmentManager.beginTransaction();
+                transaction.setMaxLifecycle(fragment, Lifecycle.State.STARTED);
                 transaction.remove(fragment).commitAllowingStateLoss();
                 mStack.remove(pair);
                 break;
@@ -705,7 +837,112 @@ public class FragmentOperation {
         return null;
     }
 
+    @Nullable
+    private IFragment findTopContentIFragment(final IFragment iFragment){
+        if (null == iFragment){
+            return null;
+        }
+        final IFragment topContentIFragment = iFragment.topContentFragment();
+        if (topContentIFragment == iFragment){
+            return topContentIFragment;
+        }
+        return findTopContentIFragment(topContentIFragment);
+    }
+
+    private String createDefaultTag(Fragment fragment){
+        return fragment.getClass().getName()
+                + SEPARATOR
+                + mTagAtomic.incrementAndGet();
+    }
+
     public int getStackSize(){
         return mStack.size();
     }
+
+    //todo lzf 所有设置FragmentLifecycle的地方都调用此方法
+    private void safeSetMaxLifecycle(@NonNull Fragment fragment,@NonNull FragmentTransaction fragmentTransaction,@NonNull Lifecycle.State state){
+        if (fragment.isAdded() && fragment.getParentFragmentManager() == mFragmentManager){
+            fragmentTransaction.setMaxLifecycle(fragment,state);
+        }
+    }
+
+    //FragmentOperation 会管理自身Fragment变化时的生命周期，此处是额外管理了HostActivity中contentFragment生命周期，
+    // 由于是后置调用，所以会先执行showFragment的onResume()再执行HostActivity的contentFragment的onPause()。
+    //此处生命周期管理，不会让被覆盖的Fragment的onStart()/onStop()方法执行，只是管理到了onResume()/onPause()的执行。
+    private static class OnFragmentStackChangeListenerProxy implements OnFragmentStackChangeListener{
+        @Nullable
+        private final OnFragmentStackChangeListener listener;
+        @NonNull
+        private final IHostActivity iHostActivity;
+        @NonNull
+        private final FragmentManager fragmentManager;
+        @NonNull
+        public String nowTopFragmentName = "";
+
+        private OnFragmentStackChangeListenerProxy(@Nullable OnFragmentStackChangeListener listener,@NonNull IHostActivity iHostActivity,@NonNull FragmentManager fragmentManager){
+            this.listener = listener;
+            this.iHostActivity = iHostActivity;
+            this.fragmentManager = fragmentManager;
+
+            final Fragment mainActivityTopFragment = iHostActivity.onGetMainLayerTopFragment();
+            if (null != mainActivityTopFragment){
+                nowTopFragmentName = mainActivityTopFragment.getClass().getName();
+            }
+        }
+
+        @Override
+        public void onPushFragment(Fragment top, StartParameter startParameter) {
+            nowTopFragmentName = null != top?top.getClass().getName():"onPushFragment():topFragment:Null";
+            final boolean showBomLayer = null == startParameter || (startParameter.enterAnimation != 0 || !startParameter.isHideBottomLayer);//有动画，不要隐藏
+            if (FragmentOperation.getInstance().getStackSize()==1){
+                iHostActivity.onShowMainLayer(showBomLayer);
+                /*final Fragment hostActivityCurContentFragment = iHostActivity.onGetMainLayerTopFragment();
+                if (null != hostActivityCurContentFragment && hostActivityCurContentFragment.isAdded()){
+                    final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.setMaxLifecycle(hostActivityCurContentFragment, Lifecycle.State.STARTED);
+                    transaction.commitAllowingStateLoss();
+                }*/
+            }
+            //
+            if (null != listener){
+                listener.onPushFragment(top,startParameter);
+            }
+        }
+
+        @Override
+        public void onPopFragment(@Nullable final Fragment nowTop) {
+            if (FragmentOperation.getInstance().getStackSize()==0){
+                final Fragment mainActivityTopFragment = iHostActivity.onGetMainLayerTopFragment();
+                if (null != mainActivityTopFragment) {
+                    nowTopFragmentName = mainActivityTopFragment.getClass().getName();
+                } else {
+                    nowTopFragmentName = "onPopFragment():size==0:mainActivityTopFragment:Null";
+                }
+
+                iHostActivity.onShowMainLayer(true);
+                /*final Fragment hostActivityCurContentFragment = iHostActivity.onGetMainLayerTopFragment();
+                if (null != hostActivityCurContentFragment && hostActivityCurContentFragment.isAdded()){
+                    final FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    // setMaxLifecycle()事务会先于 remove()/add() 事务执行。所以在FragmentOperation中，打开新Fragment时生命周期没问题：
+                    // 上一个先onPause()，新的才onResume()；但是在FragmentOperation中执行close()时，就有点问题了：
+                    // 要显示的Fragment会先执行onResume()，remove掉的Fragment才会执行onPause()。
+                    transaction.setMaxLifecycle(hostActivityCurContentFragment, Lifecycle.State.RESUMED);
+
+                    //如果Fragment状态没有到达onResume()(没有执行onResume()方法),
+                    // 那么会从Fragment的当前状态依次执行到onResume()方法。
+                    //Fragment包含的子Fragment也会同步到此状态。
+                    transaction.commitAllowingStateLoss();
+                    //Caused by: java.lang.IllegalStateException: FragmentManager is already executing transactions
+                    //此方法会有上面的crash
+                    //transaction.commitNowAllowingStateLoss();
+                }*/
+            } else {
+                nowTopFragmentName = null != nowTop?nowTop.getClass().getName():"onPopFragment():size!=0:Null";
+            }
+            //
+            if (null != listener){
+                listener.onPopFragment(nowTop);
+            }
+        }
+    }//
 }

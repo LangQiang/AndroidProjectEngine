@@ -3,6 +3,7 @@ package com.lazylite.mod.fragmentmgr;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,10 +38,14 @@ public class StartParameter {
     public String popEndTag;
     // 打开的时候同时关闭其下fragment，直到某个tag的fragment并且可选是否包含这个目标fragment
     public boolean isIncludePopEnd;
+    // 打开的时候关闭指定tag的Fragment
+    public String removeTags;
     // 共享元素动画需要的
     public List<Map.Entry<View, String>> shareViews;
     // 以singletop，singleTask启动的时候可能回需要携带些新数据，放这里就行
     public Bundle bundle;
+    // 特殊指定containerId
+    public int containerId = -1;
 
     public StartParameter(Builder builder) {
         this.tag = builder.tag;
@@ -49,10 +54,30 @@ public class StartParameter {
         this.isHideBottomLayer = builder.isHideBottomLayer;
         this.isPopCurrent = builder.isPopCurrent;
         this.popEndTag = builder.popEndTag;
+        this.removeTags = builder.removeTags;
         this.isIncludePopEnd = builder.isIncludePopEnd;
         this.shareViews = builder.shareViews;
         this.startMode = builder.startMode;
         this.bundle = builder.bundle;
+        this.containerId = builder.containerId;
+    }
+
+    public StartParameter copy(){
+        final Builder builder = new Builder();
+        builder.tag = tag;
+        builder.enterAnimation = enterAnimation;
+        builder.outerAnimation = outerAnimation;
+        builder.isHideBottomLayer = isHideBottomLayer;
+        builder.isPopCurrent = isPopCurrent;
+        builder.popEndTag = popEndTag;
+        builder.isIncludePopEnd = isIncludePopEnd;
+        builder.removeTags = removeTags;
+        if (null != shareViews){
+            builder.shareViews = new ArrayList<>(shareViews);
+        }
+        builder.startMode = startMode;
+        builder.bundle = bundle;
+        return new StartParameter(builder);
     }
 
     public static final class Builder {
@@ -64,9 +89,11 @@ public class StartParameter {
         private boolean isIncludePopEnd;
         private boolean isPopCurrent;
         private String popEndTag;
+        private String removeTags;
         private List<Map.Entry<View, String>> shareViews;
         private int startMode;
         private Bundle bundle;
+        private int containerId =-1;
 
         public Builder withTag(String tag) {
             this.tag = tag;
@@ -96,6 +123,16 @@ public class StartParameter {
         public Builder withPopEndTag(String tag, boolean include) {
             this.popEndTag = tag;
             this.isIncludePopEnd = include;
+            return this;
+        }
+
+        public Builder withRemoveTag(String tag){
+            this.removeTags = tag;
+            return this;
+        }
+
+        public Builder withContainer(int containerId){
+            this.containerId = containerId;
             return this;
         }
 
@@ -129,6 +166,7 @@ public class StartParameter {
                 ", isPopCurrent=" + isPopCurrent +
                 ", shareViews=" + shareViews +
                 ", bundle=" + bundle +
+                ", containerId="+ containerId +
                 '}';
     }
 }

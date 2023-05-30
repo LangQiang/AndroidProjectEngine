@@ -17,15 +17,12 @@ import android.widget.RelativeLayout;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.basemodule.R;
-import com.lazylite.mod.fragmentmgr.FragmentOperation;
-import com.lazylite.mod.fragmentmgr.OnFragmentStackChangeListener;
 import com.lazylite.mod.utils.DeviceInfo;
-import com.lazylite.mod.widget.swipeback.app.SwipeBackFragment;
+import com.lazylite.mod.widget.swipeback.app.SwipeBackFragmentBase;
 import com.lazylite.mod.widget.vp.NoScrollViewPager;
 
 import java.util.LinkedList;
@@ -33,7 +30,7 @@ import java.util.List;
 
 public class SwipeBackLayout extends FrameLayout {
 	
-	private SwipeBackFragment mFragment;
+	private SwipeBackFragmentBase mFragment;
     /**
      * Minimum velocity that will be detected as a fling
      */
@@ -239,7 +236,7 @@ public class SwipeBackLayout extends FrameLayout {
         mSwipeListener = listener;
     }
 
-    public static interface SwipeListener {
+    public interface SwipeListener {
         /**
          * Invoke when state change
          * 
@@ -249,7 +246,7 @@ public class SwipeBackLayout extends FrameLayout {
          * @see #STATE_SETTLING
          * @param scrollPercent scroll percent of this view
          */
-        public void onScrollStateChange(int state, float scrollPercent);
+         void onScrollStateChange(int state, float scrollPercent);
 
         /**
          * Invoke when edge touched
@@ -259,19 +256,18 @@ public class SwipeBackLayout extends FrameLayout {
          * @see #EDGE_RIGHT
          * @see #EDGE_BOTTOM
          */
-        public void onEdgeTouch(int edgeFlag);
+         void onEdgeTouch(int edgeFlag);
 
         /**
          * Invoke when scroll percent over the threshold for the first time
          */
-        public void onScrollOverThreshold();
+         void onScrollOverThreshold();
 
         /**
          * Invoke when view Scrolled
          */
-        public void onHasScroll();
-
-    }
+         void onHasScroll();
+    }//
 
     /**
      * Set scroll threshold, we will close the activity, when scrollPercent over
@@ -540,18 +536,18 @@ public class SwipeBackLayout extends FrameLayout {
         }
     }
 
-    public void attachToFragment(SwipeBackFragment fragment) {
+    public void attachToFragment(SwipeBackFragmentBase fragment) {
         mFragment = fragment;
         //在support-v4版本21之前，fragment的根view是有一层NoSaveStateFrameLayout包裹的，升级成版本23后，
         //去掉了这一层，再按以前的逻辑去拿getChildAt(0)，拿到的只是布局中的第一个控件，这样明显不行啊
         //所以需要把控件拿出来放到他原来相同Layout类型的“新袋子”中，再将该“新袋子”放入左滑退出的ViewGroup中
-        ViewGroup fragmentRoot = (ViewGroup) fragment.getView();
+        ViewGroup fragmentRoot = (ViewGroup) fragment.getFragmentView();
         if (fragmentRoot == null) {
             return;
         }
         ViewGroup copyGroup;//复制父容器新袋子
         Context cxt;
-        if ((cxt = mFragment.getActivity()) == null) {
+        if ((cxt = mFragment.getHostActivity()) == null) {
             return;
         }
         if (fragmentRoot instanceof RelativeLayout) {
@@ -653,7 +649,7 @@ public class SwipeBackLayout extends FrameLayout {
                 if(mScrollPercent >= mScrollThreshold){
                     mIsScrollOverValid = false;
                     mSwipeListener.onScrollOverThreshold();
-                }else if(mScrollPercent >=mMovedThreshold){
+                } else if(mScrollPercent >=mMovedThreshold){
                     mSwipeListener.onHasScroll();
                 }
 
@@ -662,40 +658,6 @@ public class SwipeBackLayout extends FrameLayout {
             if (mScrollPercent >= 1 && mFragment != null && mFragment.isResumed()) {
             	mFragment.close();
             	mFragment = null;
-            	return;
-            }
-            // 主页面的时候不能处理viewpager的显示隐藏
-            if (!FragmentOperation.getInstance().isMainLayerShow()) {
-                Fragment preFragment = FragmentOperation.getInstance().getPreFragment();
-                if (mScrollPercent <= 0 && lowerLayerShowing) {
-                    // gone
-                    if (preFragment == null) {
-                        OnFragmentStackChangeListener onFragmentStackChangeListener = FragmentOperation.getInstance().getOnFragmentStackChangeListener();
-                        if (onFragmentStackChangeListener != null) {
-                            onFragmentStackChangeListener.onHideMainLayer(true);
-                        }
-                    } else {
-                        View view = preFragment.getView();
-                        if (view != null) {
-                            view.setVisibility(View.GONE);
-                        }
-                    }
-                    lowerLayerShowing = false;
-                } else if (mScrollPercent > 0 && !lowerLayerShowing) {
-                    // visible
-                    if (preFragment == null) {
-                        OnFragmentStackChangeListener onFragmentStackChangeListener = FragmentOperation.getInstance().getOnFragmentStackChangeListener();
-                        if (onFragmentStackChangeListener != null) {
-                            onFragmentStackChangeListener.onShowMainLayer(false);
-                        }
-                    } else {
-                        View view = preFragment.getView();
-                        if (view != null) {
-                            view.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    lowerLayerShowing = true;
-                }
             }
         }
 
