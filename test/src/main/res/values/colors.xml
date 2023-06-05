@@ -7,4 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="skin_text_primary">#FF000000</color>
+    <color name="skin_text_secondary">#aa000000</color>
+    <color name="skin_text_Tertiary">#80000000</color>
+    <color name="skin_text_Quaternary">#50000000</color>
+    <color name="skin_btn_bg_primary">#ffebebeb</color>
+    <color name="skin_btn_bg_secondary">#aaebebeb</color>
+    <color name="skin_btn_bg_Tertiary">#80ebebeb</color>
+    <color name="skin_btn_bg_Quaternary">#50ebebeb</color>
 </resources>

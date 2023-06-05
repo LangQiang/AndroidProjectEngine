@@ -29,6 +29,7 @@
       <module name="AndroidProjectEngine.component-factory.StatisticWidget" target="11" />
       <module name="AndroidProjectEngine.component-factory.ThreadPool" target="11" />
       <module name="AndroidProjectEngine.component-factory.UICompose" target="11" />
+      <module name="AndroidProjectEngine.component-factory.xskin" target="11" />
       <module name="AndroidProjectEngine.Sample.app" target="11" />
       <module name="AndroidProjectEngine.Sample.app1-enter-point" target="11" />
       <module name="AndroidProjectEngine.Sample.business1" target="11" />
@@ -37,6 +38,7 @@
       <module name="AndroidProjectEngine.Sample.business2-api" target="11" />
       <module name="AndroidProjectEngine.Sample.business3" target="11" />
       <module name="AndroidProjectEngine.Sample.business3-api" target="11" />
+      <module name="AndroidProjectEngine.skinresapk" target="11" />
       <module name="AndroidProjectEngine.test" target="11" />
     </bytecodeTargetLevel>
   </component>

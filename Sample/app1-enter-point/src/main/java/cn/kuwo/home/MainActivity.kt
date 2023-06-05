@@ -19,6 +19,7 @@ import com.lazylite.mod.App
 import com.lazylite.mod.fragmentmgr.FragmentOperation
 import com.lazylite.mod.fragmentmgr.IHostActivity
 import com.lazylite.mod.fragmentmgr.OnFragmentStackChangeListener
+import com.lazylite.mod.fragmentmgr.StartParameter
 import com.lazylite.mod.messagemgr.MessageManager
 import com.lazylite.mod.permission.Permission
 import com.lazylite.mod.utils.KwSystemSettingUtils
@@ -27,8 +28,6 @@ import com.lazylite.mod.utils.KwSystemSettingUtils
 class MainActivity : AppCompatActivity() {
 
     private var viewPager2: ViewPager2? = null
-
-    private var navHolder: View? = null
 
     private var bottomLayoutView: BottomLayoutView? = null
 
@@ -145,35 +144,30 @@ class MainActivity : AppCompatActivity() {
 
     private val onFragmentStackChangeListener: OnFragmentStackChangeListener =
         object : OnFragmentStackChangeListener {
-
-            override fun onPushFragment(top: Fragment?) {
+            override fun onPushFragment(top: Fragment?, startParameter: StartParameter?) {
                 showMainLayer(true)//有动画，不要隐藏首页
             }
 
-            override fun onPopFragment(top: Fragment?) {
+            override fun onPopFragment(nowTop: Fragment?) {
                 val curPageFragment = getCurPageFragment()
-                val isStackEmpty = top == curPageFragment
+                val isStackEmpty = nowTop == curPageFragment
                 showMainLayer(isStackEmpty)
             }
 
-            override fun onShowMainLayer(withBottom: Boolean) {
-                showMainLayer(withBottom)
-            }
-
-            override fun onHideMainLayer(ishide: Boolean) {
-            }
         }//
 
     private fun bindFragmentOperation() {
-        FragmentOperation.getInstance().bind(this, object : IHostActivity {
-            override fun onGetManLayerTopFragment(): Fragment? {
-                return getCurPageFragment()
-            }
-
+        FragmentOperation.getInstance().bind(this, true, object : IHostActivity {
             override fun containerViewId(): Int {
                 return R.id.app_fragment_container
             }
 
+            override fun onShowMainLayer(show: Boolean) {
+            }
+
+            override fun onGetMainLayerTopFragment(): Fragment? {
+                return getCurPageFragment()
+            }
         }, onFragmentStackChangeListener)
     }
 

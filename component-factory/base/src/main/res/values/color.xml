@@ -150,32 +150,8 @@
     <color name="skin_high_color_50">#7fFF6D3B</color>
     <color name="skin_high_color_70">#b2FF6D3B</color>
 
-    <color name="task_progress_up">#FF202C</color>
-    <color name="task_progress_down">#FF5C8E</color>
-
-
-
-    <!-- 合唱歌词颜色 -->
-    <!-- 秀场直播间主播头像背景  -->
-
-
-    <!--你唱我猜-->
-
-    <!--主题换肤背景色-->
 
     <color name="bibi_common_blue">#0CAEE7</color>
-
-    <!-- 音乐包 -->
-    <color name="mine_musicbag_focus">#ffbc01</color>
-
-
-    <!-- 一键升级音质    -->
-    <color name="upgrade_main_color">#ca9d63</color>
-
-
-    <!--煲机 -->
-
-    <color name="minead_listitem_text">#888888</color>
 
     <!--专辑详情页-->
     <color name="album_detail_theme">@color/skin_high_blue_color</color>
@@ -257,7 +233,4 @@
     <color name="album_header_default_bg">#b3b3b3</color>
     <color name="tab_bg_color">#f3f3f3</color>
 
-<!--    元惜-->
-    <color name="yuanxi_nft_land_mark_seleck_title_color">#5553F7</color>
-    <color name="yuanxi_nft_land_mark_seleck_date_color">#bf5553F7</color>
 </resources>

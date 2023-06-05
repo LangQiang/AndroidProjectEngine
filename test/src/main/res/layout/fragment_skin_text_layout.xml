@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xskin="http://schemas.android.com/xskin"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        xskin:enable="true"
+        android:background="@drawable/main_bg"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            xskin:enable="true"
+            android:background="@color/skin_btn_bg_primary"
+            android:textColor="@color/skin_text_primary"
+            android:id="@+id/skin_1"
+            android:gravity="center"
+            android:text="primary"
+            android:textSize="18dp"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
+        <TextView
+            xskin:enable="true"
+            android:background="@drawable/skin_btn_shape_8_normal"
+            android:textColor="@color/skin_text_secondary"
+            android:id="@+id/skin_2"
+            android:gravity="center"
+            android:text="secondary"
+            android:textSize="18dp"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
+        <com.godq.test.skin.TestView
+            android:id="@+id/skin_3"
+            android:layout_margin="15dp"
+            android:background="@drawable/test_btn_bg"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+
+        <View
+            android:layout_margin="15dp"
+            xskin:enable="true"
+            android:background="@color/skin_text_primary"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
+    </LinearLayout>
+
+</FrameLayout>

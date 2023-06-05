@@ -18,6 +18,7 @@
             android:exported="false"
             android:process=":two" />
         <activity
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".TestActivity"
             android:exported="true">
             <intent-filter>

@@ -30,6 +30,8 @@
             <option value="$PROJECT_DIR$/component-factory/annotationLib" />
             <option value="$PROJECT_DIR$/component-factory/base" />
             <option value="$PROJECT_DIR$/component-factory/processorlib" />
+            <option value="$PROJECT_DIR$/component-factory/xskin" />
+            <option value="$PROJECT_DIR$/skinresapk" />
             <option value="$PROJECT_DIR$/test" />
           </set>
         </option>
