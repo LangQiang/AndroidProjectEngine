@@ -66,7 +66,6 @@ class SkinInflaterFactory : LayoutInflater.Factory2 {
                 //获取属性值的字符串名称和类型: color skin_xxx_red
                 val entryName = context.resources.getResourceEntryName(attrValue)
                 val typeName = context.resources.getResourceTypeName(attrValue)
-                Timber.tag("SkinManager").e("view: ${view.javaClass.name}  typeName:${typeName} entryName:${entryName} \n")
                 SkinAttrCreator.create(attrName, attrValue, entryName, typeName)?.apply {
                     skinAttrs.add(this)
                 }
@@ -78,12 +77,11 @@ class SkinInflaterFactory : LayoutInflater.Factory2 {
             return
         }
         //添加并应用当前资源指向的皮肤
-        SkinManager.addSkinView(SkinViewWrapper(WeakReference(view), skinAttrs))
+        XSkinManager.addSkinView(SkinViewWrapper(WeakReference(view), skinAttrs))
     }
 
     private fun isSkinView(name: String, attrs: AttributeSet): Boolean {
         //可以在这里加过滤器
-        Timber.tag("SkinManager").e("isSkinView name:$name")
         return attrs.getAttributeBooleanValue(SkinConstants.NAMESPACE, SkinConstants.ATTR_SKIN_ENABLE, false)
     }
 

@@ -4,7 +4,7 @@ import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.godq.xskin.SkinConstants
-import com.godq.xskin.SkinManager
+import com.godq.xskin.XSkinManager
 
 
 /**
@@ -24,7 +24,7 @@ class SkinBackgroundAttr(
     }
 
     private fun setBackgroundBySkinRes(view: View) {
-        val (currentResource, currentPackageName) = SkinManager.getCurrentResourceInfo() ?: return
+        val (currentResource, currentPackageName) = XSkinManager.getCurrentResourceInfo() ?: return
         val currentResId = currentResource.getIdentifier(resEntryName, resTypeName, currentPackageName).takeIf {
             it != 0
         }?: return

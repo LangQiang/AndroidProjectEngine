@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.godq.test.R
-import com.godq.xskin.SkinManager
+import com.godq.xskin.XSkinManager
 import com.godq.xskin.load.SkinLoadCallback
 import com.lazylite.mod.config.ConfMgr
 import com.lazylite.mod.widget.BaseFragment
@@ -30,10 +30,12 @@ class SkinTestFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<View>(R.id.skin_1).setOnClickListener {
             val url = "https://godq-1307306000.cos.ap-beijing.myqcloud.com/skinresapk-debug_2.apk"
-            SkinManager.loadSkin(url, object : SkinLoadCallback{
+            XSkinManager.loadSkin(url, callback = object : SkinLoadCallback{
 
                 override fun onProgress(progress: Float) {
-                    LoadingDialogMgr.showProcess("progress: $progress")
+                    if (progress != 1f) {
+                        LoadingDialogMgr.showProcess("progress: $progress")
+                    }
                 }
 
                 override fun onFinish(success: Boolean) {
@@ -46,10 +48,12 @@ class SkinTestFragment: BaseFragment() {
         }
         view.findViewById<View>(R.id.skin_2).setOnClickListener {
             val url = "https://godq-1307306000.cos.ap-beijing.myqcloud.com/skinresapk-debug-3.apk"
-            SkinManager.loadSkin(url, object : SkinLoadCallback{
+            XSkinManager.loadSkin(url, callback = object : SkinLoadCallback{
 
                 override fun onProgress(progress: Float) {
-                    LoadingDialogMgr.showProcess("progress: $progress")
+                    if (progress != 1f) {
+                        LoadingDialogMgr.showProcess("progress: $progress")
+                    }
                 }
 
                 override fun onFinish(success: Boolean) {
@@ -63,7 +67,7 @@ class SkinTestFragment: BaseFragment() {
 
         view.findViewById<View>(R.id.skin_3).setOnClickListener {
             ConfMgr.setStringValue("", "skin", "", false)
-            SkinManager.reset()
+            XSkinManager.reset()
         }
     }
 

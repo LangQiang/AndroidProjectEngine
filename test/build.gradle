@@ -55,7 +55,7 @@ dependencies {
 //    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 
 
-    compileOnly project(":component-factory:base")
+    implementation project(":component-factory:base")
     implementation project(":component-factory:AppLogcat")
     implementation project(":component-factory:SideSlideMenuWidget")
     implementation project(":component-factory:xskin")

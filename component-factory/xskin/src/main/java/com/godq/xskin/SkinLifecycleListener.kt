@@ -19,15 +19,17 @@ import timber.log.Timber
  */
 class SkinLifecycleListener {
 
+    private var isListening = false
+
     private val mActivityLifecycleCallbacks = object : ActivityLifecycleCallbacks {
 
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-            Timber.tag("SkinManager").e("ActivityLifecycleCallback ${activity.javaClass.name}: onActivityCreated")
+            Timber.tag("SkinManager").d("ActivityLifecycleCallback ${activity.javaClass.name}: onActivityCreated")
 
             (activity as? FragmentActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(object : FragmentLifecycleCallbacks(){
                 override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
-                    Timber.tag("SkinManager").e("FragmentLifecycleCallback ${f.javaClass.name}: onFragmentDestroyed")
-                    SkinManager.clearInvalidReference()
+                    Timber.tag("SkinManager").d("FragmentLifecycleCallback ${f.javaClass.name}: onFragmentDestroyed")
+                    XSkinManager.clearInvalidReference()
                 }
             }, false)
         }
@@ -52,6 +54,8 @@ class SkinLifecycleListener {
     }
 
     fun listen(application: Application) {
+        if (isListening) return
+        isListening = true
         application.registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks)
     }
 

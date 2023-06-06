@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import com.godq.xskin.SkinConstants
-import com.godq.xskin.SkinManager
+import com.godq.xskin.XSkinManager
 
 
 /**
@@ -26,7 +26,7 @@ class SkinTextColorAttr(
     }
 
     private fun setTextColorBySkinRes(textView: TextView) {
-        val (currentResource, currentPackageName) = SkinManager.getCurrentResourceInfo() ?: return
+        val (currentResource, currentPackageName) = XSkinManager.getCurrentResourceInfo() ?: return
         val currentResId = currentResource.getIdentifier(resEntryName, resTypeName, currentPackageName).takeIf {
             it != 0
         }?: return

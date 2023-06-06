@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import com.godq.xskin.entity.SkinResourceInfo
 import com.godq.xskin.entity.SkinViewWrapper
+import com.godq.xskin.inject.DownloadInjectImpl
+import com.godq.xskin.inject.IDownloadInject
 import com.godq.xskin.load.SkinLoadCallback
 import com.godq.xskin.load.SkinResourceLoader
 import kotlinx.coroutines.MainScope
@@ -16,9 +18,11 @@ import timber.log.Timber
  * @author  GodQ
  * @date  2023/5/30 4:47 PM
  */
-object SkinManager {
+object XSkinManager {
 
     private lateinit var mApplicationContext: Context
+
+    private lateinit var mDownloadInject: IDownloadInject
 
     private val mScope = MainScope()
 
@@ -34,25 +38,59 @@ object SkinManager {
 
     private var mIsDebug: Boolean? = null
 
-    fun init(application: Application) {
+    fun init(application: Application, httpInject: IDownloadInject? = null) {
         this.mApplicationContext = application.applicationContext
+        this.mDownloadInject = httpInject?: DownloadInjectImpl()
         this.mSkinResourceInfo = SkinResourceInfo(application.resources, application.packageName)
+        this.mSkinResourceLoader.downloadInject = this.mDownloadInject
         this.mSkinLifecycleListener.listen(application)
     }
 
-    //根据来源创建loader 来加载资源
-    fun loadSkin(url: String, callback: SkinLoadCallback? = null) {
+    /**
+     * 同一个资源不会重复下载，加载资源可以重复调用此方法，内部做了缓存处理
+     * @param autoApply true:自动切换资源 false:只下载不应用
+     * */
+    fun loadSkin(url: String, autoApply: Boolean = true, callback: SkinLoadCallback? = null) {
+        takeIf { !this::mApplicationContext.isInitialized }?.apply {
+            Timber.tag("SkinManager").e("XSkin is not Initialized")
+            callback?.onFinish(false)
+            return
+        }
         mScope.launch {
-            val newRes = mSkinResourceLoader.loadSkin(url) {
+            val newRes = mSkinResourceLoader.loadSkinFromNet(url) {
                 callback?.onProgress(it)
             }
             callback?.onFinish(newRes != null)
-            mSkinResourceInfo = newRes?: mSkinResourceInfo ?: SkinResourceInfo(mApplicationContext.resources, mApplicationContext.packageName)
+            if (autoApply) {
+                mSkinResourceInfo =
+                    newRes ?: mSkinResourceInfo ?: SkinResourceInfo(mApplicationContext.resources, mApplicationContext.packageName)
+                notifySkinChanged()
+            }
+        }
+    }
+
+    fun loadLocalExistsSkin(localPath: String) {
+        takeIf { !this::mApplicationContext.isInitialized }?.apply {
+            Timber.tag("SkinManager").e("XSkin is not Initialized")
+            return
+        }
+        mScope.launch {
+            val newRes = mSkinResourceLoader.loadSkinFromLocal(localPath)
+            mSkinResourceInfo =
+                newRes ?: mSkinResourceInfo ?: SkinResourceInfo(mApplicationContext.resources, mApplicationContext.packageName)
             notifySkinChanged()
         }
     }
 
+    fun getExistsSkinLocalPathByUrl(url: String): String? {
+        return mSkinResourceLoader.getExistsSkinLocalPathByUrl(url)
+    }
+
     fun reset() {
+        takeIf { !this::mApplicationContext.isInitialized }?.apply {
+            Timber.tag("SkinManager").e("XSkin is not Initialized")
+            return
+        }
         mScope.launch {
             mSkinResourceInfo = SkinResourceInfo(mApplicationContext.resources, mApplicationContext.packageName)
             notifySkinChanged()
@@ -73,7 +111,6 @@ object SkinManager {
     }
 
     private fun notifySkinChanged() {
-        Timber.tag("SkinManager").e("size: ${mSkinViews.size}")
         mSkinViews.forEach {
             it.apply()
         }
@@ -81,10 +118,14 @@ object SkinManager {
     }
 
     internal fun clearInvalidReference() {
+        takeIf { !this::mApplicationContext.isInitialized }?.apply {
+            Timber.tag("SkinManager").e("XSkin is not Initialized")
+            return
+        }
         if (isDebug()) {
             Runtime.getRuntime().gc()
         }
-        Timber.tag("SkinManager").e("clearInvalidReference before size: ${mSkinViews.size}")
+        Timber.tag("SkinManager").d("clearInvalidReference before size: ${mSkinViews.size}")
         with(mSkinViews.iterator()) {
             while (hasNext()) {
                 val next = next()
@@ -93,7 +134,7 @@ object SkinManager {
                 }
             }
         }
-        Timber.tag("SkinManager").e("clearInvalidReference after size: ${mSkinViews.size}")
+        Timber.tag("SkinManager").d("clearInvalidReference after size: ${mSkinViews.size}")
 
     }
     /*****************  data  ********************/

@@ -3,17 +3,14 @@ package com.godq.xskin.load
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.content.res.Resources
-import com.godq.xskin.SkinManager
+import com.godq.xskin.XSkinManager
 import com.godq.xskin.entity.SkinResourceInfo
-import com.lazylite.mod.http.mgr.HttpWrapper
-import com.lazylite.mod.http.mgr.IKwHttpFetcher
-import com.lazylite.mod.http.mgr.KwHttpMgr
-import com.lazylite.mod.http.mgr.model.DownReqInfo
-import com.lazylite.mod.utils.crypt.MD5
+import com.godq.xskin.inject.IDownloadInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
+import java.security.MessageDigest
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -24,27 +21,37 @@ import kotlin.coroutines.suspendCoroutine
  */
 class SkinResourceLoader {
 
-    suspend fun loadSkin(url: String, callback: ((progress: Float) -> Unit)?): SkinResourceInfo? {
+    internal lateinit var downloadInject: IDownloadInject
+
+    suspend fun loadSkinFromNet(url: String, callback: ((progress: Float) -> Unit)?): SkinResourceInfo? {
         val localPath = getLocalPath(url, callback)?: return null
-        Timber.tag("SkinManager").e("loadSkin savePath:$localPath")
+        Timber.tag("SkinManager").d("loadSkin savePath:$localPath")
+        return loadSkinFromLocal(localPath)
+    }
+
+    suspend fun loadSkinFromLocal(localPath: String): SkinResourceInfo? {
         return invokeResources(localPath)
+    }
+
+    fun getExistsSkinLocalPathByUrl(url: String): String? {
+        val path = getSavePath(url) ?: return null
+        return File(path).exists().let { if (it) path else "" }
     }
 
     private suspend fun invokeResources(resFilePath: String): SkinResourceInfo? {
         return withContext(Dispatchers.IO) {
             try {
-                val pm: PackageManager = SkinManager.getSkinContext().packageManager
+                val pm: PackageManager = XSkinManager.getSkinContext().packageManager
                 val info = pm.getPackageArchiveInfo(
                     resFilePath,
                     PackageManager.GET_ACTIVITIES
                 ) ?: return@withContext null
                 val skinPackageName = info.packageName
 
-                Timber.tag("skinManager").e("packageName:${skinPackageName}")
                 val assetManager = AssetManager::class.java.newInstance()
                 val path = assetManager.javaClass.getMethod("addAssetPath", String::class.java)
                 path.invoke(assetManager, resFilePath)
-                val superRes: Resources = SkinManager.getSkinContext().resources
+                val superRes: Resources = XSkinManager.getSkinContext().resources
 
                 val res = Resources(
                     assetManager,
@@ -73,8 +80,8 @@ class SkinResourceLoader {
                 return@suspendCoroutine
             }
             val temp = "$path.temp"
-            KwHttpMgr.getInstance().kwHttpFetch.asyncDownload(DownReqInfo(url, temp, 0), null, object : IKwHttpFetcher.DownloadListener {
-                override fun onComplete(httpWrapper: HttpWrapper<IKwHttpFetcher.DownloadListener>?) {
+            downloadInject.asyncDownload(url, temp, object : IDownloadInject.DownloadCallback {
+                override fun onComplete() {
                     val tempFile = File(temp)
                     if (tempFile.exists()) {
                         val newFile = File(path)
@@ -86,32 +93,54 @@ class SkinResourceLoader {
                     }
                 }
 
-                override fun onCancel(httpWrapper: HttpWrapper<IKwHttpFetcher.DownloadListener>?) {
+                override fun onCancel() {
                     it.resume(null)
                 }
 
-                override fun onError(errorCode: Int, msg: String?, httpWrapper: HttpWrapper<IKwHttpFetcher.DownloadListener>?) {
+                override fun onError(errorCode: Int, msg: String?) {
+                    super.onError(errorCode, msg)
                     it.resume(null)
                 }
 
-                override fun onProgress(currentPos: Long, totalLength: Long, httpWrapper: HttpWrapper<IKwHttpFetcher.DownloadListener>?) {
+                override fun onProgress(currentPos: Long, totalLength: Long) {
                     callback?.invoke(currentPos.toFloat() / totalLength)
-                    Timber.tag("SkinManager").e("loadSkin progress:${currentPos.toFloat() / totalLength}")
+                    Timber.tag("SkinManager").d("loadSkin progress:${currentPos * 100 / totalLength}")
                 }
             })
         }
     }
 
     private fun getSavePath(url: String): String? {
-        val getExternalFilesDirNoPermission = SkinManager.getSkinContext().getExternalFilesDir(null)?: return null
+        val getExternalFilesDirNoPermission = XSkinManager.getSkinContext().getExternalFilesDir(null)?: return null
         val dir =  getExternalFilesDirNoPermission.absolutePath + File.separator + "Skin"
         with(File(dir)) {
             if (!this.exists()) {
                 this.mkdirs()
             }
         }
-        val fileName = MD5.getMD5Str(url) + ".apk"
+        val fileName = getMD5Str(url) + ".apk"
         return  dir + File.separator + fileName
     }
+
+    private fun getMD5Str(str: String): String? {
+        val messageDigest: MessageDigest?
+        try {
+            messageDigest = MessageDigest.getInstance("MD5")
+            messageDigest.reset()
+            messageDigest.update(str.toByteArray(charset("UTF-8")))
+            val byteArray = messageDigest.digest()
+            val md5StrBuff = StringBuffer()
+            for (i in byteArray.indices) {
+                if (Integer.toHexString(0xFF and byteArray[i].toInt()).length == 1) md5StrBuff.append("0").append(
+                    Integer.toHexString(0xFF and byteArray[i].toInt())
+                ) else md5StrBuff.append(Integer.toHexString(0xFF and byteArray[i].toInt()))
+            }
+            return md5StrBuff.toString()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
+
 
 }
