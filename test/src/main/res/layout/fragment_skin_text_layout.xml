@@ -50,6 +50,22 @@
             android:background="@color/skin_text_primary"
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
+
+        <ImageView
+            xskin:enable="true"
+            android:src="@drawable/main_bg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"/>
+
+        <EditText
+            xskin:enable="true"
+            android:textColor="@color/skin_text_secondary"
+            android:textSize="18dp"
+            android:hint="skin_text_secondary"
+            android:textColorHint="@color/skin_text_secondary"
+            android:layout_margin="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"/>
     </LinearLayout>
 
 </FrameLayout>

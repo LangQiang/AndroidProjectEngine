@@ -18,11 +18,15 @@ class SkinConstants {
         val SUPPORT_ATTRIBUTE_TYPE_SET = setOf(
             SupportAttributeName.TEXT_COLOR.value,
             SupportAttributeName.BACKGROUND.value,
+            SupportAttributeName.SRC.value,
+            SupportAttributeName.TEXT_COLOR_HINT.value,
         )
     }
 
     enum class SupportAttributeName(val value: String) {
         TEXT_COLOR("textColor"),
         BACKGROUND("background"),
+        SRC("src"),
+        TEXT_COLOR_HINT("textColorHint"),
     }
 }

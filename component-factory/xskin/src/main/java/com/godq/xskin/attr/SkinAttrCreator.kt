@@ -18,6 +18,14 @@ object SkinAttrCreator {
                 SkinBackgroundAttr(attrName, attrValue, entryName, typeName)
             }
 
+            SkinConstants.SupportAttributeName.SRC.value -> {
+                SkinSrcAttr(attrName, attrValue, entryName, typeName)
+            }
+
+            SkinConstants.SupportAttributeName.TEXT_COLOR_HINT.value -> {
+                SkinTextColorHintAttr(attrName, attrValue, entryName, typeName)
+            }
+
             else -> {
                 null
             }
