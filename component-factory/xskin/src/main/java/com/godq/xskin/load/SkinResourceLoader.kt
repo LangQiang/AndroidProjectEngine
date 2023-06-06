@@ -3,7 +3,7 @@ package com.godq.xskin.load
 import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.content.res.Resources
-import com.godq.xskin.XSkinManager
+import com.godq.xskin.SkinManager
 import com.godq.xskin.entity.SkinResourceInfo
 import com.godq.xskin.inject.IDownloadInject
 import kotlinx.coroutines.Dispatchers
@@ -41,7 +41,7 @@ class SkinResourceLoader {
     private suspend fun invokeResources(resFilePath: String): SkinResourceInfo? {
         return withContext(Dispatchers.IO) {
             try {
-                val pm: PackageManager = XSkinManager.getSkinContext().packageManager
+                val pm: PackageManager = SkinManager.getSkinContext().packageManager
                 val info = pm.getPackageArchiveInfo(
                     resFilePath,
                     PackageManager.GET_ACTIVITIES
@@ -51,7 +51,7 @@ class SkinResourceLoader {
                 val assetManager = AssetManager::class.java.newInstance()
                 val path = assetManager.javaClass.getMethod("addAssetPath", String::class.java)
                 path.invoke(assetManager, resFilePath)
-                val superRes: Resources = XSkinManager.getSkinContext().resources
+                val superRes: Resources = SkinManager.getSkinContext().resources
 
                 val res = Resources(
                     assetManager,
@@ -111,7 +111,7 @@ class SkinResourceLoader {
     }
 
     private fun getSavePath(url: String): String? {
-        val getExternalFilesDirNoPermission = XSkinManager.getSkinContext().getExternalFilesDir(null)?: return null
+        val getExternalFilesDirNoPermission = SkinManager.getSkinContext().getExternalFilesDir(null)?: return null
         val dir =  getExternalFilesDirNoPermission.absolutePath + File.separator + "Skin"
         with(File(dir)) {
             if (!this.exists()) {

@@ -29,7 +29,7 @@ class SkinLifecycleListener {
             (activity as? FragmentActivity)?.supportFragmentManager?.registerFragmentLifecycleCallbacks(object : FragmentLifecycleCallbacks(){
                 override fun onFragmentDestroyed(fm: FragmentManager, f: Fragment) {
                     Timber.tag("SkinManager").d("FragmentLifecycleCallback ${f.javaClass.name}: onFragmentDestroyed")
-                    XSkinManager.clearInvalidReference()
+                    SkinManager.clearInvalidReference()
                 }
             }, false)
         }

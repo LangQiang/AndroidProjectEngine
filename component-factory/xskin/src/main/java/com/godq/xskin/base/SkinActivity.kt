@@ -3,7 +3,7 @@ package com.godq.xskin.base
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.LayoutInflaterCompat
-import com.godq.xskin.XSkinManager
+import com.godq.xskin.SkinManager
 
 
 /**
@@ -13,7 +13,7 @@ import com.godq.xskin.XSkinManager
 open class SkinActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        LayoutInflaterCompat.setFactory2(layoutInflater, XSkinManager.getSkinInflaterFactory())
+        LayoutInflaterCompat.setFactory2(layoutInflater, SkinManager.getSkinInflaterFactory())
         super.onCreate(savedInstanceState)
     }
 

@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import com.godq.test.sideslidewidget.SideSlideMenuFragment
 import com.godq.test.skin.SkinTestFragment
 import com.godq.xskin.base.SkinActivity
-import com.godq.xskin.XSkinManager
+import com.godq.xskin.SkinManager
 import com.lazylite.bridge.init.ComponentInit
 import com.lazylite.mod.App
 import com.lazylite.mod.config.ConfMgr
@@ -21,10 +21,10 @@ class TestActivity : SkinActivity() {
         ComponentInit.initOnAppCreate(this.application, null)
         App.setMainActivity(this) //垃圾代码
 
-        XSkinManager.init(this.application, null)
+        SkinManager.init(this.application, null)
         val key = ConfMgr.getStringValue("", "skin", "")
         if (!key.isNullOrEmpty()) {
-            XSkinManager.loadSkin(key)
+            SkinManager.loadSkin(key)
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test)

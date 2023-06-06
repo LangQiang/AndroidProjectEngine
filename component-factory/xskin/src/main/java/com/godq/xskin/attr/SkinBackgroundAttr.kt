@@ -4,7 +4,7 @@ import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import com.godq.xskin.SkinConstants
-import com.godq.xskin.XSkinManager
+import com.godq.xskin.SkinManager
 
 
 /**
@@ -18,13 +18,13 @@ class SkinBackgroundAttr(
     private val resTypeName: String)  //color
     : ISkinAttr {
     override fun apply(view: View) {
-        if (SkinConstants.SUPPORT_ATTRIBUTE_TYPE_BACKGROUND == xmlAttrName) {
+        if (SkinConstants.SupportAttributeName.BACKGROUND.value == xmlAttrName) {
             setBackgroundBySkinRes(view)
         }
     }
 
     private fun setBackgroundBySkinRes(view: View) {
-        val (currentResource, currentPackageName) = XSkinManager.getCurrentResourceInfo() ?: return
+        val (currentResource, currentPackageName) = SkinManager.getCurrentResourceInfo() ?: return
         val currentResId = currentResource.getIdentifier(resEntryName, resTypeName, currentPackageName).takeIf {
             it != 0
         }?: return

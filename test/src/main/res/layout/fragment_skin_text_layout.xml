@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/skin_test_ll"
         xskin:enable="true"
         android:background="@drawable/main_bg"
         android:orientation="vertical"
@@ -37,8 +38,9 @@
 
         <com.godq.test.skin.TestView
             android:id="@+id/skin_3"
+            xskin:enable="true"
             android:layout_margin="15dp"
-            android:background="@drawable/test_btn_bg"
+            android:background="@color/skin_unique"
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
 

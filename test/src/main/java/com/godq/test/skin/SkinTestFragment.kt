@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.godq.test.R
-import com.godq.xskin.XSkinManager
+import com.godq.xskin.SkinConstants
+import com.godq.xskin.SkinManager
+import com.godq.xskin.entity.SkinViewWrapper
 import com.godq.xskin.load.SkinLoadCallback
 import com.lazylite.mod.config.ConfMgr
 import com.lazylite.mod.widget.BaseFragment
@@ -30,7 +34,7 @@ class SkinTestFragment: BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<View>(R.id.skin_1).setOnClickListener {
             val url = "https://godq-1307306000.cos.ap-beijing.myqcloud.com/skinresapk-debug_2.apk"
-            XSkinManager.loadSkin(url, callback = object : SkinLoadCallback{
+            SkinManager.loadSkin(url, callback = object : SkinLoadCallback{
 
                 override fun onProgress(progress: Float) {
                     if (progress != 1f) {
@@ -48,7 +52,7 @@ class SkinTestFragment: BaseFragment() {
         }
         view.findViewById<View>(R.id.skin_2).setOnClickListener {
             val url = "https://godq-1307306000.cos.ap-beijing.myqcloud.com/skinresapk-debug-3.apk"
-            XSkinManager.loadSkin(url, callback = object : SkinLoadCallback{
+            SkinManager.loadSkin(url, callback = object : SkinLoadCallback{
 
                 override fun onProgress(progress: Float) {
                     if (progress != 1f) {
@@ -67,8 +71,17 @@ class SkinTestFragment: BaseFragment() {
 
         view.findViewById<View>(R.id.skin_3).setOnClickListener {
             ConfMgr.setStringValue("", "skin", "", false)
-            XSkinManager.reset()
+            SkinManager.reset()
         }
+
+        val addView = TextView(context)
+        addView.text = "hahahahahahah"
+        view.findViewById<LinearLayout>(R.id.skin_test_ll).addView(addView, ViewGroup.LayoutParams(-1, 200))
+        SkinManager.setSkinAttrsWhenAddViewByCode(
+            SkinViewWrapper.Builder(addView)
+                .setAttr(SkinConstants.SupportAttributeName.TEXT_COLOR, R.color.skin_text_primary)
+                .build()
+        )
     }
 
 }

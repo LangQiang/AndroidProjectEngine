@@ -10,11 +10,11 @@ import com.godq.xskin.SkinConstants
 object SkinAttrCreator {
     fun create(attrName: String, attrValue: Int, entryName: String, typeName: String): ISkinAttr? {
         return when (attrName) {
-            SkinConstants.SUPPORT_ATTRIBUTE_TYPE_TEXT_COLOR -> {
+            SkinConstants.SupportAttributeName.TEXT_COLOR.value -> {
                 SkinTextColorAttr(attrName, attrValue, entryName, typeName)
             }
 
-            SkinConstants.SUPPORT_ATTRIBUTE_TYPE_BACKGROUND -> {
+            SkinConstants.SupportAttributeName.BACKGROUND.value -> {
                 SkinBackgroundAttr(attrName, attrValue, entryName, typeName)
             }
 

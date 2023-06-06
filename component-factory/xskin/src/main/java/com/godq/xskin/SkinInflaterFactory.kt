@@ -7,7 +7,6 @@ import android.view.View
 import com.godq.xskin.attr.ISkinAttr
 import com.godq.xskin.attr.SkinAttrCreator
 import com.godq.xskin.entity.SkinViewWrapper
-import timber.log.Timber
 import java.lang.ref.WeakReference
 
 /**
@@ -77,7 +76,7 @@ class SkinInflaterFactory : LayoutInflater.Factory2 {
             return
         }
         //添加并应用当前资源指向的皮肤
-        XSkinManager.addSkinView(SkinViewWrapper(WeakReference(view), skinAttrs))
+        SkinManager.addSkinView(SkinViewWrapper(WeakReference(view), skinAttrs))
     }
 
     private fun isSkinView(name: String, attrs: AttributeSet): Boolean {

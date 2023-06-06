@@ -16,4 +16,5 @@
     <color name="skin_btn_bg_secondary">#aaebebeb</color>
     <color name="skin_btn_bg_Tertiary">#80ebebeb</color>
     <color name="skin_btn_bg_Quaternary">#50ebebeb</color>
+    <color name="skin_unique">#ff8923ff</color>
 </resources>

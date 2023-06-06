@@ -18,7 +18,7 @@ import timber.log.Timber
  * @author  GodQ
  * @date  2023/5/30 4:47 PM
  */
-object XSkinManager {
+object SkinManager {
 
     private lateinit var mApplicationContext: Context
 
@@ -105,6 +105,10 @@ object XSkinManager {
 
 
     /*****************  data  ********************/
+    fun setSkinAttrsWhenAddViewByCode(skinView: SkinViewWrapper) {
+        addSkinView(skinView)
+    }
+
     internal fun addSkinView(skinView: SkinViewWrapper) {
         skinView.apply()
         mSkinViews.add(skinView)
