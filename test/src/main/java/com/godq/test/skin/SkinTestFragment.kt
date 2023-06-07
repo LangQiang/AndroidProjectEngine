@@ -76,7 +76,7 @@ class SkinTestFragment: BaseFragment() {
 
         val addView = TextView(context)
         addView.text = "hahahahahahah"
-        view.findViewById<LinearLayout>(R.id.skin_test_ll).addView(addView, ViewGroup.LayoutParams(-1, 200))
+        view.findViewById<LinearLayout>(R.id.skin_test_ll).addView(addView)
         SkinManager.setSkinAttrsWhenAddViewByCode(
             SkinViewWrapper.Builder(addView)
                 .setAttr(SkinConstants.SupportAttributeName.TEXT_COLOR, R.color.skin_text_primary)

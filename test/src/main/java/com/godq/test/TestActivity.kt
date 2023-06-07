@@ -21,7 +21,7 @@ class TestActivity : SkinActivity() {
         ComponentInit.initOnAppCreate(this.application, null)
         App.setMainActivity(this) //垃圾代码
 
-        SkinManager.init(this.application, null)
+        SkinManager.init(this.application)
         val key = ConfMgr.getStringValue("", "skin", "")
         if (!key.isNullOrEmpty()) {
             SkinManager.loadSkin(key)

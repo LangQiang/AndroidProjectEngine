@@ -1,7 +1,15 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'maven-publish'
 }
+
+ext {
+    publishVersion = '1.0.0-SNAPSHOT'
+    publishArtifactName = 'XSkin'
+    publishComponentType = 'aar-release'
+}
+apply from:'../../publish-tool.gradle'
 
 android {
     namespace 'com.godq.xskin'
@@ -11,7 +19,6 @@ android {
         minSdk 16
         targetSdk 32
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -36,11 +43,10 @@ dependencies {
     implementation rootProject.ext.appcompat
     implementation rootProject.ext.ktx_coroutines_core
     implementation rootProject.ext.ktx_coroutines_android
-    implementation 'com.google.android.material:material:1.5.0'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation rootProject.ext.material
     implementation rootProject.ext.timber
+    implementation rootProject.ext.lifecycle_extensions
+
 
 
 }
