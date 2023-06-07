@@ -3,6 +3,7 @@ package com.godq.xskin.attr
 import android.view.View
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
 import com.godq.xskin.SkinConstants
 import com.godq.xskin.SkinManager
 
@@ -26,15 +27,7 @@ class SkinSrcAttr(
     }
 
     private fun setSrcBySkinRes(imageView: ImageView) {
-        val (currentResource, currentPackageName) = SkinManager.getCurrentResourceInfo() ?: return
-        val currentResId = currentResource.getIdentifier(resEntryName, resTypeName, currentPackageName).takeIf {
-            it != 0
-        }?: return
-        try {
-            ResourcesCompat.getDrawable(currentResource, currentResId, null)
-        } catch (e: Exception) {
-            null
-        }?.apply {
+        SkinManager.getSkinResource()?.getDrawable(resEntryName, resTypeName)?.apply {
             imageView.setImageDrawable(this)
         }
     }

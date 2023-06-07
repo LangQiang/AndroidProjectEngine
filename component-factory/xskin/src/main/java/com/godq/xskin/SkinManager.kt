@@ -3,7 +3,8 @@ package com.godq.xskin
 import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
-import com.godq.xskin.entity.SkinResourceInfo
+import com.godq.xskin.entity.ISkinResource
+import com.godq.xskin.entity.SkinResource
 import com.godq.xskin.entity.SkinViewWrapper
 import com.godq.xskin.inject.DownloadInjectImpl
 import com.godq.xskin.inject.IDownloadInject
@@ -18,6 +19,7 @@ import timber.log.Timber
  * @author  GodQ
  * @date  2023/5/30 4:47 PM
  */
+typealias SkinChangedListener = () -> Unit
 object SkinManager {
 
     private lateinit var mApplicationContext: Context
@@ -34,14 +36,16 @@ object SkinManager {
 
     private val mSkinViews = ArrayList<SkinViewWrapper>()
 
-    private var mSkinResourceInfo: SkinResourceInfo? = null
+    private val mSkinChangedListeners = ArrayList<SkinChangedListener>()
+
+    private var mSkinResource: SkinResource? = null
 
     private var mIsDebug: Boolean? = null
 
     fun init(application: Application, httpInject: IDownloadInject? = null) {
         this.mApplicationContext = application.applicationContext
         this.mDownloadInject = httpInject?: DownloadInjectImpl()
-        this.mSkinResourceInfo = SkinResourceInfo(application.resources, application.packageName)
+        this.mSkinResource = SkinResource(application.resources, application.packageName)
         this.mSkinResourceLoader.downloadInject = this.mDownloadInject
         this.mSkinLifecycleListener.listen(application)
     }
@@ -62,8 +66,8 @@ object SkinManager {
             }
             callback?.onFinish(newRes != null)
             if (autoApply) {
-                mSkinResourceInfo =
-                    newRes ?: mSkinResourceInfo ?: SkinResourceInfo(mApplicationContext.resources, mApplicationContext.packageName)
+                mSkinResource =
+                    newRes ?: mSkinResource ?: SkinResource(mApplicationContext.resources, mApplicationContext.packageName)
                 notifySkinChanged()
             }
         }
@@ -76,8 +80,8 @@ object SkinManager {
         }
         mScope.launch {
             val newRes = mSkinResourceLoader.loadSkinFromLocal(localPath)
-            mSkinResourceInfo =
-                newRes ?: mSkinResourceInfo ?: SkinResourceInfo(mApplicationContext.resources, mApplicationContext.packageName)
+            mSkinResource =
+                newRes ?: mSkinResource ?: SkinResource(mApplicationContext.resources, mApplicationContext.packageName)
             notifySkinChanged()
         }
     }
@@ -92,19 +96,18 @@ object SkinManager {
             return
         }
         mScope.launch {
-            mSkinResourceInfo = SkinResourceInfo(mApplicationContext.resources, mApplicationContext.packageName)
+            mSkinResource = SkinResource(mApplicationContext.resources, mApplicationContext.packageName)
             notifySkinChanged()
         }
     }
 
-    internal fun getCurrentResourceInfo() = mSkinResourceInfo
+    fun getSkinResource(): ISkinResource? = mSkinResource
 
     internal fun getSkinInflaterFactory() = mSkinInflaterFactory
 
     internal fun getSkinContext() = mApplicationContext
 
 
-    /*****************  data  ********************/
     fun setSkinAttrsWhenAddViewByCode(skinView: SkinViewWrapper) {
         addSkinView(skinView)
     }
@@ -115,6 +118,9 @@ object SkinManager {
     }
 
     private fun notifySkinChanged() {
+        mSkinChangedListeners.forEach {
+            it()
+        }
         mSkinViews.forEach {
             it.apply()
         }
@@ -141,7 +147,15 @@ object SkinManager {
         Timber.tag("SkinManager").d("clearInvalidReference after size: ${mSkinViews.size}")
 
     }
-    /*****************  data  ********************/
+
+
+    fun registerSkinChangedListener(listener: SkinChangedListener) {
+        mSkinChangedListeners.add(listener)
+    }
+
+    fun unregisterSkinChangedListener(listener: SkinChangedListener) {
+        mSkinChangedListeners.remove(listener)
+    }
 
     private fun isDebug(): Boolean {
         var isDebug = mIsDebug

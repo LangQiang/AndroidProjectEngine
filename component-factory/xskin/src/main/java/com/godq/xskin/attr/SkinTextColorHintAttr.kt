@@ -26,15 +26,7 @@ class SkinTextColorHintAttr(
     }
 
     private fun setTextColorHintBySkinRes(textView: TextView) {
-        val (currentResource, currentPackageName) = SkinManager.getCurrentResourceInfo() ?: return
-        val currentResId = currentResource.getIdentifier(resEntryName, resTypeName, currentPackageName).takeIf {
-            it != 0
-        }?: return
-        try {
-            ResourcesCompat.getColorStateList(currentResource, currentResId, null)
-        } catch (e: Exception) {
-            null
-        }?.apply {
+        SkinManager.getSkinResource()?.getColorStateList(resEntryName, resTypeName)?.apply {
             textView.setHintTextColor(this)
         }
     }

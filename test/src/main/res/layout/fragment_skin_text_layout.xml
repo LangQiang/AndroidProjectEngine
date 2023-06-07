@@ -38,9 +38,7 @@
 
         <com.godq.test.skin.TestView
             android:id="@+id/skin_3"
-            xskin:enable="true"
             android:layout_margin="15dp"
-            android:background="@color/skin_unique"
             android:layout_width="match_parent"
             android:layout_height="50dp"/>
 

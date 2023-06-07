@@ -24,25 +24,12 @@ class SkinBackgroundAttr(
     }
 
     private fun setBackgroundBySkinRes(view: View) {
-        val (currentResource, currentPackageName) = SkinManager.getCurrentResourceInfo() ?: return
-        val currentResId = currentResource.getIdentifier(resEntryName, resTypeName, currentPackageName).takeIf {
-            it != 0
-        }?: return
-
         if (SkinConstants.RES_TYPE_COLOR == resTypeName) {
-            try {
-                ResourcesCompat.getColor(currentResource, currentResId, null)
-            } catch (e: Exception) {
-                null
-            }?.apply {
+            SkinManager.getSkinResource()?.getColor(resEntryName, resTypeName)?.apply {
                 view.setBackgroundColor(this)
             }
         } else if (SkinConstants.RES_TYPE_DRAWABLE == resTypeName) {
-            try {
-                ResourcesCompat.getDrawable(currentResource, currentResId, null)
-            } catch (e: Exception) {
-                null
-            }?.apply {
+            SkinManager.getSkinResource()?.getDrawable(resEntryName, resTypeName)?.apply {
                 //fixme 可能存在view的padding被设置为drawable的padding
                 ViewCompat.setBackground(view, this)
             }

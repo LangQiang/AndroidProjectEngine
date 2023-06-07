@@ -4,7 +4,7 @@ import android.content.pm.PackageManager
 import android.content.res.AssetManager
 import android.content.res.Resources
 import com.godq.xskin.SkinManager
-import com.godq.xskin.entity.SkinResourceInfo
+import com.godq.xskin.entity.SkinResource
 import com.godq.xskin.inject.IDownloadInject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,13 +23,13 @@ class SkinResourceLoader {
 
     internal lateinit var downloadInject: IDownloadInject
 
-    suspend fun loadSkinFromNet(url: String, callback: ((progress: Float) -> Unit)?): SkinResourceInfo? {
+    suspend fun loadSkinFromNet(url: String, callback: ((progress: Float) -> Unit)?): SkinResource? {
         val localPath = getLocalPath(url, callback)?: return null
         Timber.tag("SkinManager").d("loadSkin savePath:$localPath")
         return loadSkinFromLocal(localPath)
     }
 
-    suspend fun loadSkinFromLocal(localPath: String): SkinResourceInfo? {
+    suspend fun loadSkinFromLocal(localPath: String): SkinResource? {
         return invokeResources(localPath)
     }
 
@@ -38,7 +38,7 @@ class SkinResourceLoader {
         return File(path).exists().let { if (it) path else "" }
     }
 
-    private suspend fun invokeResources(resFilePath: String): SkinResourceInfo? {
+    private suspend fun invokeResources(resFilePath: String): SkinResource? {
         return withContext(Dispatchers.IO) {
             try {
                 val pm: PackageManager = SkinManager.getSkinContext().packageManager
@@ -59,7 +59,7 @@ class SkinResourceLoader {
                     superRes.configuration
                 )
 
-                SkinResourceInfo(res, skinPackageName)
+                SkinResource(res, skinPackageName)
             } catch (e: Exception) {
                 Timber.tag("SkinManager").e("e: ${e.message}")
                 null
