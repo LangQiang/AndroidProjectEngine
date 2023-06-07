@@ -43,6 +43,7 @@
             android:layout_height="50dp"/>
 
         <View
+            android:id="@+id/skin_4"
             android:layout_margin="15dp"
             xskin:enable="true"
             android:background="@color/skin_text_primary"

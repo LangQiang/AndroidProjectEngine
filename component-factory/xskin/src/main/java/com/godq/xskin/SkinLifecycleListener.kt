@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.app.Application.ActivityLifecycleCallbacks
 import android.os.Bundle
+import androidx.core.view.LayoutInflaterCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
@@ -22,6 +23,11 @@ class SkinLifecycleListener {
     private var isListening = false
 
     private val mActivityLifecycleCallbacks = object : ActivityLifecycleCallbacks {
+
+        override fun onActivityPreCreated(activity: Activity, savedInstanceState: Bundle?) {
+            super.onActivityPreCreated(activity, savedInstanceState)
+            LayoutInflaterCompat.setFactory2(activity.layoutInflater, SkinManager.getSkinInflaterFactory())
+        }
 
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
             Timber.tag("SkinManager").d("ActivityLifecycleCallback ${activity.javaClass.name}: onActivityCreated")
@@ -50,6 +56,8 @@ class SkinLifecycleListener {
         }
 
         override fun onActivityDestroyed(activity: Activity) {
+            Timber.tag("SkinManager").d("ActivityLifecycleCallbacks ${activity.javaClass.name}: onActivityDestroyed")
+            SkinManager.clearInvalidReference()
         }
     }
 

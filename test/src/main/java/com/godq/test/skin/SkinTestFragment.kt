@@ -1,5 +1,6 @@
 package com.godq.test.skin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.godq.test.R
+import com.godq.test.TwoActivity
 import com.godq.xskin.SkinConstants
 import com.godq.xskin.SkinManager
 import com.godq.xskin.entity.SkinViewWrapper
@@ -72,6 +74,10 @@ class SkinTestFragment: BaseFragment() {
         view.findViewById<View>(R.id.skin_3).setOnClickListener {
             ConfMgr.setStringValue("", "skin", "", false)
             SkinManager.reset()
+        }
+
+        view.findViewById<View>(R.id.skin_4).setOnClickListener {
+            startActivity(Intent(context, TwoActivity::class.java))
         }
 
         val addView = TextView(context)

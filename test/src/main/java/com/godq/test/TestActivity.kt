@@ -3,10 +3,10 @@ package com.godq.test
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.godq.test.sideslidewidget.SideSlideMenuFragment
 import com.godq.test.skin.SkinTestFragment
-import com.godq.xskin.base.SkinActivity
 import com.godq.xskin.SkinManager
 import com.lazylite.bridge.init.ComponentInit
 import com.lazylite.mod.App
@@ -16,12 +16,11 @@ import com.lazylite.mod.fragmentmgr.IHostActivity
 import com.lazylite.mod.fragmentmgr.OnFragmentStackChangeListener
 import com.lazylite.mod.fragmentmgr.StartParameter
 
-class TestActivity : SkinActivity() {
+class TestActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         ComponentInit.initOnAppCreate(this.application, null)
         App.setMainActivity(this) //垃圾代码
 
-        SkinManager.init(this.application)
         val key = ConfMgr.getStringValue("", "skin", "")
         if (!key.isNullOrEmpty()) {
             SkinManager.loadSkin(key)

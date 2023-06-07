@@ -3,6 +3,8 @@ package com.godq.xskin
 import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
+import android.view.LayoutInflater
+import androidx.core.view.LayoutInflaterCompat
 import com.godq.xskin.entity.ISkinResource
 import com.godq.xskin.entity.SkinResource
 import com.godq.xskin.entity.SkinViewWrapper
@@ -48,6 +50,8 @@ object SkinManager {
         this.mSkinResource = SkinResource(application.resources, application.packageName)
         this.mSkinResourceLoader.downloadInject = this.mDownloadInject
         this.mSkinLifecycleListener.listen(application)
+        //确保有人用application的Context加载View时依然正确换肤
+        LayoutInflaterCompat.setFactory2(LayoutInflater.from(application), mSkinInflaterFactory)
     }
 
     /**
