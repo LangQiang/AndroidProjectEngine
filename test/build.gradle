@@ -59,4 +59,6 @@ dependencies {
     implementation project(":component-factory:AppLogcat")
     implementation project(":component-factory:SideSlideMenuWidget")
     implementation project(":component-factory:xskin")
+//    implementation 'io.github.langqiang:XSkin:1.0.1-SNAPSHOT'
+
 }

@@ -18,7 +18,7 @@ class TestView @JvmOverloads constructor(context: Context, attributes: Attribute
     private val paint = Paint()
     private val paint2 = Paint()
 
-    private val onSkinChangedListener:() -> Unit = {
+    private val onSkinChangedListener = SkinManager.SkinChangedListener {
         SkinManager.getSkinResource()?.getColor(R.color.skin_text_Tertiary)?.also {
             setPaintColor(it)
             invalidate()

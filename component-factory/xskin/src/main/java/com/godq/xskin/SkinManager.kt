@@ -21,7 +21,6 @@ import timber.log.Timber
  * @author  GodQ
  * @date  2023/5/30 4:47 PM
  */
-typealias SkinChangedListener = () -> Unit
 object SkinManager {
 
     private lateinit var mApplicationContext: Context
@@ -44,6 +43,7 @@ object SkinManager {
 
     private var mIsDebug: Boolean? = null
 
+    @JvmOverloads
     fun init(application: Application, httpInject: IDownloadInject? = null) {
         this.mApplicationContext = application.applicationContext
         this.mDownloadInject = httpInject?: DownloadInjectImpl()
@@ -58,6 +58,7 @@ object SkinManager {
      * 同一个资源不会重复下载，加载资源可以重复调用此方法，内部做了缓存处理
      * @param autoApply true:自动切换资源 false:只下载不应用
      * */
+    @JvmOverloads
     fun loadSkin(url: String, autoApply: Boolean = true, callback: SkinLoadCallback? = null) {
         takeIf { !this::mApplicationContext.isInitialized }?.apply {
             Timber.tag("SkinManager").e("XSkin is not Initialized")
@@ -123,7 +124,7 @@ object SkinManager {
 
     private fun notifySkinChanged() {
         mSkinChangedListeners.forEach {
-            it()
+            it.onChanged()
         }
         mSkinViews.forEach {
             it.apply()
@@ -176,4 +177,7 @@ object SkinManager {
         return isDebug ?: false
     }
 
+    fun interface SkinChangedListener {
+        fun onChanged()
+    }
 }
