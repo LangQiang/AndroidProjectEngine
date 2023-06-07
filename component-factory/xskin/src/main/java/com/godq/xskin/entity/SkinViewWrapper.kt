@@ -23,7 +23,7 @@ class SkinViewWrapper internal constructor(private val skinView: WeakReference<o
 
         private val skinAttrs = ArrayList<ISkinAttr>()
 
-        fun setAttr(attrName: SkinConstants.SupportAttributeName, attrId: Int): Builder {
+        fun addAttr(attrName: SkinConstants.SupportAttributeName, attrId: Int): Builder {
             //获取属性值的字符串名称和类型: color skin_xxx_red
             val entryName = skinView.resources.getResourceEntryName(attrId)
             val typeName = skinView.resources.getResourceTypeName(attrId)

@@ -25,7 +25,7 @@ public class SkinJAVATest {
         SkinManager.INSTANCE.registerSkinChangedListener(cb);
         SkinManager.INSTANCE.setSkinAttrsWhenAddViewByCode(
                 new SkinViewWrapper.Builder(new View(App.getApplication()))
-                        .setAttr(SkinConstants.SupportAttributeName.TEXT_COLOR, R.color.rgb4D000000)
+                        .addAttr(SkinConstants.SupportAttributeName.TEXT_COLOR, R.color.rgb4D000000)
                         .build());
     }
 }

@@ -82,7 +82,7 @@ addView.text = "Dynamic addition View”
 rootViewGroup.addView(addView)
 SkinManager.setSkinAttrsWhenAddViewByCode(
         SkinViewWrapper.Builder(addView)
-           .setAttr(SkinConstants.SupportAttributeName.TEXT_COLOR,R.color.skin_text_primary)
+           .addAttr(SkinConstants.SupportAttributeName.TEXT_COLOR,R.color.skin_text_primary)
            .build()
         )
 ```

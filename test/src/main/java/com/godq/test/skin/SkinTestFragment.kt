@@ -85,7 +85,7 @@ class SkinTestFragment: BaseFragment() {
         view.findViewById<LinearLayout>(R.id.skin_test_ll).addView(addView)
         SkinManager.setSkinAttrsWhenAddViewByCode(
             SkinViewWrapper.Builder(addView)
-                .setAttr(SkinConstants.SupportAttributeName.TEXT_COLOR, R.color.skin_text_primary)
+                .addAttr(SkinConstants.SupportAttributeName.TEXT_COLOR, R.color.skin_text_primary)
                 .build()
         )
     }
