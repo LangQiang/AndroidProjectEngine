@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.godq.test.sideslidewidget.SideSlideMenuFragment
 import com.godq.test.skin.SkinTestFragment
+import com.godq.test.uicompose.UIComposeFragment
 import com.godq.xskin.SkinManager
 import com.lazylite.bridge.init.ComponentInit
 import com.lazylite.mod.App
@@ -35,6 +36,9 @@ class TestActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.skin_btn).setOnClickListener {
             FragmentOperation.getInstance().showFullFragment(SkinTestFragment())
+        }
+        findViewById<View>(R.id.ui_compose).setOnClickListener {
+            FragmentOperation.getInstance().showFullFragment(UIComposeFragment())
         }
         bindFragmentOperation()
 

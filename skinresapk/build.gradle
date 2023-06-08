@@ -33,7 +33,7 @@ android {
 
     sourceSets {
         main {
-            res.srcDirs = ['src/main/skin-res/skin-2']
+            res.srcDirs = ['src/main/skin-res/skin-smd-1']
         }
     }
 }

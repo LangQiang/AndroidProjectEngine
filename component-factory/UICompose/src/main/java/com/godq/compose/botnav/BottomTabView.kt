@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.godq.botnav.R
+import com.godq.compose.R
 
 class BottomTabView(private val mContext: Context, data: BottomItemData?) : FrameLayout(mContext),
     ITabView {

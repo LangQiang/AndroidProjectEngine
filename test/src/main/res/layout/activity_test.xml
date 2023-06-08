@@ -41,6 +41,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"/>
 
+            <TextView
+                xskin:enable="true"
+                android:background="@drawable/main_bg"
+                android:textColor="@color/skin_text_primary"
+                android:id="@+id/ui_compose"
+                android:gravity="center"
+                android:text="UI组件"
+                android:textSize="18dp"
+                android:layout_margin="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"/>
+
         </LinearLayout>
 
         <LinearLayout

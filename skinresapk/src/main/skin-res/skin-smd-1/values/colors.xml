@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="skin_text_primary">#ffffffff</color>
+    <color name="skin_text_secondary">#99ffffff</color>
+    <color name="skin_text_Tertiary">#22ffffff</color>
+    <color name="skin_text_Quaternary">#10ffffff</color>
+
+    <color name="skin_btn_text_color">#ffffffff</color>
+
+    <color name="skin_btn_bg_normal">#ff66B2FF</color>
+    <color name="skin_btn_bg_press">#aa66B2FF</color>
+
+    <color name="skin_item_shape_common_normal_bg_color">#ff000000</color>
+    <color name="skin_item_shape_common_press_bg_color">#aa000000</color>
+</resources>
