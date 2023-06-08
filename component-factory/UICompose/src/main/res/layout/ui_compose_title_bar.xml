@@ -29,11 +29,10 @@
         <TextView
             android:gravity="center"
             android:id="@+id/title_tv"
-            android:text="asdfasdf"
             android:layout_weight="1"
             android:textStyle="bold"
             android:textSize="18sp"
-            tools:text="sasdfasfsasdfasfsasdfasfsasdfasfsasdfasfsasdfasfsasdfasfsasdfasf"
+            tools:text="TitleBar"
             android:ellipsize="end"
             android:singleLine="true"
             android:layout_gravity="center_vertical"
