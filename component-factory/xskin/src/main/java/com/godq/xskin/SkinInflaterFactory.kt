@@ -81,6 +81,14 @@ class SkinInflaterFactory : LayoutInflater.Factory2 {
 
     private fun isSkinView(name: String, attrs: AttributeSet): Boolean {
         //可以在这里加过滤器
+        when (name) {
+            "com.godq.xskin.widget.SkinTransitionBgView" -> {
+                return true
+            }
+            else -> {
+
+            }
+        }
         return attrs.getAttributeBooleanValue(SkinConstants.NAMESPACE, SkinConstants.ATTR_SKIN_ENABLE, false)
     }
 

@@ -38,6 +38,16 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
         setResDelegate(delegate)
     }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        delegate?.onAttach()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        delegate?.onDetach()
+    }
+
     fun setResDelegate(delegate: AbsTitleBarResDelegate?) {
         this.delegate = delegate
         notifyStyleChanged() //这里可以记录快照，每次对比实现局部更新
@@ -60,15 +70,12 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
         menuContainer?.setOnClickListener(onClickListener)
     }
 
-    fun showMenu(showMenuText: Boolean, showMenuIcon: Boolean) {
-        if (showMenuText) {
-            menuTv?.visibility = VISIBLE
-            return
-        }
-        if (showMenuIcon) {
-            menuIv?.visibility = VISIBLE
-            return
-        }
+    @JvmOverloads
+    fun setVisible(showBack: Boolean? = null, showTitle: Boolean? = null, showMenuText: Boolean? = null, showMenuIcon: Boolean? = null) {
+        backContainer?.visibility = if (showBack == true)  VISIBLE else INVISIBLE
+        titleTv?.visibility = if (showTitle == true)  VISIBLE else INVISIBLE
+        menuTv?.visibility = if (showMenuText == true)  VISIBLE else INVISIBLE
+        menuIv?.visibility = if (showMenuIcon == true)  VISIBLE else INVISIBLE
     }
 
     fun notifyStyleChanged() {

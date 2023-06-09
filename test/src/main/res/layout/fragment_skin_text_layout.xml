@@ -4,10 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.godq.xskin.widget.SkinTransitionBgView
+        android:background="@drawable/main_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
         android:id="@+id/skin_test_ll"
-        xskin:enable="true"
-        android:background="@drawable/main_bg"
         android:orientation="vertical"
         android:gravity="center"
         android:layout_width="match_parent"
