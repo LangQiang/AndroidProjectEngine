@@ -16,7 +16,7 @@ repositories {
 2. 在项目的 build.gradle 文件中添加依赖项：  
 ```
 dependencies {
-    implementation 'io.github.langqiang:XSkin:1.0.0-SNAPSHOT'
+    implementation 'io.github.langqiang:XSkin:1.0.4-SNAPSHOT'
 }
 ```
 
@@ -144,7 +144,6 @@ SkinManager.setSkinAttrsWhenAddViewByCode(
 1. XSkin:1.0.x-SNAPSHOT 目前只支持  textColor｜background｜src｜textColorHint属性，后续会陆续支持
 2. 加载网络皮肤包以url作为唯一标识，多次加载同一url不会重复下载即使真正的文件不同。
 3. 在应用冷启动后不会记录上一次加载的资源，需要用户自行实现，记录最新加载的url或者本地路径在初始化之后调用XSkin的加载接口。  
-4. 不停的加载多个皮肤包理论上会持续的增加内存。
 
 ## 八、常见问题
 
@@ -153,3 +152,6 @@ SkinManager.setSkinAttrsWhenAddViewByCode(
 2. 优化下加载多个皮肤包内存增加问题
 
 项目地址：https://github.com/LangQiang/AndroidProjectEngine/tree/master/component-factory/xskin
+
+## 十 更新说明
+1.0.4: 新增背景切换转场动画控件SkinTransitionBgView
