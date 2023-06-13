@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+def res_dir = project.getProperties().get("res_directory")
+print res_dir
+
 android {
     namespace 'com.godq.skinresapk'
     compileSdk 33
@@ -15,6 +18,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
     }
 
     buildTypes {
@@ -33,7 +38,10 @@ android {
 
     sourceSets {
         main {
-            res.srcDirs = ['src/main/skin-res/skin-smd-1']
+            if (res_dir != null) {
+                print("sourceSets main res:" + res_dir)
+                res.srcDirs = [res_dir]
+            }
         }
     }
 }
