@@ -607,7 +607,7 @@ public class ScreenUtility {
 		}
 		String uriStr = null;
 		try {
-			uriStr = MediaStore.Images.Media.insertImage(context.getContentResolver(), path, UUID.randomUUID().toString(), "元惜分享");
+			uriStr = MediaStore.Images.Media.insertImage(context.getContentResolver(), path, UUID.randomUUID().toString(), "应用分享");
 		}catch (Exception e){  //有些手机上会禁止此操作权限，造成安全
 			return false;
 		}

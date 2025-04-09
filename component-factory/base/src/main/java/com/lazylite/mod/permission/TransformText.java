@@ -142,14 +142,14 @@ public class TransformText {
         if (hasValue) {
             stringBuilder.deleteCharAt(stringBuilder.length() - 1);
         }
-        if (stringBuilder.indexOf("正常使用元惜功能") != -1) {
-            return "正常使用元惜功能";
+        if (stringBuilder.indexOf("正常使用应用功能") != -1) {
+            return "正常使用应用功能";
         }
         return stringBuilder.toString();
     }
 
     public static String getPermissionTip(String permission) {
-        String result = "正常使用元惜功能";
+        String result = "正常使用应用功能";
         switch (permission) {
             case READ_CALENDAR:
             case WRITE_CALENDAR: {

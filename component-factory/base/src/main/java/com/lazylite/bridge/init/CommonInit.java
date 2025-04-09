@@ -18,7 +18,6 @@ import com.lazylite.mod.http.mgr.KwHttpConfig;
 import com.lazylite.mod.http.mgr.KwHttpMgr;
 import com.lazylite.mod.imageloader.fresco.load.impl.FrescoImageLoader;
 import com.lazylite.mod.receiver.network.NetworkStateUtil;
-import com.lazylite.mod.receiver.sdcard.SDCardUtils;
 import com.lazylite.mod.utils.AppInfo;
 import com.lazylite.mod.utils.DeviceInfo;
 import com.tencent.mmkv.MMKV;
@@ -68,10 +67,17 @@ class CommonInit {
             builder.setTrustManager(getX509TrustManager());
             builder.setSslSocketFactory(getSSLSocketFactory());
         }
+        if (config != null) {
+            builder.setInterceptors(config.interceptors);
+            builder.setNetworkInterceptors(config.netWorkInterceptors);
+        }
+        builder.setConnectTimeout(config == null ? 30 : config.connectTimeout);
+        builder.setReadTimeout(config == null ? 60 : config.readTimeout);
+        builder.setWriteTimeout(config == null ? 60 : config.writeTimeout);
+
         KwHttpMgr.getInstance().init(context, builder.build());
         //
         NetworkStateUtil.init(context);
-        SDCardUtils.init(context);
 
         if (isDebug(context)) {
             Timber.plant(new Timber.DebugTree());

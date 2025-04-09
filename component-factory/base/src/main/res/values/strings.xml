@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">元惜</string>
+    <string name="app_name">UNKNOWN</string>
 
     <string name="list_onlywifi">仅wifi联网已开启\n为了节省您的流量，不获取在线内容</string>
     <string name="search_result_search_nonet_tip">还没联网，无法搜索网络歌曲</string>

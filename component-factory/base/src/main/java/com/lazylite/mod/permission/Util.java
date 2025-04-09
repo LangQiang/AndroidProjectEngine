@@ -126,7 +126,7 @@ public class Util {
 //    }
 //
     public static CharSequence createRequestMsg(String[] permissions) {
-        StringBuilder messageBuild = new StringBuilder("<html>元惜需要获取");
+        StringBuilder messageBuild = new StringBuilder("<html>应用需要获取");
         List<String> text = TransformText.transformText(permissions);
         for (int i = 0, size = text.size(); i < size; i++) {
             messageBuild.append("<font color=\"#1672FA\">（").append(text.get(i)).append("）</font>");
@@ -144,7 +144,7 @@ public class Util {
     }
 
     public static CharSequence createGoSettingMsg(String[] permissions) {
-        StringBuilder messageBuild = new StringBuilder("元惜需要获取");
+        StringBuilder messageBuild = new StringBuilder("应用需要获取");
         List<String> text = TransformText.transformText(permissions);
         for (int i = 0, size = text.size(); i < size; i++) {
             messageBuild.append("（").append(text.get(i)).append("）");
@@ -158,7 +158,7 @@ public class Util {
         }
         messageBuild.append("权限，以保证" + TransformText.getPermissionTip(permissions));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            messageBuild.append("。\n请在【设置-应用-元惜-权限】中开启权限。");
+            messageBuild.append("。\n请在【设置-应用-应用名称-权限】中开启权限。");
         } else {
             messageBuild.append("。\n请在【设置】中开启权限。");
         }

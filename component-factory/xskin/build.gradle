@@ -13,11 +13,11 @@ apply from:'../../publish-tool.gradle'
 
 android {
     namespace 'com.godq.xskin'
-    compileSdk 32
+    compileSdk rootProject.ext.compileSdk
 
     defaultConfig {
-        minSdk 16
-        targetSdk 32
+        minSdk rootProject.ext.minSdk
+        targetSdk rootProject.ext.targetSdk
 
         consumerProguardFiles "consumer-rules.pro"
     }

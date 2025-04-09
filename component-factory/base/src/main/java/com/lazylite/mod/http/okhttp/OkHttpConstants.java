@@ -15,11 +15,11 @@ public class OkHttpConstants {
 
     static final int CACHE_SIZE = 10 * 1024 * 1024;
 
-    static final int TIME_OUT_CONNECT_SECONDS = 10;
+    static final int TIME_OUT_CONNECT_SECONDS = 30;
 
-    static final int TIME_OUT_WRITE_SECONDS = 30;
+    static final int TIME_OUT_WRITE_SECONDS = 60;
 
-    static final int TIME_OUT_READ_SECONDS = 100;
+    static final int TIME_OUT_READ_SECONDS = 60;
 
     static final int CODE_EMPTY_BODY = 700;
 

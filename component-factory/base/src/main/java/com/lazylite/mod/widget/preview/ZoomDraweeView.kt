@@ -101,7 +101,7 @@ class ZoomDraweeView(mContext: Context, attrs: AttributeSet?, defStyle: Int): Si
         mScaleDetector = ScaleGestureDetector(context, scaleListener)
 
         val gestureListener: GestureDetector.SimpleOnGestureListener = object : GestureDetector.SimpleOnGestureListener() {
-            override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
                 mScroller?.forceFinished(true)
                 reset(true)
                 mZoomViewListener?.onClick()
@@ -110,8 +110,8 @@ class ZoomDraweeView(mContext: Context, attrs: AttributeSet?, defStyle: Int): Si
             }
 
             override fun onScroll(
-                e1: MotionEvent?,
-                e2: MotionEvent?,
+                e1: MotionEvent,
+                e2: MotionEvent,
                 distanceX: Float,
                 distanceY: Float
             ): Boolean {
@@ -143,8 +143,8 @@ class ZoomDraweeView(mContext: Context, attrs: AttributeSet?, defStyle: Int): Si
 
 
             override fun onFling(
-                e1: MotionEvent?,
-                e2: MotionEvent?,
+                e1: MotionEvent,
+                e2: MotionEvent,
                 velocityX: Float,
                 velocityY: Float
             ): Boolean {
@@ -227,7 +227,7 @@ class ZoomDraweeView(mContext: Context, attrs: AttributeSet?, defStyle: Int): Si
             releaseDragDistance = 0f
         }
         mScaleDetector.onTouchEvent(event)
-        if (!mScaleDetector.isInProgress) {
+        if (!mScaleDetector.isInProgress && event != null) {
             mGestureDetector.onTouchEvent(event)
         }
         return true

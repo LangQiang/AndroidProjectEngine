@@ -29,7 +29,7 @@ import java.util.Locale;
 public final class AppInfo {
 
     // name，某些api会用到
-    public static final String APP_NAME = "YuanXi";
+    public static final String APP_NAME = "UNKNOWN";
     private static final String FST_LAUNCH_KEY = "fstLaunch";
     public static String CLIENT_IP = "0.0.0.0";
     public static boolean IS_FORGROUND = false;

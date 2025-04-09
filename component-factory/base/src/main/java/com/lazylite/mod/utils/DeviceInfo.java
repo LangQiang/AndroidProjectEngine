@@ -46,7 +46,6 @@ import java.util.regex.Pattern;
 
 import timber.log.Timber;
 
-// by haiping
 public final class DeviceInfo {
 
 	public static final String SEC_APP_CONFIG = "appconfig";

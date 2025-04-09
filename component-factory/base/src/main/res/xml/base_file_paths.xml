@@ -5,11 +5,8 @@
         path="." />
     <external-path
         name="Home"
-        path="Android/data/com.tencent.metarare/files/YuanXi/" />
+        path="Android/data/com.tencent.metarare/files/APP/" />
     <external-path
         name="Download"
         path="Download/" />
-    <external-path
-        name="DownloadRes"
-        path="元惜/试音素材/" />
 </paths>

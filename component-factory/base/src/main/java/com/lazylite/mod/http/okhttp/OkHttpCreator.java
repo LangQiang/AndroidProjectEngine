@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Cache;
 import okhttp3.Dispatcher;
 import okhttp3.Dns;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 
 import java.security.SecureRandom;
@@ -58,17 +59,28 @@ public class OkHttpCreator {
 
         builder.dns(getDns());
 
-        builder.connectTimeout(OkHttpConstants.TIME_OUT_CONNECT_SECONDS, TimeUnit.SECONDS);
-        builder.writeTimeout(OkHttpConstants.TIME_OUT_WRITE_SECONDS, TimeUnit.SECONDS);
-        builder.readTimeout(OkHttpConstants.TIME_OUT_READ_SECONDS, TimeUnit.SECONDS);
+
+        builder.connectTimeout(kwHttpConfig.getConnectTimeout() != 0 ? kwHttpConfig.getConnectTimeout() : OkHttpConstants.TIME_OUT_CONNECT_SECONDS, TimeUnit.SECONDS);
+        builder.writeTimeout(kwHttpConfig.getWriteTimeout() != 0 ?  kwHttpConfig.getWriteTimeout() : OkHttpConstants.TIME_OUT_WRITE_SECONDS, TimeUnit.SECONDS);
+        builder.readTimeout(kwHttpConfig.getReadTimeout() != 0 ? kwHttpConfig.getReadTimeout() : OkHttpConstants.TIME_OUT_READ_SECONDS, TimeUnit.SECONDS);
 
         builder.cache(createCache(kwHttpConfig.getContext()));
 
         builder.addInterceptor(new OkHttpLogInterceptor());
         builder.addInterceptor(new ReqCacheInterceptor());
         builder.addInterceptor(new FixedIpRetryInterceptor());
+        for (Interceptor interceptor : kwHttpConfig.getInterceptors()) {
+            if (interceptor != null) {
+                builder.addInterceptor(interceptor);
+            }
+        }
 
         builder.addNetworkInterceptor(new RespCacheInterceptor());
+        for (Interceptor interceptor : kwHttpConfig.getNetworkInterceptors()) {
+            if (interceptor != null) {
+                builder.addNetworkInterceptor(interceptor);
+            }
+        }
         builder.addInterceptor(new ProgressInterceptor());
 
         Dispatcher dispatcher = new Dispatcher();

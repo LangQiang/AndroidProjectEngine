@@ -7,12 +7,12 @@ apply from: '../gradle_utils.gradle'
 
 
 android {
-    compileSdk 32
+    compileSdkVersion rootProject.ext.compileSdk
 
     defaultConfig {
         applicationId "com.godq.test"
-        minSdk 21
-        targetSdk 32
+        minSdkVersion rootProject.ext.minSdk
+        targetSdkVersion rootProject.ext.targetSdk
         versionCode 1
         versionName "1.0"
 

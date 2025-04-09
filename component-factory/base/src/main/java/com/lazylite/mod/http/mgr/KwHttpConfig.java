@@ -21,6 +21,8 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.X509TrustManager;
 
+import okhttp3.Interceptor;
+
 
 public class KwHttpConfig {
 
@@ -30,6 +32,9 @@ public class KwHttpConfig {
 
     private IKwHttpFetcher iKwHttpFetcher;
 
+    private ArrayList<Interceptor> interceptors = new ArrayList<>();
+    private ArrayList<Interceptor> networkInterceptors = new ArrayList<>();
+
     private HostnameVerifier hostnameVerifier;
 
     private X509TrustManager trustManager;
@@ -38,6 +43,9 @@ public class KwHttpConfig {
 
     private Context context;
     private Handler handler;
+    private int connectTimeout = 30;
+    private int readTimeout = 60;
+    private int writeTimeout = 60;
 
     private KwHttpConfig() {}
 
@@ -97,6 +105,22 @@ public class KwHttpConfig {
         return hostnameVerifier;
     }
 
+    public ArrayList<Interceptor> getInterceptors() {
+        return interceptors;
+    }
+    public ArrayList<Interceptor> getNetworkInterceptors() {
+        return networkInterceptors;
+    }
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+    public int getWriteTimeout() {
+        return writeTimeout;
+    }
+
     public Context getContext() {
         return context;
     }
@@ -145,6 +169,11 @@ public class KwHttpConfig {
         private SSLSocketFactory sslSocketFactory;
         private Context context;
         private Handler handler;
+        public int connectTimeout = 30;
+        public int readTimeout = 60;
+        public int writeTimeout = 60;
+        private ArrayList<Interceptor> interceptors;
+        private ArrayList<Interceptor> networkInterceptors;
 
         public Builder setContext(Context context) {
             this.context = context;
@@ -159,6 +188,18 @@ public class KwHttpConfig {
 
         public Builder setHandler(Handler handler) {
             this.handler = handler;
+            return this;
+        }
+        public Builder setConnectTimeout(int connectTimeout) {
+            this.connectTimeout = connectTimeout;
+            return this;
+        }
+        public Builder setReadTimeout(int readTimeout) {
+            this.readTimeout = readTimeout;
+            return this;
+        }
+        public Builder setWriteTimeout(int writeTimeout) {
+            this.writeTimeout = writeTimeout;
             return this;
         }
 
@@ -177,6 +218,14 @@ public class KwHttpConfig {
             return this;
         }
 
+        public void setInterceptors(ArrayList<Interceptor> interceptors) {
+            this.interceptors = interceptors;
+        }
+
+        public void setNetworkInterceptors(ArrayList<Interceptor> interceptors) {
+            this.networkInterceptors = interceptors;
+        }
+
 
         public KwHttpConfig build() {
             KwHttpConfig kwHttpConfig = new KwHttpConfig();
@@ -186,13 +235,21 @@ public class KwHttpConfig {
             kwHttpConfig.trustManager = this.trustManager;
             kwHttpConfig.sslSocketFactory = this.sslSocketFactory;
             kwHttpConfig.resultCheckPolicies = this.resultCheckPolicies;
+            kwHttpConfig.connectTimeout = this.connectTimeout;
+            kwHttpConfig.readTimeout = this.readTimeout;
+            kwHttpConfig.writeTimeout = this.writeTimeout;
+            if (this.interceptors != null) {
+                kwHttpConfig.interceptors.addAll(this.interceptors);
+            }
+            if (this.networkInterceptors != null) {
+                kwHttpConfig.networkInterceptors.addAll(this.networkInterceptors);
+            }
             if(null == kwHttpConfig.resultCheckPolicies){
                 kwHttpConfig.resultCheckPolicies = new LinkedList<>();
             }
             kwHttpConfig.iKwHttpFetcher = OkHttpCreator.create(kwHttpConfig); //这个赋值要放在最后一个
             return kwHttpConfig;
         }
-
     }
 
 }
