@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.Px
 import com.godq.compose.R
 
 
@@ -25,6 +26,7 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
     private var menuContainer: View? = null
     private var menuTv: TextView? = null
     private var menuIv: ImageView? = null
+    private var divideLine: View? = null
 
     init {
         LayoutInflater.from(context).inflate(R.layout.ui_compose_title_bar, this, true)
@@ -34,6 +36,7 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
         menuContainer = findViewById(R.id.menu_container)
         menuTv = findViewById(R.id.menu_tv)
         menuIv = findViewById(R.id.menu_iv)
+        divideLine = findViewById(R.id.title_bottom_divide_line)
 
         setResDelegate(delegate)
     }
@@ -62,6 +65,12 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
         menuTv?.visibility = VISIBLE
     }
 
+    fun setDivideLineHeight(@Px height: Int) {
+        val params = divideLine?.layoutParams
+        params?.height = height
+        divideLine?.layoutParams = params
+    }
+
     fun setBackClickListener(onClickListener: OnClickListener) {
         backContainer?.setOnClickListener(onClickListener)
     }
@@ -71,11 +80,28 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
     }
 
     @JvmOverloads
-    fun setVisible(showBack: Boolean? = null, showTitle: Boolean? = null, showMenuText: Boolean? = null, showMenuIcon: Boolean? = null) {
-        backContainer?.visibility = if (showBack == true)  VISIBLE else INVISIBLE
-        titleTv?.visibility = if (showTitle == true)  VISIBLE else INVISIBLE
-        menuTv?.visibility = if (showMenuText == true)  VISIBLE else INVISIBLE
-        menuIv?.visibility = if (showMenuIcon == true)  VISIBLE else INVISIBLE
+    fun setVisible(
+        showBack: Boolean? = null,
+        showTitle: Boolean? = null,
+        showMenuText: Boolean? = null,
+        showMenuIcon: Boolean? = null,
+        showDivideLine: Boolean? = null,
+    ) {
+        if (showBack != null) {
+            backContainer?.visibility = if (showBack) VISIBLE else INVISIBLE
+        }
+        if (showTitle != null) {
+            titleTv?.visibility = if (showTitle) VISIBLE else INVISIBLE
+        }
+        if (showMenuText != null) {
+            menuTv?.visibility = if (showMenuText) VISIBLE else INVISIBLE
+        }
+        if (showMenuIcon != null) {
+            menuIv?.visibility = if (showMenuIcon) VISIBLE else INVISIBLE
+        }
+        if (showDivideLine != null) {
+            divideLine?.visibility = if (showDivideLine) VISIBLE else INVISIBLE
+        }
     }
 
     fun notifyStyleChanged() {
@@ -84,6 +110,7 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
         setMenuIcon(delegate?.getMenuIcon())
         setMenuTextColor(delegate?.getMenuTextColor())
         setTitleBackground(delegate?.getBackground())
+        setDivideLineBackground(delegate?.getDivideLineColor())
     }
 
     /*******   设置titleBar的样式     *******/
@@ -115,6 +142,11 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
     private fun setTitleBackground(drawable: Drawable?) {
         drawable?: return
         background = drawable
+    }
+
+    private fun setDivideLineBackground(color: Int?) {
+        color?: return
+        divideLine?.setBackgroundColor(color)
     }
 
     companion object {

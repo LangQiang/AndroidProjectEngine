@@ -41,4 +41,8 @@ class TitleBarDefaultResDelegate(private val context: Context): AbsTitleBarResDe
     }
 
     override fun getBackground(): Drawable? = null
+
+    override fun getDivideLineColor(): Int {
+        return 0x1A000000
+    }
 }

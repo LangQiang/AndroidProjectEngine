@@ -4,7 +4,7 @@ plugins {
     id 'maven-publish'
 }
 ext {
-    publishVersion = '1.0.4-SNAPSHOT'
+    publishVersion = '1.0.5-SNAPSHOT'
     publishArtifactName = 'UICompose'
     publishComponentType = 'aar-release'
 }

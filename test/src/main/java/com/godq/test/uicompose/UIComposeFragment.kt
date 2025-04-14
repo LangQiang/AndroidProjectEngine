@@ -30,6 +30,7 @@ class UIComposeFragment: BaseFragment() {
 
             }
             setResDelegate(SkinTitleBarResDelegate(this))
+            setVisible(showDivideLine = true)
         }
     }
 }

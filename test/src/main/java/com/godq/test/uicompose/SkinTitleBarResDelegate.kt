@@ -34,6 +34,10 @@ class SkinTitleBarResDelegate(private val titleBar: TitleBar): AbsTitleBarResDel
 
     override fun getBackground(): Drawable? = SkinManager.getSkinResource()?.getDrawable(R.color.skin_btn_bg_primary)
 
+    override fun getDivideLineColor(): Int? {
+        return SkinManager.getSkinResource()?.getColor(R.color.skin_text_Tertiary)
+    }
+
     override fun onChanged() {
         titleBar.notifyStyleChanged()
     }

@@ -1,6 +1,5 @@
 package com.godq.compose.titlebar
 
-import android.content.Context
 import android.graphics.drawable.Drawable
 
 
@@ -19,4 +18,5 @@ interface AbsTitleBarResDelegate {
     fun getMenuTextStr(): String?
     fun getMenuTextColor(): Int?
     fun getBackground(): Drawable?
+    fun getDivideLineColor(): Int?
 }

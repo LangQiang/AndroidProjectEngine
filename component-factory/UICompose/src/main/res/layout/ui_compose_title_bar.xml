@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center_vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_gravity="center_vertical"
@@ -69,5 +69,10 @@
 
     </LinearLayout>
 
-
+    <View
+        android:visibility="invisible"
+        android:id="@+id/title_bottom_divide_line"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
 </FrameLayout>
