@@ -7,8 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.Px
+import androidx.core.view.marginBottom
+import androidx.core.view.marginTop
 import com.godq.compose.R
 
 
@@ -27,6 +30,7 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
     private var menuTv: TextView? = null
     private var menuIv: ImageView? = null
     private var divideLine: View? = null
+    private var contentContainer: LinearLayout? = null
 
     init {
         LayoutInflater.from(context).inflate(R.layout.ui_compose_title_bar, this, true)
@@ -37,6 +41,7 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
         menuTv = findViewById(R.id.menu_tv)
         menuIv = findViewById(R.id.menu_iv)
         divideLine = findViewById(R.id.title_bottom_divide_line)
+        contentContainer = findViewById(R.id.content_container)
 
         setResDelegate(delegate)
     }
@@ -63,6 +68,19 @@ class TitleBar @JvmOverloads constructor(context: Context, attributeSet: Attribu
     fun setMenuTitle(menuStr: String) {
         menuTv?.text = menuStr
         menuTv?.visibility = VISIBLE
+    }
+
+    fun setHorizontalMarginExceptDivideLine(@Px margin: Int) {
+        //不包含divideLine
+        val layoutParams = (contentContainer?.layoutParams as? LayoutParams)
+        layoutParams?.setMargins(margin, marginTop, margin, marginBottom)
+        contentContainer?.layoutParams = layoutParams
+    }
+
+    fun setDivideLineHorizontalMargin(@Px margin: Int) {
+        val layoutParams = (divideLine?.layoutParams as? LayoutParams)
+        layoutParams?.setMargins(margin, marginTop, margin, marginBottom)
+        divideLine?.layoutParams = layoutParams
     }
 
     fun setDivideLineHeight(@Px height: Int) {

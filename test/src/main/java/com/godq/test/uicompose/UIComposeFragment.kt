@@ -31,6 +31,8 @@ class UIComposeFragment: BaseFragment() {
             }
             setResDelegate(SkinTitleBarResDelegate(this))
             setVisible(showDivideLine = true)
+            setHorizontalMarginExceptDivideLine(100)
+            setDivideLineHorizontalMargin(50)
         }
     }
 }
